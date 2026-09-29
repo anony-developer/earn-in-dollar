@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#6366f1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>Earn In Dollar · Watch & Earn</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -31,10 +34,11 @@
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
       --shadow: 0 4px 12px rgba(0,0,0,0.05);
       --shadow-lg: 0 10px 30px rgba(0,0,0,0.08);
-      --card-radius: 24px;
+      --card-radius: 20px;
       --input-radius: 14px;
       --transition: all 0.2s ease;
-      --sidebar-w: 280px;
+      --header-h: 64px;
+      --bottom-nav-h: 68px;
     }
 
     body.dark {
@@ -53,6 +57,8 @@
     html, body {
       overflow-x: hidden;
       width: 100%;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
     }
 
     body {
@@ -60,74 +66,271 @@
       color: var(--text-primary);
       transition: background-color 0.3s, color 0.3s;
       min-height: 100vh;
-      display: flex;
-      padding: 12px;
-      -webkit-text-size-adjust: 100%;
+      padding: 0;
+      padding-bottom: env(safe-area-inset-bottom);
+      -webkit-font-smoothing: antialiased;
+      overscroll-behavior-y: none;
     }
 
-    /* ---- APP CONTAINER ---- */
-    .app-container {
-      display: flex;
-      width: 100%;
-      max-width: 1600px;
-      margin: 0 auto;
-      gap: 20px;
-      min-height: calc(100vh - 24px);
-    }
-
-    /* ---- SIDEBAR ---- */
-    .sidebar {
-      width: var(--sidebar-w);
-      flex-shrink: 0;
-      background: var(--surface);
-      border-radius: var(--card-radius);
-      padding: 22px 16px;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
+    /* ---- APP SHELL ---- */
+    .app-shell {
       display: flex;
       flex-direction: column;
-      transition: var(--transition);
-      height: fit-content;
-      position: sticky;
-      top: 12px;
+      min-height: 100vh;
+      width: 100%;
+      max-width: 100%;
     }
 
-    .sidebar-logo {
-      font-size: 24px;
-      font-weight: 800;
-      letter-spacing: -0.8px;
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    /* ============================================================
+       MOBILE TOP APP BAR
+       ============================================================ */
+    .app-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-h);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      z-index: 800;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    body.dark .app-bar {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .app-bar-left {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 0 8px 18px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 16px;
+      min-width: 0;
+      flex: 1;
     }
 
-    .sidebar-logo i {
-      font-size: 26px;
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    .hamburger-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: var(--transition);
+      color: var(--text-primary);
+    }
+
+    .hamburger-btn:active {
+      transform: scale(0.94);
+      background: var(--border);
+    }
+
+    .hamburger-btn i {
+      font-size: 18px;
+    }
+
+    .app-bar-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .app-bar-title .brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .app-bar-title .brand-text {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      background: linear-gradient(135deg, #4f46e5, #9333ea, #db2777);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    body.dark .app-bar-title .brand-text {
+      background: linear-gradient(135deg, #ffffff, #c4b5fd, #fbcfe8);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
-    .sidebar-nav {
+    .app-bar-right {
       display: flex;
-      flex-direction: column;
-      gap: 6px;
-      flex: 1;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
     }
 
-    .nav-item {
+    .icon-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-primary);
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+
+    .icon-btn:active {
+      transform: scale(0.94);
+      background: var(--border);
+    }
+
+    .icon-btn i {
+      font-size: 16px;
+    }
+
+    /* ============================================================
+       SLIDE-OUT NAVIGATION DRAWER
+       ============================================================ */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      z-index: 900;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.28s ease, visibility 0.28s ease;
+    }
+
+    .drawer-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 82%;
+      max-width: 320px;
+      background: var(--surface);
+      z-index: 950;
+      transform: translateX(-100%);
+      transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+      display: flex;
+      flex-direction: column;
+      box-shadow: 4px 0 30px rgba(0,0,0,0.15);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .drawer.open {
+      transform: translateX(0);
+    }
+
+    .drawer-header {
+      padding: 20px 20px 18px;
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+      color: white;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .drawer-header::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      right: -20%;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .drawer-header-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .drawer-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      font-weight: 800;
+      flex-shrink: 0;
+      border: 2px solid rgba(255,255,255,0.4);
+    }
+
+    .drawer-user-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .drawer-user-name {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .drawer-user-role {
+      font-size: 11px;
+      font-weight: 600;
+      opacity: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-top: 2px;
+    }
+
+    .drawer-nav {
+      flex: 1;
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .drawer-nav-item {
       display: flex;
       align-items: center;
       gap: 14px;
-      padding: 14px 16px;
+      padding: 15px 16px;
       border-radius: 14px;
       font-weight: 600;
       font-size: 15px;
@@ -138,9 +341,10 @@
       background: transparent;
       width: 100%;
       text-align: left;
+      min-height: 54px;
     }
 
-    .nav-item i {
+    .drawer-nav-item i {
       font-size: 18px;
       width: 22px;
       text-align: center;
@@ -148,103 +352,37 @@
       transition: var(--transition);
     }
 
-    .nav-item:hover {
-      background: rgba(59,130,246,0.06);
-      color: var(--text-primary);
+    .drawer-nav-item:active {
+      background: rgba(59,130,246,0.08);
     }
 
-    .nav-item.active {
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
+    .drawer-nav-item.active {
+      background: linear-gradient(135deg, #3b82f6, #6366f1);
       color: white;
       box-shadow: 0 8px 20px rgba(59,130,246,0.3);
     }
 
-    .nav-item.active i {
+    .drawer-nav-item.active i {
       color: white;
     }
 
-    .sidebar-footer {
-      margin-top: 20px;
-      padding-top: 16px;
+    .drawer-footer {
+      padding: 14px 12px 24px;
       border-top: 1px solid var(--border);
       display: flex;
       flex-direction: column;
       gap: 8px;
-    }
-
-    .user-profile-trigger {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 14px;
-      background: var(--bg);
-      border-radius: 14px;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: var(--transition);
-      border: 1.5px solid var(--border);
-      width: 100%;
-      text-align: left;
-    }
-
-    .user-profile-trigger:hover {
-      border-color: var(--primary);
-      background: rgba(59,130,246,0.06);
-      color: var(--text-primary);
-    }
-
-    .user-profile-trigger .avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 16px;
       flex-shrink: 0;
     }
 
-    .user-profile-trigger .user-info {
-      flex: 1;
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-    }
-
-    .user-profile-trigger .user-info .name {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text-primary);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .user-profile-trigger .user-info .role {
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--text-secondary);
-    }
-
-    .user-profile-trigger .chevron {
-      color: var(--text-secondary);
-      font-size: 13px;
-      transition: var(--transition);
-    }
-
-    .logout-btn-side {
+    .drawer-logout {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
+      gap: 14px;
+      padding: 15px 16px;
       border-radius: 14px;
-      font-weight: 600;
-      font-size: 14px;
+      font-weight: 700;
+      font-size: 15px;
       color: var(--danger);
       background: transparent;
       border: 1.5px solid var(--border);
@@ -252,107 +390,159 @@
       transition: var(--transition);
       width: 100%;
       text-align: left;
+      min-height: 54px;
     }
 
-    .logout-btn-side:hover {
+    .drawer-logout i {
+      font-size: 18px;
+      width: 22px;
+      text-align: center;
+    }
+
+    .drawer-logout:active {
       background: var(--danger);
       color: white;
       border-color: var(--danger);
     }
 
-    /* ---- MAIN CONTENT ---- */
+    /* ============================================================
+       MAIN CONTENT
+       ============================================================ */
     .main-content {
       flex: 1;
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+      padding: calc(var(--header-h) + 14px) 14px 90px;
+      max-width: 100%;
+      margin: 0 auto;
+      width: 100%;
     }
 
-    /* ---- TOP BAR ---- */
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 0 4px;
-      gap: 12px;
-      flex-wrap: wrap;
+    .page-header {
+      margin-bottom: 16px;
     }
 
-    .top-bar-left h1 {
-      font-size: 24px;
+    .page-header h1 {
+      font-size: 22px;
       font-weight: 800;
       letter-spacing: -0.5px;
       color: var(--text-primary);
+      margin-bottom: 2px;
     }
 
-    .top-bar-left p {
-      font-size: 14px;
-      color: var(--text-secondary);
-      font-weight: 500;
-      margin-top: 2px;
-    }
-
-    .top-bar-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .theme-toggle {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 40px;
-      width: 52px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 8px;
-      cursor: pointer;
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition);
-    }
-
-    .theme-toggle i {
+    .page-header p {
       font-size: 13px;
       color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* ============================================================
+       BOTTOM NAVIGATION BAR
+       ============================================================ */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom));
+      padding-bottom: env(safe-area-inset-bottom);
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: stretch;
+      justify-content: space-around;
+      z-index: 800;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+    }
+
+    body.dark .bottom-nav {
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
+    }
+
+    .bottom-nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      padding: 8px 2px;
+      position: relative;
+      letter-spacing: 0.2px;
+      min-width: 0;
+    }
+
+    .bottom-nav-item i {
+      font-size: 19px;
       transition: var(--transition);
     }
 
-    .theme-toggle .active-icon {
+    .bottom-nav-item.active {
       color: var(--primary);
     }
 
-    /* ---- CARDS & SECTIONS ---- */
+    .bottom-nav-item.active i {
+      transform: translateY(-1px);
+    }
+
+    .bottom-nav-item.active::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 28px;
+      height: 3px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      border-radius: 0 0 4px 4px;
+    }
+
+    .bottom-nav-item:active {
+      transform: scale(0.95);
+    }
+
+    /* ============================================================
+       CARDS & SECTIONS (Mobile optimized)
+       ============================================================ */
     .card {
       background: var(--surface);
       border-radius: var(--card-radius);
-      padding: 24px 20px;
+      padding: 18px 16px;
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
       transition: var(--transition);
+      margin-bottom: 14px;
+    }
+
+    .card:last-child {
+      margin-bottom: 0;
     }
 
     .card-title {
-      font-size: 18px;
+      font-size: 15px;
       font-weight: 700;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      letter-spacing: -0.3px;
+      gap: 8px;
+      letter-spacing: -0.2px;
     }
 
     .card-title i {
       color: var(--primary);
+      font-size: 15px;
     }
 
     /* ---- BALANCE TABS ---- */
     .balance-tabs {
       display: flex;
-      gap: 8px;
-      margin-bottom: 14px;
+      gap: 6px;
+      margin-bottom: 12px;
       background: var(--bg);
       padding: 5px;
       border-radius: 40px;
@@ -361,23 +551,24 @@
 
     .balance-tab {
       flex: 1;
-      padding: 12px 16px;
+      padding: 11px 8px;
       border-radius: 36px;
       border: none;
       background: transparent;
       font-weight: 700;
-      font-size: 14px;
+      font-size: 12px;
       color: var(--text-secondary);
       cursor: pointer;
       transition: var(--transition);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 5px;
+      min-height: 44px;
     }
 
     .balance-tab i {
-      font-size: 15px;
+      font-size: 13px;
     }
 
     .balance-tab.active {
@@ -389,19 +580,20 @@
     /* ---- BALANCE CARD ---- */
     .balance-card {
       position: relative;
-      border-radius: 28px;
-      padding: 26px 24px;
+      border-radius: 22px;
+      padding: 22px 20px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 6px;
+      gap: 4px;
       overflow: hidden;
       color: white;
       background:
         radial-gradient(circle at 15% 15%, rgba(255,255,255,0.28) 0%, transparent 45%),
         radial-gradient(circle at 85% 90%, rgba(255,255,255,0.18) 0%, transparent 50%),
         linear-gradient(135deg, #6366f1 0%, #8b5cf6 45%, #ec4899 100%);
-      box-shadow: 0 18px 40px rgba(99,102,241,0.35), 0 6px 16px rgba(236,72,153,0.2), inset 0 1px 0 rgba(255,255,255,0.25);
+      box-shadow: 0 14px 32px rgba(99,102,241,0.35), 0 4px 12px rgba(236,72,153,0.2);
+      margin-bottom: 14px;
     }
 
     .balance-card.total-card {
@@ -409,7 +601,7 @@
         radial-gradient(circle at 15% 15%, rgba(255,255,255,0.28) 0%, transparent 45%),
         radial-gradient(circle at 85% 90%, rgba(255,255,255,0.18) 0%, transparent 50%),
         linear-gradient(135deg, #059669 0%, #10b981 45%, #34d399 100%);
-      box-shadow: 0 18px 40px rgba(16,185,129,0.35), 0 6px 16px rgba(5,150,105,0.2), inset 0 1px 0 rgba(255,255,255,0.25);
+      box-shadow: 0 14px 32px rgba(16,185,129,0.35), 0 4px 12px rgba(5,150,105,0.2);
     }
 
     .balance-card::before {
@@ -417,8 +609,8 @@
       position: absolute;
       top: -50%;
       right: -30%;
-      width: 220px;
-      height: 220px;
+      width: 180px;
+      height: 180px;
       border-radius: 50%;
       background: radial-gradient(circle, rgba(255,255,255,0.22) 0%, transparent 70%);
       pointer-events: none;
@@ -429,8 +621,8 @@
       position: absolute;
       bottom: -60%;
       left: -20%;
-      width: 180px;
-      height: 180px;
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
       background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
       pointer-events: none;
@@ -439,27 +631,27 @@
     .balance-label {
       position: relative;
       z-index: 1;
-      font-size: 12px;
+      font-size: 11px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1.4px;
+      letter-spacing: 1.2px;
       color: rgba(255,255,255,0.92);
     }
 
     .balance-label i {
-      font-size: 15px;
+      font-size: 13px;
       color: #fde68a;
     }
 
     .balance-amount {
       position: relative;
       z-index: 1;
-      font-size: 46px;
+      font-size: 38px;
       font-weight: 900;
-      letter-spacing: -2.5px;
+      letter-spacing: -2px;
       color: #ffffff;
       line-height: 1.05;
       text-shadow: 0 2px 10px rgba(0,0,0,0.2);
@@ -467,20 +659,20 @@
       align-items: baseline;
     }
 
-    .balance-amount span {
-      font-size: 24px;
+    .balance-amount span:first-child {
+      font-size: 20px;
       font-weight: 700;
       color: rgba(255,255,255,0.92);
-      margin-right: 4px;
+      margin-right: 3px;
       letter-spacing: -1px;
     }
 
     .balance-sparkle {
       position: absolute;
-      top: 16px;
-      right: 20px;
+      top: 14px;
+      right: 18px;
       z-index: 1;
-      font-size: 18px;
+      font-size: 16px;
       color: rgba(255,255,255,0.85);
       animation: sparkle 2.4s ease-in-out infinite;
       filter: drop-shadow(0 1px 3px rgba(0,0,0,0.2));
@@ -491,35 +683,34 @@
       50% { opacity: 1; transform: scale(1.15) rotate(15deg); }
     }
 
+    /* ---- ACTION BUTTONS ---- */
     .action-buttons {
       display: flex;
-      flex-direction: row;
-      gap: 12px;
-      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
     }
 
     .action-btn {
+      flex: 1;
       border: none;
-      border-radius: 100px;
-      padding: 16px 20px;
+      border-radius: 16px;
+      padding: 15px 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
       font-weight: 700;
-      font-size: 16px;
+      font-size: 14px;
       cursor: pointer;
       transition: var(--transition);
       color: white;
-      box-shadow: var(--shadow-lg);
-      letter-spacing: 0.3px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      letter-spacing: 0.2px;
       min-height: 56px;
-      flex: 1;
-      min-width: 140px;
     }
 
     .action-btn i {
-      font-size: 20px;
+      font-size: 17px;
       color: white;
     }
 
@@ -527,33 +718,66 @@
       background: linear-gradient(135deg, #10b981, #059669);
     }
 
-    .action-btn.deposit-btn:hover {
-      background: linear-gradient(135deg, #059669, #047857);
-      transform: translateY(-2px);
-      box-shadow: 0 18px 40px rgba(16,185,129,0.35);
+    .action-btn.deposit-btn:active {
+      transform: scale(0.97);
+      box-shadow: 0 4px 12px rgba(16,185,129,0.4);
     }
 
     .action-btn.withdraw-btn {
       background: linear-gradient(135deg, #f59e0b, #d97706);
     }
 
-    .action-btn.withdraw-btn:hover {
-      background: linear-gradient(135deg, #d97706, #b45309);
-      transform: translateY(-2px);
-      box-shadow: 0 18px 40px rgba(245,158,11,0.35);
+    .action-btn.withdraw-btn:active {
+      transform: scale(0.97);
+      box-shadow: 0 4px 12px rgba(245,158,11,0.4);
+    }
+
+    /* ---- STATS GRID ---- */
+    .stats-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .stat-tile {
+      flex: 1;
+      background: var(--bg);
+      padding: 14px 10px;
+      border-radius: 16px;
+      text-align: center;
+      border: 1px solid var(--border);
+      min-width: 0;
+    }
+
+    .stat-tile .label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text-secondary);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .stat-tile .value {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     /* ---- PLANS GRID ---- */
     .plans-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
     .plan-card {
       background: var(--bg);
       border-radius: 18px;
-      padding: 18px 14px;
+      padding: 16px 14px;
       border: 1.5px solid var(--border);
       transition: var(--transition);
       display: flex;
@@ -563,10 +787,28 @@
       overflow: hidden;
     }
 
-    .plan-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-lg);
-      border-color: var(--primary);
+    .plan-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    .plan-card-header .plan-icon-wrap {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .plan-card-header .plan-title {
+      flex: 1;
+      min-width: 0;
     }
 
     .plan-card .plan-name {
@@ -576,43 +818,44 @@
     }
 
     .plan-card .plan-deposit {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 900;
       color: var(--primary);
       letter-spacing: -0.5px;
     }
 
     .plan-card .plan-detail {
-      font-size: 12px;
+      font-size: 12.5px;
       color: var(--text-secondary);
       font-weight: 500;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
 
     .plan-card .plan-detail i {
       width: 14px;
       color: var(--primary);
+      font-size: 12px;
     }
 
     .plan-card .plan-btn {
-      margin-top: 8px;
-      padding: 10px 14px;
-      border-radius: 12px;
+      margin-top: 10px;
+      padding: 14px 16px;
+      border-radius: 14px;
       border: none;
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
       color: white;
-      font-weight: 700;
-      font-size: 14px;
+      font-weight: 800;
+      font-size: 15px;
       cursor: pointer;
       transition: var(--transition);
       width: 100%;
+      min-height: 52px;
+      letter-spacing: 0.3px;
     }
 
-    .plan-card .plan-btn:hover {
-      transform: scale(1.02);
-      box-shadow: 0 8px 20px rgba(59,130,246,0.35);
+    .plan-card .plan-btn:active {
+      transform: scale(0.97);
     }
 
     .plan-card .plan-btn:disabled {
@@ -623,26 +866,26 @@
 
     .plan-badge {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 12px;
+      right: 12px;
       background: var(--success);
       color: white;
       font-size: 10px;
-      font-weight: 700;
-      padding: 3px 10px;
+      font-weight: 800;
+      padding: 4px 10px;
       border-radius: 30px;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.6px;
     }
 
     /* ---- APPLY EARNING SECTION ---- */
     .apply-section {
       background: var(--bg);
       border-radius: 18px;
-      padding: 20px;
+      padding: 18px 16px;
       border: 2px dashed var(--border);
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
       transition: var(--transition);
     }
 
@@ -653,7 +896,7 @@
 
     .apply-input {
       width: 100%;
-      padding: 14px 16px;
+      padding: 15px 16px;
       border-radius: var(--input-radius);
       border: 1.5px solid var(--border);
       background: var(--surface);
@@ -661,6 +904,7 @@
       font-size: 15px;
       font-weight: 500;
       transition: var(--transition);
+      min-height: 54px;
     }
 
     .apply-input:focus {
@@ -670,87 +914,80 @@
     }
 
     .apply-btn {
-      padding: 16px 24px;
+      padding: 16px 20px;
       border-radius: var(--input-radius);
       border: none;
       background: linear-gradient(135deg, #8b5cf6, #6366f1);
       color: white;
       font-weight: 800;
-      font-size: 16px;
+      font-size: 15px;
       cursor: pointer;
       transition: var(--transition);
       box-shadow: 0 8px 24px rgba(139,92,246,0.35);
       min-height: 56px;
     }
 
-    .apply-btn:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 32px rgba(139,92,246,0.45);
+    .apply-btn:active:not(:disabled) {
+      transform: scale(0.98);
     }
 
     .apply-btn:disabled {
       opacity: 0.6;
       cursor: not-allowed;
-      transform: none;
     }
 
     .apply-status {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 12px 16px;
+      gap: 10px;
+      padding: 14px 16px;
       border-radius: 14px;
       background: var(--surface);
       border: 1px solid var(--border);
+      line-height: 1.45;
     }
 
     .apply-status i {
       font-size: 18px;
+      flex-shrink: 0;
     }
 
     /* ---- ADS WATCHING ---- */
-    .ad-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-      padding: 10px 0;
-    }
-
     .ad-box {
       width: 100%;
-      max-width: 500px;
-      aspect-ratio: 16/9;
+      aspect-ratio: 16/10;
       background: linear-gradient(135deg, #1e293b, #0f172a);
-      border-radius: 20px;
+      border-radius: 18px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       color: white;
-      gap: 10px;
+      gap: 8px;
       position: relative;
       overflow: hidden;
       border: 2px solid var(--border);
+      margin-bottom: 14px;
     }
 
     .ad-box .ad-icon {
-      font-size: 48px;
+      font-size: 42px;
       color: rgba(255,255,255,0.3);
     }
 
     .ad-box .ad-text {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 600;
       color: rgba(255,255,255,0.7);
       text-align: center;
       padding: 0 20px;
+      line-height: 1.4;
     }
 
     .ad-box .ad-countdown {
-      font-size: 40px;
+      font-size: 44px;
       font-weight: 900;
       color: #fbbf24;
       text-shadow: 0 0 20px rgba(251,191,36,0.4);
@@ -762,7 +999,7 @@
       background: var(--bg);
       border-radius: 30px;
       overflow: hidden;
-      margin-top: 8px;
+      margin-bottom: 14px;
     }
 
     .ad-progress-bar {
@@ -772,73 +1009,74 @@
       transition: width 1s linear;
     }
 
-    .ad-stats {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      justify-content: center;
+    .watch-btn {
       width: 100%;
-    }
-
-    .ad-stat-item {
-      background: var(--bg);
-      padding: 12px 20px;
+      border: none;
       border-radius: 16px;
-      text-align: center;
-      flex: 1;
-      min-width: 100px;
-      border: 1px solid var(--border);
-    }
-
-    .ad-stat-item .label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      color: var(--text-secondary);
-      font-weight: 600;
-    }
-
-    .ad-stat-item .value {
-      font-size: 20px;
+      padding: 17px 20px;
       font-weight: 800;
-      color: var(--text-primary);
-      margin-top: 2px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: var(--transition);
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+      box-shadow: 0 10px 28px rgba(59,130,246,0.4);
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .watch-btn:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    .watch-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .watch-btn i {
+      font-size: 18px;
     }
 
     /* ---- HISTORY ---- */
     .history-subtabs {
       display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 2px;
+    }
+
+    .history-subtabs::-webkit-scrollbar {
+      display: none;
     }
 
     .history-subtab {
       background: var(--bg);
       border: 1.5px solid var(--border);
       border-radius: 100px;
-      padding: 10px 18px;
+      padding: 10px 14px;
       font-weight: 700;
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-secondary);
       cursor: pointer;
       transition: var(--transition);
-      min-height: 42px;
+      min-height: 40px;
       display: flex;
       align-items: center;
       gap: 6px;
-      justify-content: center;
-      flex: 1;
-      min-width: 90px;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .history-subtab i {
-      font-size: 13px;
-    }
-
-    .history-subtab:hover {
-      border-color: var(--primary);
-      color: var(--primary);
+      font-size: 12px;
     }
 
     .history-subtab.active {
@@ -851,47 +1089,38 @@
     .history-subtab.subtab-deposit.active {
       background: linear-gradient(135deg, #10b981, #059669);
       border-color: #10b981;
-      box-shadow: 0 6px 16px rgba(16,185,129,0.35);
     }
 
     .history-subtab.subtab-withdraw.active {
       background: linear-gradient(135deg, #f59e0b, #d97706);
       border-color: #f59e0b;
-      box-shadow: 0 6px 16px rgba(245,158,11,0.35);
     }
 
     .history-subtab.subtab-ad.active {
       background: linear-gradient(135deg, #8b5cf6, #7c3aed);
       border-color: #8b5cf6;
-      box-shadow: 0 6px 16px rgba(139,92,246,0.35);
     }
 
     .history-list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      max-height: 520px;
-      overflow-y: auto;
-      padding-right: 4px;
-      -webkit-overflow-scrolling: touch;
+      gap: 8px;
     }
 
     .history-item {
       background: var(--bg);
-      border-radius: 16px;
-      padding: 14px 16px;
+      border-radius: 14px;
+      padding: 13px 14px;
       border-left: 4px solid var(--primary);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
+      gap: 10px;
       transition: var(--transition);
     }
 
     .history-item.deposit { border-left-color: var(--success); }
     .history-item.withdraw { border-left-color: var(--warning); }
-    .history-item.bet { border-left-color: var(--primary); }
     .history-item.ad { border-left-color: var(--purple); }
 
     .history-info {
@@ -904,23 +1133,35 @@
 
     .history-type {
       font-weight: 700;
-      font-size: 14px;
+      font-size: 13px;
       display: flex;
       align-items: center;
       gap: 6px;
+      line-height: 1.3;
+    }
+
+    .history-type i {
+      font-size: 12px;
+      flex-shrink: 0;
     }
 
     .history-detail {
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--text-secondary);
       font-weight: 500;
       word-break: break-word;
+      line-height: 1.4;
+    }
+
+    .history-amount-wrap {
+      text-align: right;
+      flex-shrink: 0;
     }
 
     .history-amount {
       font-weight: 800;
-      font-size: 16px;
-      letter-spacing: -0.5px;
+      font-size: 15px;
+      letter-spacing: -0.3px;
       white-space: nowrap;
     }
 
@@ -928,9 +1169,10 @@
     .history-amount.negative { color: var(--danger); }
 
     .history-time {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--text-secondary);
       font-weight: 500;
+      margin-top: 2px;
     }
 
     .empty-history {
@@ -940,30 +1182,32 @@
     }
 
     .empty-history i {
-      font-size: 38px;
+      font-size: 36px;
       margin-bottom: 12px;
       opacity: 0.4;
       display: block;
     }
 
     .empty-history p {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
     }
 
     /* ============================================================
-       AUTH PAGES — LIGHT THEME (Default) + DARK THEME SUPPORT
+       AUTH PAGES — LIGHT THEME (Mobile Optimized)
        ============================================================ */
     .auth-wrapper {
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
+      min-height: 100dvh;
       width: 100%;
-      padding: 20px;
+      padding: 16px;
       position: fixed;
       inset: 0;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       background:
         radial-gradient(circle at 10% 20%, rgba(99,102,241,0.18) 0%, transparent 45%),
         radial-gradient(circle at 90% 15%, rgba(236,72,153,0.14) 0%, transparent 45%),
@@ -983,100 +1227,90 @@
         linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
     }
 
-    /* Floating glowing orbs */
     .auth-orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(70px);
-      opacity: 0.55;
+      filter: blur(60px);
+      opacity: 0.5;
       pointer-events: none;
       animation: floatOrb 15s ease-in-out infinite;
     }
 
     .auth-orb.orb-1 {
-      width: 320px;
-      height: 320px;
+      width: 240px;
+      height: 240px;
       background: radial-gradient(circle, #818cf8 0%, transparent 70%);
-      top: -80px;
-      left: -80px;
+      top: -60px;
+      left: -60px;
     }
 
     .auth-orb.orb-2 {
-      width: 260px;
-      height: 260px;
+      width: 200px;
+      height: 200px;
       background: radial-gradient(circle, #f472b6 0%, transparent 70%);
       top: 20%;
-      right: -100px;
+      right: -80px;
       animation-delay: -5s;
     }
 
     .auth-orb.orb-3 {
-      width: 300px;
-      height: 300px;
+      width: 220px;
+      height: 220px;
       background: radial-gradient(circle, #34d399 0%, transparent 70%);
-      bottom: -100px;
-      left: 30%;
+      bottom: -80px;
+      left: 25%;
       animation-delay: -10s;
-      opacity: 0.45;
+      opacity: 0.4;
     }
 
     .auth-orb.orb-4 {
-      width: 200px;
-      height: 200px;
+      width: 160px;
+      height: 160px;
       background: radial-gradient(circle, #a78bfa 0%, transparent 70%);
-      top: 55%;
+      top: 60%;
       left: 5%;
       animation-delay: -7s;
-      opacity: 0.5;
+      opacity: 0.45;
     }
 
     .auth-orb.orb-5 {
-      width: 240px;
-      height: 240px;
+      width: 180px;
+      height: 180px;
       background: radial-gradient(circle, #22d3ee 0%, transparent 70%);
-      bottom: 5%;
-      right: 8%;
+      bottom: 8%;
+      right: 5%;
       animation-delay: -3s;
-      opacity: 0.4;
+      opacity: 0.35;
     }
 
     @keyframes floatOrb {
       0%, 100% { transform: translate(0, 0) scale(1); }
-      25% { transform: translate(30px, -40px) scale(1.08); }
-      50% { transform: translate(-25px, 25px) scale(0.94); }
-      75% { transform: translate(20px, 35px) scale(1.04); }
+      25% { transform: translate(20px, -30px) scale(1.06); }
+      50% { transform: translate(-20px, 20px) scale(0.95); }
+      75% { transform: translate(15px, 25px) scale(1.03); }
     }
 
-    /* Sparkling stars overlay */
     .auth-stars {
       position: absolute;
       inset: 0;
       background-image:
-        radial-gradient(2px 2px at 15% 25%, rgba(99,102,241,0.5), transparent),
-        radial-gradient(2px 2px at 75% 15%, rgba(236,72,153,0.45), transparent),
-        radial-gradient(1.5px 1.5px at 45% 55%, rgba(139,92,246,0.5), transparent),
-        radial-gradient(2px 2px at 85% 75%, rgba(16,185,129,0.4), transparent),
-        radial-gradient(1.5px 1.5px at 25% 85%, rgba(99,102,241,0.5), transparent),
-        radial-gradient(1px 1px at 55% 10%, rgba(236,72,153,0.4), transparent),
-        radial-gradient(1px 1px at 65% 90%, rgba(139,92,246,0.4), transparent),
-        radial-gradient(1.5px 1.5px at 5% 60%, rgba(16,185,129,0.4), transparent);
-      background-size: 100% 100%;
+        radial-gradient(1.5px 1.5px at 15% 25%, rgba(99,102,241,0.4), transparent),
+        radial-gradient(1.5px 1.5px at 75% 15%, rgba(236,72,153,0.4), transparent),
+        radial-gradient(1px 1px at 45% 55%, rgba(139,92,246,0.4), transparent),
+        radial-gradient(1.5px 1.5px at 85% 75%, rgba(16,185,129,0.35), transparent),
+        radial-gradient(1px 1px at 25% 85%, rgba(99,102,241,0.4), transparent);
       pointer-events: none;
       animation: twinkle 5s ease-in-out infinite alternate;
-      opacity: 0.8;
+      opacity: 0.7;
     }
 
     body.dark .auth-stars {
       background-image:
-        radial-gradient(2px 2px at 15% 25%, rgba(255,255,255,0.9), transparent),
-        radial-gradient(2px 2px at 75% 15%, rgba(255,255,255,0.85), transparent),
-        radial-gradient(1.5px 1.5px at 45% 55%, rgba(255,255,255,0.75), transparent),
-        radial-gradient(2px 2px at 85% 75%, rgba(255,255,255,0.9), transparent),
-        radial-gradient(1.5px 1.5px at 25% 85%, rgba(255,255,255,0.7), transparent),
-        radial-gradient(1px 1px at 55% 10%, rgba(255,255,255,0.8), transparent),
-        radial-gradient(1px 1px at 65% 90%, rgba(255,255,255,0.7), transparent),
-        radial-gradient(1.5px 1.5px at 5% 60%, rgba(255,255,255,0.75), transparent);
-      opacity: 0.75;
+        radial-gradient(1.5px 1.5px at 15% 25%, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1.5px 1.5px at 75% 15%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1px 1px at 45% 55%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1.5px 1.5px at 85% 75%, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 25% 85%, rgba(255,255,255,0.6), transparent);
     }
 
     @keyframes twinkle {
@@ -1084,18 +1318,17 @@
       100% { opacity: 0.95; }
     }
 
-    /* Auth theme toggle button */
     .auth-theme-toggle {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      z-index: 100;
-      background: rgba(255, 255, 255, 0.85);
+      position: fixed;
+      top: calc(env(safe-area-inset-top) + 12px);
+      right: 12px;
+      z-index: 600;
+      background: rgba(255, 255, 255, 0.9);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.8);
       border-radius: 40px;
-      width: 54px;
+      width: 52px;
       height: 32px;
       display: flex;
       align-items: center;
@@ -1112,8 +1345,8 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     }
 
-    .auth-theme-toggle:hover {
-      transform: scale(1.05);
+    .auth-theme-toggle:active {
+      transform: scale(0.95);
     }
 
     .auth-theme-toggle i {
@@ -1133,12 +1366,12 @@
     .auth-card {
       position: relative;
       z-index: 10;
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.88);
       backdrop-filter: blur(30px) saturate(180%);
       -webkit-backdrop-filter: blur(30px) saturate(180%);
-      border-radius: 30px;
-      padding: 38px 30px;
-      max-width: 480px;
+      border-radius: 26px;
+      padding: 28px 20px;
+      max-width: 440px;
       width: 100%;
       box-shadow:
         0 30px 70px rgba(99, 102, 241, 0.15),
@@ -1147,10 +1380,11 @@
       border: 1px solid rgba(255, 255, 255, 0.9);
       transition: var(--transition);
       color: #0f172a;
+      margin: auto;
     }
 
     body.dark .auth-card {
-      background: rgba(21, 30, 44, 0.85);
+      background: rgba(21, 30, 44, 0.88);
       box-shadow:
         0 30px 70px rgba(0, 0, 0, 0.5),
         0 0 0 1px rgba(255, 255, 255, 0.08) inset,
@@ -1163,7 +1397,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      border-radius: 30px;
+      border-radius: 26px;
       padding: 1.5px;
       background: linear-gradient(135deg, rgba(99,102,241,0.5), rgba(236,72,153,0.35), rgba(16,185,129,0.35), rgba(139,92,246,0.5));
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -1173,10 +1407,70 @@
       opacity: 0.7;
     }
 
+    .auth-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .auth-brand-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #6366f1, #ec4899, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 28px;
+      box-shadow:
+        0 15px 40px rgba(139, 92, 246, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+      animation: brandPulse 3s ease-in-out infinite;
+    }
+
+    body.dark .auth-brand-icon {
+      box-shadow:
+        0 15px 40px rgba(139, 92, 246, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+    }
+
+    @keyframes brandPulse {
+      0%, 100% {
+        box-shadow:
+          0 15px 40px rgba(139, 92, 246, 0.4),
+          0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+      }
+      50% {
+        box-shadow:
+          0 20px 50px rgba(236, 72, 153, 0.5),
+          0 0 0 1px rgba(255, 255, 255, 0.55) inset;
+      }
+    }
+
+    .auth-brand-name {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #4f46e5 0%, #9333ea 50%, #db2777 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    body.dark .auth-brand-name {
+      background: linear-gradient(135deg, #ffffff 0%, #c4b5fd 40%, #fbcfe8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
     .auth-card h2 {
-      font-size: 26px;
+      font-size: 22px;
       font-weight: 800;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       text-align: center;
       letter-spacing: -0.5px;
       background: linear-gradient(135deg, #4f46e5 0%, #9333ea 50%, #db2777 100%);
@@ -1190,14 +1484,13 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      text-shadow: 0 2px 20px rgba(139, 92, 246, 0.3);
     }
 
     .auth-sub {
       text-align: center;
       color: #64748b;
-      margin-bottom: 26px;
-      font-size: 14px;
+      margin-bottom: 22px;
+      font-size: 13px;
       font-weight: 500;
     }
 
@@ -1206,14 +1499,14 @@
     }
 
     .input-group {
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .input-group label {
       display: block;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
-      margin-bottom: 7px;
+      margin-bottom: 6px;
       color: #334155;
       letter-spacing: 0.2px;
     }
@@ -1224,16 +1517,17 @@
 
     .input-field {
       width: 100%;
-      padding: 15px 18px;
+      padding: 15px 16px;
       border-radius: 14px;
       border: 1.5px solid #e2e8f0;
       background: rgba(255, 255, 255, 0.9);
       color: #0f172a;
-      font-size: 15px;
+      font-size: 16px;
       transition: var(--transition);
       font-weight: 500;
       -webkit-appearance: none;
       appearance: none;
+      min-height: 54px;
     }
 
     body.dark .input-field {
@@ -1278,7 +1572,7 @@
 
     .toggle-password {
       position: absolute;
-      right: 14px;
+      right: 8px;
       top: 50%;
       transform: translateY(-50%);
       color: #64748b;
@@ -1291,37 +1585,31 @@
       align-items: center;
       justify-content: center;
       padding: 8px;
-      min-width: 40px;
-      min-height: 40px;
-      border-radius: 8px;
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 10px;
     }
 
     body.dark .toggle-password {
       color: rgba(226, 232, 240, 0.7);
     }
 
-    .toggle-password:hover {
-      color: #4f46e5;
-      background: rgba(99, 102, 241, 0.08);
-    }
-
-    body.dark .toggle-password:hover {
-      color: #c4b5fd;
-      background: rgba(255, 255, 255, 0.08);
+    .toggle-password:active {
+      background: rgba(99, 102, 241, 0.1);
     }
 
     .btn {
       border: none;
       border-radius: 14px;
-      padding: 16px 22px;
+      padding: 16px 20px;
       font-weight: 800;
-      font-size: 16px;
+      font-size: 15px;
       cursor: pointer;
       transition: var(--transition);
       color: white;
       width: 100%;
-      letter-spacing: 0.4px;
-      min-height: 54px;
+      letter-spacing: 0.3px;
+      min-height: 56px;
       -webkit-appearance: none;
       appearance: none;
       position: relative;
@@ -1329,64 +1617,28 @@
       background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
       box-shadow:
         0 12px 30px rgba(139, 92, 246, 0.35),
-        0 4px 12px rgba(236, 72, 153, 0.25),
-        inset 0 1px 0 rgba(255, 255, 255, 0.25);
-    }
-
-    .btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #6366f1 100%);
-      opacity: 0;
-      transition: opacity 0.35s ease;
-      border-radius: 14px;
-    }
-
-    .btn:hover::before {
-      opacity: 1;
-    }
-
-    .btn > * {
-      position: relative;
-      z-index: 1;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow:
-        0 18px 40px rgba(139, 92, 246, 0.45),
-        0 6px 18px rgba(236, 72, 153, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        0 4px 12px rgba(236, 72, 153, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
     .btn:active {
-      transform: translateY(0);
+      transform: scale(0.98);
     }
 
     .btn-success {
       background: linear-gradient(135deg, #10b981 0%, #059669 50%, #06b6d4 100%);
       box-shadow:
         0 12px 30px rgba(16, 185, 129, 0.35),
-        0 4px 12px rgba(6, 182, 212, 0.25),
-        inset 0 1px 0 rgba(255, 255, 255, 0.25);
-    }
-
-    .btn-success::before {
-      background: linear-gradient(135deg, #06b6d4 0%, #059669 50%, #10b981 100%);
-    }
-
-    .btn-success:hover {
-      box-shadow:
-        0 18px 40px rgba(16, 185, 129, 0.45),
-        0 6px 18px rgba(6, 182, 212, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        0 4px 12px rgba(6, 182, 212, 0.25);
     }
 
     .auth-switch {
       text-align: center;
-      margin-top: 22px;
-      font-size: 14px;
+      margin-top: 18px;
+      font-size: 13.5px;
       color: #64748b;
       font-weight: 500;
     }
@@ -1401,260 +1653,32 @@
       font-weight: 700;
       cursor: pointer;
       transition: var(--transition);
+      padding: 4px 2px;
+      display: inline-block;
     }
 
     body.dark .auth-switch a {
       color: #c4b5fd;
     }
 
-    .auth-switch a:hover {
-      color: #db2777;
-      text-decoration: underline;
-    }
-
-    body.dark .auth-switch a:hover {
-      color: #fbcfe8;
-      text-shadow: 0 0 12px rgba(196, 181, 253, 0.5);
+    .auth-switch a:active {
+      opacity: 0.7;
     }
 
     .hidden { display: none !important; }
 
-    /* Auth page country picker - light theme */
-    .auth-card .country-trigger {
-      border: 1.5px solid #e2e8f0;
-      background: rgba(255, 255, 255, 0.9);
-      color: #0f172a;
-    }
-
-    body.dark .auth-card .country-trigger {
-      border: 1.5px solid rgba(255, 255, 255, 0.15);
-      background: rgba(255, 255, 255, 0.06);
-      color: #ffffff;
-    }
-
-    .auth-card .country-trigger:hover {
-      border-color: #6366f1;
-      background: #ffffff;
-    }
-
-    body.dark .auth-card .country-trigger:hover {
-      border-color: rgba(139, 92, 246, 0.8);
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    .auth-card .country-trigger i {
-      color: #64748b;
-    }
-
-    body.dark .auth-card .country-trigger i {
-      color: rgba(226, 232, 240, 0.7);
-    }
-
-    .auth-card .country-dropdown {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.12);
-    }
-
-    body.dark .auth-card .country-dropdown {
-      background: rgba(15, 23, 42, 0.95);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-    }
-
-    .auth-card .country-search {
-      background: #ffffff;
-      color: #0f172a;
-      border-bottom: 1px solid #e2e8f0;
-    }
-
-    body.dark .auth-card .country-search {
-      background: rgba(15, 23, 42, 0.95);
-      color: #ffffff;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .auth-card .country-search::placeholder {
-      color: #94a3b8;
-    }
-
-    body.dark .auth-card .country-search::placeholder {
-      color: rgba(226, 232, 240, 0.5);
-    }
-
-    .auth-card .country-item {
-      color: #0f172a;
-    }
-
-    body.dark .auth-card .country-item {
-      color: #e2e8f0;
-    }
-
-    .auth-card .country-item .dial {
-      background: #f1f5f9;
-      color: #6366f1;
-    }
-
-    body.dark .auth-card .country-item .dial {
-      background: rgba(255, 255, 255, 0.08);
-      color: #c4b5fd;
-    }
-
-    .auth-card .country-item:hover {
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      color: white;
-    }
-
-    .auth-card .country-item:hover .dial {
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
-    }
-
-    .auth-card .phone-prefix-box {
-      border: 1.5px solid #e2e8f0;
-      background: rgba(255, 255, 255, 0.9);
-      color: #0f172a;
-    }
-
-    body.dark .auth-card .phone-prefix-box {
-      border: 1.5px solid rgba(255, 255, 255, 0.15);
-      background: rgba(255, 255, 255, 0.06);
-      color: #ffffff;
-    }
-
-    .auth-card .phone-input-box {
-      border: 1.5px solid #e2e8f0;
-      background: rgba(255, 255, 255, 0.9);
-      color: #0f172a;
-    }
-
-    body.dark .auth-card .phone-input-box {
-      border: 1.5px solid rgba(255, 255, 255, 0.15);
-      background: rgba(255, 255, 255, 0.06);
-      color: #ffffff;
-    }
-
-    .auth-card .phone-input-box::placeholder {
-      color: #94a3b8;
-    }
-
-    body.dark .auth-card .phone-input-box::placeholder {
-      color: rgba(226, 232, 240, 0.45);
-    }
-
-    .auth-card .phone-input-box:focus {
-      outline: none;
-      border-color: #6366f1;
-      background: #ffffff;
-      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
-    }
-
-    body.dark .auth-card .phone-input-box:focus {
-      border-color: rgba(139, 92, 246, 0.8);
-      background: rgba(255, 255, 255, 0.1);
-      box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2);
-    }
-
-    .auth-card .phone-hint-text {
-      color: #64748b;
-    }
-
-    body.dark .auth-card .phone-hint-text {
-      color: rgba(226, 232, 240, 0.6);
-    }
-
-    /* Brand mark in auth card */
-    .auth-brand {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 22px;
-    }
-
-    .auth-brand-icon {
-      width: 70px;
-      height: 70px;
-      border-radius: 22px;
-      background: linear-gradient(135deg, #6366f1, #ec4899, #8b5cf6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 32px;
-      box-shadow:
-        0 15px 40px rgba(139, 92, 246, 0.4),
-        0 0 0 1px rgba(255, 255, 255, 0.4) inset;
-      animation: brandPulse 3s ease-in-out infinite;
-    }
-
-    body.dark .auth-brand-icon {
-      box-shadow:
-        0 15px 40px rgba(139, 92, 246, 0.5),
-        0 0 0 1px rgba(255, 255, 255, 0.15) inset;
-    }
-
-    @keyframes brandPulse {
-      0%, 100% {
-        box-shadow:
-          0 15px 40px rgba(139, 92, 246, 0.4),
-          0 0 0 1px rgba(255, 255, 255, 0.4) inset;
-      }
-      50% {
-        box-shadow:
-          0 20px 50px rgba(236, 72, 153, 0.5),
-          0 0 0 1px rgba(255, 255, 255, 0.55) inset;
-      }
-    }
-
-    body.dark .auth-brand-icon {
-      animation: brandPulseDark 3s ease-in-out infinite;
-    }
-
-    @keyframes brandPulseDark {
-      0%, 100% {
-        box-shadow:
-          0 15px 40px rgba(139, 92, 246, 0.5),
-          0 0 0 1px rgba(255, 255, 255, 0.15) inset;
-      }
-      50% {
-        box-shadow:
-          0 20px 50px rgba(236, 72, 153, 0.6),
-          0 0 0 1px rgba(255, 255, 255, 0.25) inset;
-      }
-    }
-
-    .auth-brand-name {
-      font-size: 22px;
-      font-weight: 900;
-      letter-spacing: -0.5px;
-      background: linear-gradient(135deg, #4f46e5 0%, #9333ea 50%, #db2777 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    body.dark .auth-brand-name {
-      background: linear-gradient(135deg, #ffffff 0%, #c4b5fd 40%, #fbcfe8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* ---- COUNTRY PICKER (base) ---- */
+    /* Auth country picker (mobile) */
     .country-picker-wrapper {
       position: relative;
     }
 
     .country-trigger {
       width: 100%;
-      padding: 14px 16px;
-      border-radius: var(--input-radius);
-      border: 1.5px solid var(--border);
-      background: var(--bg);
-      color: var(--text-primary);
+      padding: 15px 16px;
+      border-radius: 14px;
+      border: 1.5px solid #e2e8f0;
+      background: rgba(255, 255, 255, 0.9);
+      color: #0f172a;
       font-size: 16px;
       font-weight: 500;
       display: flex;
@@ -1662,32 +1686,48 @@
       align-items: center;
       cursor: pointer;
       transition: var(--transition);
-      min-height: 50px;
+      min-height: 54px;
     }
 
-    .country-trigger:hover {
-      border-color: var(--primary);
+    body.dark .country-trigger {
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.06);
+      color: #ffffff;
+    }
+
+    .country-trigger:active {
+      border-color: #6366f1;
     }
 
     .country-trigger i {
-      color: var(--text-secondary);
+      color: #64748b;
       font-size: 14px;
+    }
+
+    body.dark .country-trigger i {
+      color: rgba(226, 232, 240, 0.7);
     }
 
     .country-dropdown {
       position: absolute;
-      top: calc(100% + 8px);
+      top: calc(100% + 6px);
       left: 0;
       right: 0;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 18px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
       box-shadow: 0 20px 50px rgba(0,0,0,0.15);
       z-index: 100;
-      max-height: 260px;
+      max-height: 240px;
       overflow-y: auto;
       display: none;
       -webkit-overflow-scrolling: touch;
+    }
+
+    body.dark .country-dropdown {
+      background: rgba(15, 23, 42, 0.98);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
     }
 
     .country-dropdown.open {
@@ -1698,9 +1738,9 @@
       width: 100%;
       padding: 14px 16px;
       border: none;
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text-primary);
+      border-bottom: 1px solid #e2e8f0;
+      background: #ffffff;
+      color: #0f172a;
       font-size: 16px;
       outline: none;
       position: sticky;
@@ -1709,41 +1749,55 @@
       font-weight: 500;
     }
 
+    body.dark .country-search {
+      background: rgba(15, 23, 42, 0.98);
+      color: #ffffff;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
     .country-list {
-      padding: 6px 0;
+      padding: 4px 0;
     }
 
     .country-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 13px 16px;
+      padding: 14px 16px;
       cursor: pointer;
       transition: background 0.12s;
       font-size: 15px;
       font-weight: 500;
-      min-height: 48px;
+      min-height: 50px;
+      color: #0f172a;
     }
 
-    .country-item:hover,
+    body.dark .country-item {
+      color: #e2e8f0;
+    }
+
     .country-item:active {
-      background: var(--primary);
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
       color: white;
     }
 
     .country-item .dial {
-      font-size: 13px;
-      color: var(--text-secondary);
-      background: rgba(0,0,0,0.04);
-      padding: 3px 12px;
+      font-size: 12px;
+      color: #6366f1;
+      background: #f1f5f9;
+      padding: 3px 10px;
       border-radius: 30px;
-      font-weight: 600;
+      font-weight: 700;
     }
 
-    .country-item:hover .dial,
+    body.dark .country-item .dial {
+      background: rgba(255, 255, 255, 0.08);
+      color: #c4b5fd;
+    }
+
     .country-item:active .dial {
-      color: white;
       background: rgba(255,255,255,0.2);
+      color: white;
     }
 
     .phone-row {
@@ -1752,117 +1806,170 @@
     }
 
     .phone-prefix-box {
-      width: 82px;
-      padding: 14px 8px;
-      border-radius: var(--input-radius);
-      border: 1.5px solid var(--border);
-      background: var(--bg);
-      color: var(--text-primary);
+      width: 78px;
+      padding: 15px 6px;
+      border-radius: 14px;
+      border: 1.5px solid #e2e8f0;
+      background: rgba(255, 255, 255, 0.9);
+      color: #0f172a;
       font-size: 15px;
       font-weight: 700;
       text-align: center;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 50px;
+      min-height: 54px;
+    }
+
+    body.dark .phone-prefix-box {
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.06);
+      color: #ffffff;
     }
 
     .phone-input-box {
       flex: 1;
-      padding: 14px 16px;
-      border-radius: var(--input-radius);
-      border: 1.5px solid var(--border);
-      background: var(--bg);
-      color: var(--text-primary);
+      padding: 15px 16px;
+      border-radius: 14px;
+      border: 1.5px solid #e2e8f0;
+      background: rgba(255, 255, 255, 0.9);
+      color: #0f172a;
       font-size: 16px;
       font-weight: 500;
-      min-height: 50px;
+      min-height: 54px;
       -webkit-appearance: none;
       appearance: none;
+      min-width: 0;
+    }
+
+    body.dark .phone-input-box {
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.06);
+      color: #ffffff;
+    }
+
+    .phone-input-box:focus {
+      outline: none;
+      border-color: #6366f1;
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+    }
+
+    body.dark .phone-input-box:focus {
+      border-color: rgba(139, 92, 246, 0.8);
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2);
     }
 
     .phone-hint-text {
-      font-size: 12px;
-      color: var(--text-secondary);
+      font-size: 11.5px;
+      color: #64748b;
       margin-top: 6px;
       padding-left: 4px;
     }
 
-    /* ---- MODALS ---- */
+    body.dark .phone-hint-text {
+      color: rgba(226, 232, 240, 0.6);
+    }
+
+    /* ============================================================
+       MODALS (mobile bottom-sheet style)
+       ============================================================ */
     .modal-overlay {
       position: fixed;
       inset: 0;
       background: rgba(0,0,0,0.55);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: center;
       z-index: 1000;
-      padding: 12px;
-      overflow-y: auto;
+      padding: 0;
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     .modal-content {
       background: var(--surface);
-      border-radius: 24px;
-      max-width: 520px;
+      border-radius: 26px 26px 0 0;
       width: 100%;
-      padding: 26px 20px;
+      max-width: 100%;
+      padding: 22px 18px calc(22px + env(safe-area-inset-bottom));
       border: 1px solid var(--border);
-      box-shadow: 0 40px 80px rgba(0,0,0,0.3);
+      border-bottom: none;
+      box-shadow: 0 -20px 60px rgba(0,0,0,0.25);
       max-height: 92vh;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      margin: auto;
+      margin: 0;
       position: relative;
+      animation: slideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .modal-drag-handle {
+      width: 40px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 4px;
+      margin: 0 auto 16px;
     }
 
     .modal-content h3 {
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 800;
       margin-bottom: 14px;
-      letter-spacing: -0.5px;
+      letter-spacing: -0.4px;
     }
 
     .modal-close {
       position: absolute;
       top: 14px;
-      right: 16px;
-      font-size: 26px;
+      right: 14px;
+      font-size: 20px;
       cursor: pointer;
       color: var(--text-secondary);
       transition: var(--transition);
       line-height: 1;
-      padding: 4px 8px;
-      min-width: 40px;
-      min-height: 40px;
+      padding: 0;
+      width: 36px;
+      height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: transparent;
+      background: var(--bg);
       border: none;
+      border-radius: 50%;
     }
 
-    .modal-close:hover {
-      color: var(--danger);
-      transform: rotate(90deg);
+    .modal-close:active {
+      background: var(--danger);
+      color: white;
     }
 
     .method-selector {
       display: flex;
-      gap: 10px;
-      margin: 16px 0;
+      gap: 8px;
+      margin: 14px 0;
     }
 
     .method-btn {
       flex: 1;
       padding: 14px 8px;
-      border-radius: 16px;
+      border-radius: 14px;
       border: 1.5px solid var(--border);
       background: var(--bg);
       font-weight: 700;
-      font-size: 14px;
+      font-size: 13px;
       cursor: pointer;
       transition: var(--transition);
       color: var(--text-secondary);
@@ -1881,48 +1988,43 @@
     .deposit-detail-box {
       background: var(--bg);
       padding: 14px;
-      border-radius: 18px;
-      margin: 14px 0;
+      border-radius: 16px;
+      margin: 12px 0;
       word-break: break-word;
-      font-size: 14px;
+      font-size: 13.5px;
     }
 
     .scanner-full-btn {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 10px;
       background: linear-gradient(135deg, var(--primary), #2563eb);
       color: white;
       font-weight: 800;
-      font-size: 17px;
-      padding: 20px 20px;
-      border-radius: 20px;
+      font-size: 15px;
+      padding: 17px 16px;
+      border-radius: 16px;
       border: none;
       cursor: pointer;
       transition: var(--transition);
       text-decoration: none;
       width: 100%;
-      margin: 12px 0;
+      margin: 10px 0;
       box-shadow: 0 10px 28px rgba(59,130,246,0.4);
       text-align: center;
-      min-height: 62px;
+      min-height: 56px;
     }
 
-    .scanner-full-btn i {
-      font-size: 22px;
-    }
-
-    .scanner-full-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 16px 40px rgba(59,130,246,0.5);
+    .scanner-full-btn:active {
+      transform: scale(0.98);
     }
 
     .amount-summary {
       background: var(--bg);
-      border-radius: 18px;
-      padding: 16px;
-      margin: 14px 0;
+      border-radius: 16px;
+      padding: 14px;
+      margin: 12px 0;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -1932,7 +2034,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 600;
       gap: 10px;
       flex-wrap: wrap;
@@ -1940,7 +2042,7 @@
 
     .amount-row.total {
       font-weight: 800;
-      font-size: 17px;
+      font-size: 16px;
       border-top: 2px solid var(--border);
       padding-top: 10px;
       margin-top: 4px;
@@ -1948,13 +2050,13 @@
 
     .amount-row .pkr-value {
       color: var(--text-secondary);
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
     }
 
     .amount-input-row {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       align-items: center;
       flex: 1;
       min-width: 0;
@@ -1964,13 +2066,13 @@
       flex: 1;
       font-weight: 700;
       text-align: right;
-      padding: 10px 12px;
-      min-height: 44px;
+      padding: 11px 12px;
+      min-height: 46px;
       font-size: 16px;
     }
 
     .screenshot-upload {
-      margin: 14px 0;
+      margin: 12px 0;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -1985,33 +2087,29 @@
     .file-input {
       padding: 14px;
       border: 2px dashed var(--border);
-      border-radius: 16px;
+      border-radius: 14px;
       background: var(--bg);
       cursor: pointer;
       transition: var(--transition);
       font-weight: 500;
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text-secondary);
-      min-height: 50px;
+      min-height: 54px;
       width: 100%;
-    }
-
-    .file-input:hover {
-      border-color: var(--primary);
     }
 
     .toast-message {
       background: linear-gradient(135deg, #10b981, #059669);
       color: white;
-      padding: 12px 18px;
+      padding: 13px 18px;
       border-radius: 100px;
       font-weight: 700;
-      margin-top: 14px;
+      margin-top: 12px;
       display: flex;
       align-items: center;
       gap: 8px;
       justify-content: center;
-      font-size: 14px;
+      font-size: 13.5px;
       box-shadow: 0 8px 20px rgba(16,185,129,0.3);
       text-align: center;
     }
@@ -2021,18 +2119,121 @@
       box-shadow: 0 8px 20px rgba(245,158,11,0.3);
     }
 
-    /* ---- TOAST SYSTEM ---- */
+    /* ---- PROFILE MODAL ---- */
+    .profile-modal-avatar {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 30px;
+      font-weight: 800;
+      margin: 0 auto 14px;
+      box-shadow: 0 10px 25px rgba(59,130,246,0.35);
+    }
+
+    .profile-modal-name {
+      text-align: center;
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 3px;
+    }
+
+    .profile-modal-role {
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 18px;
+    }
+
+    .profile-details {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .profile-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 13px 14px;
+      background: var(--bg);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .profile-row .label {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .profile-row .label i {
+      color: var(--primary);
+      width: 15px;
+      font-size: 13px;
+    }
+
+    .profile-row .value {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      word-break: break-all;
+      text-align: right;
+      flex: 1;
+      justify-content: flex-end;
+      min-width: 0;
+    }
+
+    .toggle-password-inline {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 15px;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      transition: var(--transition);
+      min-width: 34px;
+      min-height: 34px;
+      flex-shrink: 0;
+    }
+
+    .toggle-password-inline:active {
+      color: var(--primary);
+      background: rgba(59,130,246,0.08);
+    }
+
+    /* ============================================================
+       TOAST SYSTEM
+       ============================================================ */
     .toast-container {
       position: fixed;
-      top: 12px;
+      top: calc(env(safe-area-inset-top) + 10px);
       left: 50%;
       transform: translateX(-50%);
       z-index: 10000;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
       width: 100%;
-      max-width: 480px;
+      max-width: 420px;
       pointer-events: none;
       padding: 0 10px;
     }
@@ -2041,20 +2242,18 @@
       pointer-events: auto;
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 14px 16px;
+      gap: 10px;
+      padding: 13px 14px;
       border-radius: 16px;
       color: white;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 13px;
       box-shadow: 0 12px 32px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.1);
       opacity: 0;
       transform: translateY(-24px) scale(0.96);
       animation: toastIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
       position: relative;
       overflow: hidden;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
     }
 
     .custom-toast.toast-out {
@@ -2073,23 +2272,23 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 36px;
-      height: 36px;
-      min-width: 36px;
-      border-radius: 11px;
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      border-radius: 10px;
       background: rgba(255,255,255,0.2);
-      font-size: 16px;
+      font-size: 14px;
     }
 
     .custom-toast .toast-content {
       flex: 1;
-      line-height: 1.4;
+      line-height: 1.35;
       min-width: 0;
     }
 
     .custom-toast .toast-title {
       font-weight: 800;
-      font-size: 12px;
+      font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.6px;
       opacity: 0.9;
@@ -2098,7 +2297,7 @@
 
     .custom-toast .toast-body {
       font-weight: 500;
-      font-size: 13px;
+      font-size: 12.5px;
       opacity: 0.98;
       word-break: break-word;
     }
@@ -2107,7 +2306,7 @@
       background: transparent;
       border: none;
       color: white;
-      font-size: 16px;
+      font-size: 15px;
       cursor: pointer;
       opacity: 0.75;
       transition: opacity 0.2s;
@@ -2115,17 +2314,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      min-width: 32px;
-      min-height: 32px;
+      min-width: 30px;
+      min-height: 30px;
     }
-
-    .custom-toast .toast-close:hover { opacity: 1; }
 
     .custom-toast .toast-progress {
       position: absolute;
       bottom: 0;
       left: 0;
-      height: 4px;
+      height: 3px;
       background: rgba(255,255,255,0.5);
       width: 100%;
       transform-origin: left;
@@ -2139,237 +2336,100 @@
 
     .custom-toast.toast-success {
       background: linear-gradient(135deg, #10b981, #059669);
-      box-shadow: 0 12px 32px rgba(16,185,129,0.35), 0 4px 12px rgba(16,185,129,0.2);
     }
-    .custom-toast.toast-success .toast-progress { background: rgba(255,255,255,0.6); }
-
     .custom-toast.toast-error {
       background: linear-gradient(135deg, #ef4444, #b91c1c);
-      box-shadow: 0 12px 32px rgba(239,68,68,0.35), 0 4px 12px rgba(239,68,68,0.2);
     }
-    .custom-toast.toast-error .toast-progress { background: rgba(255,255,255,0.6); }
-
     .custom-toast.toast-warning {
       background: linear-gradient(135deg, #f59e0b, #d97706);
-      box-shadow: 0 12px 32px rgba(245,158,11,0.35), 0 4px 12px rgba(245,158,11,0.2);
     }
-    .custom-toast.toast-warning .toast-progress { background: rgba(255,255,255,0.6); }
-
     .custom-toast.toast-info {
       background: linear-gradient(135deg, #3b82f6, #2563eb);
-      box-shadow: 0 12px 32px rgba(59,130,246,0.35), 0 4px 12px rgba(59,130,246,0.2);
-    }
-    .custom-toast.toast-info .toast-progress { background: rgba(255,255,255,0.6); }
-
-    /* ---- PROFILE MODAL ---- */
-    .profile-modal-avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 32px;
-      font-weight: 800;
-      margin: 0 auto 16px;
-      box-shadow: 0 10px 25px rgba(59,130,246,0.35);
     }
 
-    .profile-modal-name {
-      text-align: center;
-      font-size: 20px;
-      font-weight: 800;
-      color: var(--text-primary);
-      margin-bottom: 4px;
-    }
+    /* ============================================================
+       TABLET+ ADJUSTMENTS (still mobile-first, just more room)
+       ============================================================ */
+    @media (min-width: 640px) {
+      .main-content {
+        padding: calc(var(--header-h) + 20px) 24px 90px;
+        max-width: 720px;
+      }
 
-    .profile-modal-role {
-      text-align: center;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      margin-bottom: 20px;
-    }
-
-    .profile-details {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .profile-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 16px;
-      background: var(--bg);
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .profile-row .label {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .profile-row .label i {
-      color: var(--primary);
-      width: 16px;
-    }
-
-    .profile-row .value {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      word-break: break-all;
-      text-align: right;
-    }
-
-    .toggle-password-inline {
-      background: transparent;
-      border: none;
-      color: var(--text-secondary);
-      cursor: pointer;
-      font-size: 15px;
-      padding: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 8px;
-      transition: var(--transition);
-      min-width: 32px;
-      min-height: 32px;
-    }
-
-    .toggle-password-inline:hover {
-      color: var(--primary);
-      background: rgba(59,130,246,0.08);
-    }
-
-    /* ---- RESPONSIVE ---- */
-    @media (max-width: 1024px) {
-      .app-container { flex-direction: column; }
-      .sidebar {
-        width: 100%;
-        position: static;
-        padding: 16px;
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: center;
+      .plans-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
         gap: 12px;
-        border-radius: 20px;
       }
-      .sidebar-logo {
-        padding: 0 12px 0 0;
-        border-bottom: none;
-        margin-bottom: 0;
-        border-right: 1px solid var(--border);
-        flex: 0 0 auto;
-        font-size: 20px;
+
+      .drawer {
+        width: 340px;
       }
-      .sidebar-logo i { font-size: 22px; }
-      .sidebar-nav {
-        flex-direction: row;
-        flex-wrap: wrap;
-        flex: 1;
-        gap: 4px;
-      }
-      .nav-item {
-        padding: 10px 16px;
-        font-size: 13px;
-        flex: 0 0 auto;
-        border-radius: 12px;
-      }
-      .nav-item i { font-size: 15px; width: 18px; }
-      .sidebar-footer {
-        margin-top: 0;
-        padding-top: 0;
-        border-top: none;
-        flex-direction: row;
-        flex-wrap: wrap;
+
+      .modal-overlay {
         align-items: center;
-        gap: 8px;
+        padding: 20px;
       }
-      .user-profile-trigger { padding: 8px 12px; font-size: 12px; flex: 0 0 auto; }
-      .user-profile-trigger .avatar { width: 30px; height: 30px; font-size: 13px; }
-      .user-profile-trigger .user-info .name { font-size: 12px; }
-      .user-profile-trigger .user-info .role { font-size: 10px; }
-      .logout-btn-side { padding: 8px 14px; font-size: 12px; }
+
+      .modal-content {
+        border-radius: 24px;
+        max-width: 520px;
+        padding: 26px 22px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .modal-drag-handle {
+        display: none;
+      }
+
+      @keyframes slideUp {
+        from { transform: scale(0.95); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+      }
     }
 
-    @media (max-width: 640px) {
-      body { padding: 8px; }
-      .app-container { gap: 12px; }
-      .card { padding: 18px 14px; border-radius: 18px; }
-      .top-bar-left h1 { font-size: 20px; }
-      .balance-amount { font-size: 38px; }
-      .balance-amount span { font-size: 20px; }
-      .action-btn { font-size: 14px; padding: 14px 12px; min-height: 50px; }
-      .action-btn i { font-size: 18px; }
-      .plans-grid { grid-template-columns: 1fr 1fr; }
-      .plan-card .plan-deposit { font-size: 20px; }
-      .auth-card { padding: 28px 20px; border-radius: 24px; }
-      .auth-card h2 { font-size: 22px; }
-      .auth-brand-icon { width: 58px; height: 58px; font-size: 26px; }
-      .auth-brand-name { font-size: 18px; }
-      .auth-orb.orb-1 { width: 220px; height: 220px; }
-      .auth-orb.orb-2 { width: 180px; height: 180px; }
-      .auth-orb.orb-3 { width: 200px; height: 200px; }
-      .modal-content { padding: 20px 16px; }
-      .history-subtab { font-size: 12px; padding: 8px 12px; min-width: 70px; }
-      .history-subtab i { font-size: 11px; }
-      .ad-box .ad-countdown { font-size: 32px; }
-      .ad-stat-item { min-width: 70px; padding: 10px 12px; }
-      .ad-stat-item .value { font-size: 16px; }
-      .nav-item { padding: 8px 12px; font-size: 12px; }
-      .nav-item i { font-size: 13px; width: 16px; }
-      .user-profile-trigger { padding: 6px 10px; font-size: 11px; }
-      .user-profile-trigger .avatar { width: 26px; height: 26px; font-size: 12px; }
-      .user-profile-trigger .user-info .name { font-size: 11px; }
-      .user-profile-trigger .user-info .role { font-size: 9px; }
-      .logout-btn-side { font-size: 11px; padding: 6px 12px; }
-      .balance-tab { font-size: 12px; padding: 10px 12px; }
-      .profile-row { padding: 12px 14px; }
-      .profile-row .value { font-size: 13px; }
-      .profile-modal-avatar { width: 64px; height: 64px; font-size: 26px; }
-      .auth-theme-toggle { top: 12px; right: 12px; width: 48px; height: 28px; }
+    @media (min-width: 900px) {
+      .plans-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .main-content {
+        max-width: 900px;
+      }
     }
 
-    @media (max-width: 400px) {
-      .plans-grid { grid-template-columns: 1fr; }
-      .action-buttons { flex-direction: column; }
-      .action-btn { min-width: 100%; }
-      .history-subtab { font-size: 11px; padding: 6px 10px; min-width: 60px; }
-      .balance-tab { font-size: 11px; padding: 8px 10px; gap: 4px; }
-      .profile-row { flex-direction: column; align-items: flex-start; }
-      .profile-row .value { text-align: left; width: 100%; }
+    /* Very small phones */
+    @media (max-width: 360px) {
+      .balance-amount { font-size: 32px; }
+      .balance-amount span:first-child { font-size: 17px; }
+      .action-btn { font-size: 12.5px; padding: 13px 8px; min-height: 50px; gap: 6px; }
+      .action-btn i { font-size: 15px; }
+      .stat-tile { padding: 12px 6px; }
+      .stat-tile .value { font-size: 15px; }
+      .bottom-nav-item { font-size: 9px; }
+      .bottom-nav-item i { font-size: 17px; }
+      .app-bar-title .brand-text { font-size: 14px; }
       .auth-card { padding: 24px 16px; }
-      .auth-card h2 { font-size: 20px; }
+      .auth-brand-name { font-size: 18px; }
     }
 
-    /* iOS Safe area */
+    /* Landscape phones */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .auth-wrapper { align-items: flex-start; padding: 12px; }
+      .auth-brand { margin-bottom: 12px; }
+      .auth-brand-icon { width: 48px; height: 48px; font-size: 22px; }
+      .auth-card h2 { font-size: 18px; }
+      .auth-sub { margin-bottom: 14px; }
+    }
+
+    /* iOS Safe area support */
     @supports (padding: env(safe-area-inset-top)) {
-      body {
-        padding-top: max(12px, env(safe-area-inset-top));
-        padding-bottom: max(12px, env(safe-area-inset-bottom));
-        padding-left: max(12px, env(safe-area-inset-left));
-        padding-right: max(12px, env(safe-area-inset-right));
+      .app-bar {
+        padding-top: env(safe-area-inset-top);
+        height: calc(var(--header-h) + env(safe-area-inset-top));
       }
-      .toast-container { top: max(12px, env(safe-area-inset-top)); }
-      .auth-wrapper {
-        padding-top: max(20px, env(safe-area-inset-top));
-        padding-bottom: max(20px, env(safe-area-inset-bottom));
+      .main-content {
+        padding-top: calc(var(--header-h) + env(safe-area-inset-top) + 14px);
       }
     }
 
@@ -2377,7 +2437,6 @@
     ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 30px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
   </style>
 </head>
 <body>
@@ -2385,13 +2444,11 @@
 
   <!-- ========== AUTH SECTION ========== -->
   <div id="authSection" class="auth-wrapper">
-    <!-- Auth theme toggle -->
     <button class="auth-theme-toggle" id="authThemeToggle" aria-label="Toggle theme">
       <i class="fas fa-sun active-icon" id="authSunIcon"></i>
       <i class="fas fa-moon" id="authMoonIcon"></i>
     </button>
 
-    <!-- Floating orbs & stars -->
     <div class="auth-orb orb-1"></div>
     <div class="auth-orb orb-2"></div>
     <div class="auth-orb orb-3"></div>
@@ -2456,7 +2513,7 @@
           </button>
         </div>
       </div>
-      <button class="btn btn-success" id="signupBtn"><i class="fas fa-user-plus" style="margin-right:8px;"></i>Create account</button>
+      <button class="btn btn-success" id="signupBtn"><i class="fas fa-user-plus"></i> Create account</button>
       <div class="auth-switch">
         Already have an account? <a id="goToLogin">Log in</a>
       </div>
@@ -2483,7 +2540,7 @@
           </button>
         </div>
       </div>
-      <button class="btn" id="loginBtn"><i class="fas fa-sign-in-alt" style="margin-right:8px;"></i>Log in</button>
+      <button class="btn" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Log in</button>
       <div class="auth-switch">
         <a id="goToReset">Forgot password?</a> · <a id="goToSignupFromLogin">Sign up</a>
       </div>
@@ -2510,7 +2567,7 @@
           </button>
         </div>
       </div>
-      <button class="btn" id="resetBtn"><i class="fas fa-sync-alt" style="margin-right:8px;"></i>Update password</button>
+      <button class="btn" id="resetBtn"><i class="fas fa-sync-alt"></i> Update password</button>
       <div class="auth-switch">
         <a id="backToLoginFromReset">Back to login</a>
       </div>
@@ -2518,39 +2575,59 @@
   </div>
 
   <!-- ========== DASHBOARD SECTION ========== -->
-  <div id="dashboardSection" class="app-container hidden">
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-      <div class="sidebar-logo">
-        <i class="fas fa-dollar-sign"></i> Earn In Dollar
+  <div id="dashboardSection" class="app-shell hidden">
+    <!-- TOP APP BAR -->
+    <header class="app-bar">
+      <div class="app-bar-left">
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="app-bar-title">
+          <div class="brand-icon"><i class="fas fa-dollar-sign"></i></div>
+          <span class="brand-text">Earn In Dollar</span>
+        </div>
       </div>
-      <nav class="sidebar-nav">
-        <button class="nav-item active" data-view="dashboard">
+      <div class="app-bar-right">
+        <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">
+          <i class="fas fa-moon" id="themeIcon"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- NAVIGATION DRAWER -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <aside class="drawer" id="drawer">
+      <div class="drawer-header">
+        <div class="drawer-header-inner">
+          <div class="drawer-avatar" id="drawerAvatar">U</div>
+          <div class="drawer-user-info">
+            <div class="drawer-user-name" id="drawerUserName">User</div>
+            <div class="drawer-user-role">Verified Member</div>
+          </div>
+        </div>
+      </div>
+      <nav class="drawer-nav">
+        <button class="drawer-nav-item active" data-view="dashboard">
           <i class="fas fa-home"></i> Dashboard
         </button>
-        <button class="nav-item" data-view="apply">
+        <button class="drawer-nav-item" data-view="apply">
           <i class="fas fa-file-signature"></i> Apply for Earning
         </button>
-        <button class="nav-item" data-view="plans">
+        <button class="drawer-nav-item" data-view="plans">
           <i class="fas fa-crown"></i> Premium Plans
         </button>
-        <button class="nav-item" data-view="watch">
+        <button class="drawer-nav-item" data-view="watch">
           <i class="fas fa-tv"></i> Watch Ads
         </button>
-        <button class="nav-item" data-view="history">
+        <button class="drawer-nav-item" data-view="history">
           <i class="fas fa-history"></i> History
         </button>
-      </nav>
-      <div class="sidebar-footer">
-        <button class="user-profile-trigger" id="userProfileTrigger">
-          <div class="avatar" id="userAvatar">U</div>
-          <div class="user-info">
-            <div class="name" id="sidebarUserName">User</div>
-            <div class="role">View Profile</div>
-          </div>
-          <i class="fas fa-chevron-right chevron"></i>
+        <button class="drawer-nav-item" id="drawerProfileBtn">
+          <i class="fas fa-user-circle"></i> My Profile
         </button>
-        <button class="logout-btn-side" id="logoutBtn">
+      </nav>
+      <div class="drawer-footer">
+        <button class="drawer-logout" id="drawerLogoutBtn">
           <i class="fas fa-sign-out-alt"></i> Logout
         </button>
       </div>
@@ -2558,28 +2635,19 @@
 
     <!-- MAIN CONTENT -->
     <main class="main-content">
-      <!-- TOP BAR -->
-      <div class="top-bar">
-        <div class="top-bar-left">
-          <h1 id="pageTitle">Dashboard</h1>
-          <p id="pageSubtitle">Welcome back, User</p>
-        </div>
-        <div class="top-bar-right">
-          <div class="theme-toggle" id="themeToggle">
-            <i class="fas fa-sun" id="sunIcon"></i>
-            <i class="fas fa-moon" id="moonIcon"></i>
-          </div>
-        </div>
+      <div class="page-header">
+        <h1 id="pageTitle">Dashboard</h1>
+        <p id="pageSubtitle">Welcome back, User</p>
       </div>
 
       <!-- ====== VIEW: DASHBOARD ====== -->
       <div id="view-dashboard" class="view-section">
         <div class="balance-tabs" id="balanceTabs">
           <button class="balance-tab active" data-tab="current">
-            <i class="fas fa-wallet"></i> Current Balance
+            <i class="fas fa-wallet"></i> Current
           </button>
           <button class="balance-tab" data-tab="total">
-            <i class="fas fa-chart-line"></i> Total Balance
+            <i class="fas fa-chart-line"></i> Total
           </button>
         </div>
 
@@ -2594,31 +2662,28 @@
         <div id="totalBalanceView" class="hidden">
           <div class="balance-card total-card">
             <div class="balance-sparkle"><i class="fas fa-star"></i></div>
-            <div class="balance-label"><i class="fas fa-chart-line"></i> Total balance (lifetime)</div>
+            <div class="balance-label"><i class="fas fa-chart-line"></i> Total balance</div>
             <div class="balance-amount"><span>$</span><span id="totalBalanceDisplay">0.00</span></div>
           </div>
         </div>
 
-        <div class="action-buttons" style="margin-top:14px;">
+        <div class="action-buttons">
           <button class="action-btn deposit-btn" id="depositBtn"><i class="fas fa-arrow-down"></i> Deposit</button>
           <button class="action-btn withdraw-btn" id="withdrawBtn"><i class="fas fa-arrow-up"></i> Withdraw</button>
         </div>
 
-        <div class="card" style="margin-top:4px;">
-          <div class="card-title"><i class="fas fa-chart-bar"></i> Quick Stats</div>
-          <div class="ad-stats">
-            <div class="ad-stat-item">
-              <div class="label">Ads Watched</div>
-              <div class="value" id="statAdsWatched">0</div>
-            </div>
-            <div class="ad-stat-item">
-              <div class="label">Today's Earnings</div>
-              <div class="value" id="statTodayEarned">$0.00</div>
-            </div>
-            <div class="ad-stat-item">
-              <div class="label">Active Plan</div>
-              <div class="value" id="statActivePlan" style="font-size:15px;">None</div>
-            </div>
+        <div class="stats-row">
+          <div class="stat-tile">
+            <div class="label">Ads Today</div>
+            <div class="value" id="statAdsWatched">0</div>
+          </div>
+          <div class="stat-tile">
+            <div class="label">Earned Today</div>
+            <div class="value" id="statTodayEarned">$0</div>
+          </div>
+          <div class="stat-tile">
+            <div class="label">Plan</div>
+            <div class="value" id="statActivePlan" style="font-size:13px;">None</div>
           </div>
         </div>
 
@@ -2637,16 +2702,16 @@
       <div id="view-apply" class="view-section hidden">
         <div class="card">
           <div class="card-title"><i class="fas fa-file-signature"></i> Apply for Earning</div>
-          <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">
-            Fill in your details below. After submitting, you'll become eligible for earning and receive a <strong>$5 bonus</strong> in your wallet. The normal approval time for earning is <strong>20 minutes</strong>.
+          <p style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;line-height:1.5;">
+            Fill in your details. After submitting, you'll become eligible within <strong>20 minutes</strong> and receive a <strong>$5 bonus</strong>.
           </p>
           <div class="apply-section" id="applySection">
             <input type="text" id="applyFullName" class="apply-input" placeholder="Full name (as on CNIC)">
-            <input type="text" id="applyCnic" class="apply-input" placeholder="CNIC number (e.g., 35202-1234567-1)">
+            <input type="text" id="applyCnic" class="apply-input" placeholder="CNIC (35202-1234567-1)">
             <input type="text" id="applyCity" class="apply-input" placeholder="City">
             <button class="apply-btn" id="applySubmitBtn">Submit Application</button>
           </div>
-          <div id="applyStatusBox" style="margin-top:14px;"></div>
+          <div id="applyStatusBox" style="margin-top:12px;"></div>
         </div>
       </div>
 
@@ -2654,8 +2719,8 @@
       <div id="view-plans" class="view-section hidden">
         <div class="card">
           <div class="card-title"><i class="fas fa-crown"></i> Premium Plans</div>
-          <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">
-            Choose a plan to start watching ads and earning. All plans include <strong>10 ads per day</strong>, each <strong>10 seconds</strong> long. <strong>$5 bonus</strong> is added to your deposit.
+          <p style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;line-height:1.5;">
+            Choose a plan. <strong>10 ads/day</strong>, 10 seconds each. <strong>$5 bonus</strong> included.
           </p>
           <div class="plans-grid" id="plansGrid"></div>
         </div>
@@ -2665,31 +2730,29 @@
       <div id="view-watch" class="view-section hidden">
         <div class="card">
           <div class="card-title"><i class="fas fa-tv"></i> Watch & Earn</div>
-          <div class="ad-container">
-            <div class="ad-box" id="adBox">
-              <i class="fas fa-play-circle ad-icon" id="adIcon"></i>
-              <div class="ad-text" id="adText">Select a plan to start watching ads</div>
-              <div class="ad-countdown hidden" id="adCountdown">10</div>
+          <div class="ad-box" id="adBox">
+            <i class="fas fa-play-circle ad-icon" id="adIcon"></i>
+            <div class="ad-text" id="adText">Select a plan to start watching ads</div>
+            <div class="ad-countdown hidden" id="adCountdown">10</div>
+          </div>
+          <div class="ad-progress" id="adProgressContainer" style="display:none;">
+            <div class="ad-progress-bar" id="adProgressBar" style="width:0%;"></div>
+          </div>
+          <button class="watch-btn" id="watchAdBtn" disabled>
+            <i class="fas fa-play"></i> Watch Ad
+          </button>
+          <div class="stats-row" style="margin-bottom:0;">
+            <div class="stat-tile">
+              <div class="label">Ads Today</div>
+              <div class="value" id="adsTodayCount">0 / 10</div>
             </div>
-            <div class="ad-progress" id="adProgressContainer" style="display:none;">
-              <div class="ad-progress-bar" id="adProgressBar" style="width:0%;"></div>
+            <div class="stat-tile">
+              <div class="label">Per Ad</div>
+              <div class="value" id="perAdEarning">$0.00</div>
             </div>
-            <button class="btn" id="watchAdBtn" style="max-width:400px;width:100%;" disabled>
-              <i class="fas fa-play"></i> Watch Ad
-            </button>
-            <div class="ad-stats">
-              <div class="ad-stat-item">
-                <div class="label">Ads Today</div>
-                <div class="value" id="adsTodayCount">0 / 10</div>
-              </div>
-              <div class="ad-stat-item">
-                <div class="label">Per Ad</div>
-                <div class="value" id="perAdEarning">$0.00</div>
-              </div>
-              <div class="ad-stat-item">
-                <div class="label">Earned Today</div>
-                <div class="value" id="todayEarnedDisplay">$0.00</div>
-              </div>
+            <div class="stat-tile">
+              <div class="label">Earned Today</div>
+              <div class="value" id="todayEarnedDisplay">$0.00</div>
             </div>
           </div>
         </div>
@@ -2714,12 +2777,37 @@
         </div>
       </div>
     </main>
+
+    <!-- BOTTOM NAVIGATION -->
+    <nav class="bottom-nav">
+      <button class="bottom-nav-item active" data-view="dashboard">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </button>
+      <button class="bottom-nav-item" data-view="plans">
+        <i class="fas fa-crown"></i>
+        <span>Plans</span>
+      </button>
+      <button class="bottom-nav-item" data-view="watch">
+        <i class="fas fa-tv"></i>
+        <span>Watch</span>
+      </button>
+      <button class="bottom-nav-item" data-view="history">
+        <i class="fas fa-history"></i>
+        <span>History</span>
+      </button>
+      <button class="bottom-nav-item" id="bottomProfileBtn">
+        <i class="fas fa-user"></i>
+        <span>Profile</span>
+      </button>
+    </nav>
   </div>
 
   <!-- ========== MODAL: PROFILE ========== -->
   <div id="profileModal" class="modal-overlay hidden">
-    <div class="modal-content" style="max-width:440px;">
-      <button class="modal-close" id="closeProfileModal">&times;</button>
+    <div class="modal-content" style="max-width:480px;">
+      <div class="modal-drag-handle"></div>
+      <button class="modal-close" id="closeProfileModal"><i class="fas fa-times"></i></button>
       <div class="profile-modal-avatar" id="profileModalAvatar">U</div>
       <div class="profile-modal-name" id="profileModalName">User</div>
       <div class="profile-modal-role">Verified Member</div>
@@ -2729,7 +2817,7 @@
           <div class="value" id="profileFullName">—</div>
         </div>
         <div class="profile-row">
-          <div class="label"><i class="fas fa-phone"></i> Phone Number</div>
+          <div class="label"><i class="fas fa-phone"></i> Phone</div>
           <div class="value" id="profilePhone">—</div>
         </div>
         <div class="profile-row">
@@ -2756,7 +2844,8 @@
   <!-- ========== MODAL: DEPOSIT ========== -->
   <div id="depositModal" class="modal-overlay hidden">
     <div class="modal-content">
-      <button class="modal-close" id="closeDepositModal">&times;</button>
+      <div class="modal-drag-handle"></div>
+      <button class="modal-close" id="closeDepositModal"><i class="fas fa-times"></i></button>
       <h3>Deposit funds</h3>
       <div class="method-selector">
         <button class="method-btn active" data-method="binance">Binance</button>
@@ -2764,7 +2853,7 @@
       </div>
       <div id="depositBinanceDetails" class="deposit-detail-box">
         <p><strong>Binance Pay ID:</strong> 371289456</p>
-        <p class="text-muted mt-2" style="color:var(--text-secondary);font-size:13px;margin-top:6px;">Send USDT (TRC20) to this address. After payment, upload screenshot.</p>
+        <p style="color:var(--text-secondary);font-size:12.5px;margin-top:6px;">Send USDT (TRC20) to this address. After payment, upload screenshot.</p>
       </div>
       <div id="depositBankDetails" class="deposit-detail-box hidden">
         <p><strong>Bank transfer (scanner):</strong></p>
@@ -2774,7 +2863,7 @@
            class="scanner-full-btn">
           <i class="fas fa-qrcode"></i> Open Payment Scanner
         </a>
-        <p class="text-muted mt-2" style="color:var(--text-secondary);font-size:13px;margin-top:6px;text-align:center;">Scan the QR code to pay.</p>
+        <p style="color:var(--text-secondary);font-size:12.5px;margin-top:6px;text-align:center;">Scan the QR code to pay.</p>
       </div>
       <div id="pkrExtraFields" class="hidden">
         <div class="amount-summary">
@@ -2815,11 +2904,12 @@
   <!-- ========== MODAL: WITHDRAW ========== -->
   <div id="withdrawModal" class="modal-overlay hidden">
     <div class="modal-content">
-      <button class="modal-close" id="closeWithdrawModal">&times;</button>
+      <div class="modal-drag-handle"></div>
+      <button class="modal-close" id="closeWithdrawModal"><i class="fas fa-times"></i></button>
       <h3>Withdraw funds</h3>
       <div class="method-selector">
         <button class="method-btn active" data-wmethod="binance">Binance</button>
-        <button class="method-btn" data-wmethod="bank">Bank / EasyPaisa / JazzCash</button>
+        <button class="method-btn" data-wmethod="bank">Bank / Mobile</button>
       </div>
       <div id="withdrawBinanceFields">
         <div class="input-group">
@@ -2828,13 +2918,13 @@
         </div>
         <div class="amount-summary">
           <div class="amount-row">
-            <span>Withdraw amount (USD) — min $30</span>
+            <span>Withdraw (USD) — min $30</span>
             <div class="amount-input-row">
               <input type="number" id="withdrawBinanceAmount" class="input-field" value="30" step="0.01" inputmode="decimal">
             </div>
           </div>
           <div class="amount-row">
-            <span>Transaction fee</span>
+            <span>Fee</span>
             <span style="font-weight:600; color:var(--danger);">- $0.50</span>
           </div>
           <div class="amount-row total">
@@ -2842,7 +2932,7 @@
             <span id="withdrawBinanceReceive">$29.50</span>
           </div>
           <div class="amount-row">
-            <span class="pkr-value">Amount in PKR (auto)</span>
+            <span class="pkr-value">In PKR</span>
             <span class="pkr-value" id="withdrawBinancePkr">₨ 8,112.50</span>
           </div>
         </div>
@@ -2853,7 +2943,7 @@
           <input type="text" id="withdrawHolder" class="input-field" placeholder="Full name">
         </div>
         <div class="input-group">
-          <label>Select bank / service</label>
+          <label>Bank / Service</label>
           <select id="withdrawBankSelect" class="input-field">
             <option>EasyPaisa</option><option>JazzCash</option><option>HBL</option><option>UBL</option>
             <option>Bank of America</option><option>Chase</option><option>Wells Fargo</option><option>Other</option>
@@ -2865,13 +2955,13 @@
         </div>
         <div class="amount-summary">
           <div class="amount-row">
-            <span>Withdraw amount (USD) — min $30</span>
+            <span>Withdraw (USD) — min $30</span>
             <div class="amount-input-row">
               <input type="number" id="withdrawBankAmount" class="input-field" value="30" step="0.01" inputmode="decimal">
             </div>
           </div>
           <div class="amount-row">
-            <span>Transaction fee</span>
+            <span>Fee</span>
             <span style="font-weight:600; color:var(--danger);">- $0.50</span>
           </div>
           <div class="amount-row total">
@@ -2879,7 +2969,7 @@
             <span id="withdrawBankReceive">$29.50</span>
           </div>
           <div class="amount-row">
-            <span class="pkr-value">Amount in PKR (auto)</span>
+            <span class="pkr-value">In PKR</span>
             <span class="pkr-value" id="withdrawBankPkr">₨ 8,112.50</span>
           </div>
         </div>
@@ -2901,7 +2991,7 @@
       // ============================================================
       const toastContainer = document.getElementById('toastContainer');
 
-      function showToast(message, type = 'info', title = null, duration = 4000) {
+      function showToast(message, type = 'info', title = null, duration = 3500) {
         const icons = {
           success: 'fa-check-circle', error: 'fa-times-circle',
           warning: 'fa-exclamation-triangle', info: 'fa-info-circle'
@@ -2955,7 +3045,6 @@
       const AD_DURATION_SEC = 10;
       const ADS_PER_DAY = 10;
       const APPLY_ELIGIBILITY_MS = 20 * 60 * 1000;
-      const REGISTRATION_BONUS = 5;
 
       const PLANS = [
         { id: 'plan1', name: 'Starter', deposit: 10, bonus: 5, totalRequired: 15, perAd: 0.5, daily: 5, color: '#10b981', icon: 'fa-seedling' },
@@ -2969,193 +3058,69 @@
       // COUNTRY DATA
       // ============================================================
       const countries = [
-        { name: "Afghanistan", dial: "+93", format: "9 digits" },
-        { name: "Albania", dial: "+355", format: "9 digits" },
-        { name: "Algeria", dial: "+213", format: "9 digits" },
-        { name: "Andorra", dial: "+376", format: "6 digits" },
-        { name: "Angola", dial: "+244", format: "9 digits" },
-        { name: "Argentina", dial: "+54", format: "10 digits" },
-        { name: "Armenia", dial: "+374", format: "8 digits" },
-        { name: "Australia", dial: "+61", format: "9 digits" },
-        { name: "Austria", dial: "+43", format: "10 digits" },
-        { name: "Azerbaijan", dial: "+994", format: "9 digits" },
-        { name: "Bahamas", dial: "+1-242", format: "7 digits" },
-        { name: "Bahrain", dial: "+973", format: "8 digits" },
-        { name: "Bangladesh", dial: "+880", format: "10 digits" },
-        { name: "Barbados", dial: "+1-246", format: "7 digits" },
-        { name: "Belarus", dial: "+375", format: "9 digits" },
-        { name: "Belgium", dial: "+32", format: "9 digits" },
-        { name: "Belize", dial: "+501", format: "7 digits" },
-        { name: "Benin", dial: "+229", format: "8 digits" },
-        { name: "Bhutan", dial: "+975", format: "8 digits" },
-        { name: "Bolivia", dial: "+591", format: "8 digits" },
-        { name: "Bosnia and Herzegovina", dial: "+387", format: "8 digits" },
-        { name: "Botswana", dial: "+267", format: "8 digits" },
-        { name: "Brazil", dial: "+55", format: "11 digits" },
-        { name: "Brunei", dial: "+673", format: "7 digits" },
-        { name: "Bulgaria", dial: "+359", format: "9 digits" },
-        { name: "Burkina Faso", dial: "+226", format: "8 digits" },
-        { name: "Burundi", dial: "+257", format: "8 digits" },
-        { name: "Cambodia", dial: "+855", format: "9 digits" },
-        { name: "Cameroon", dial: "+237", format: "9 digits" },
-        { name: "Canada", dial: "+1", format: "10 digits" },
-        { name: "Chad", dial: "+235", format: "8 digits" },
-        { name: "Chile", dial: "+56", format: "9 digits" },
-        { name: "China", dial: "+86", format: "11 digits" },
-        { name: "Colombia", dial: "+57", format: "10 digits" },
-        { name: "Comoros", dial: "+269", format: "7 digits" },
-        { name: "Congo", dial: "+242", format: "9 digits" },
-        { name: "Costa Rica", dial: "+506", format: "8 digits" },
-        { name: "Croatia", dial: "+385", format: "9 digits" },
-        { name: "Cuba", dial: "+53", format: "8 digits" },
-        { name: "Cyprus", dial: "+357", format: "8 digits" },
-        { name: "Czechia", dial: "+420", format: "9 digits" },
-        { name: "Denmark", dial: "+45", format: "8 digits" },
-        { name: "Djibouti", dial: "+253", format: "8 digits" },
-        { name: "Dominica", dial: "+1-767", format: "7 digits" },
-        { name: "Dominican Republic", dial: "+1-809", format: "7 digits" },
-        { name: "Ecuador", dial: "+593", format: "9 digits" },
-        { name: "Egypt", dial: "+20", format: "10 digits" },
-        { name: "El Salvador", dial: "+503", format: "8 digits" },
-        { name: "Estonia", dial: "+372", format: "8 digits" },
-        { name: "Eswatini", dial: "+268", format: "8 digits" },
-        { name: "Ethiopia", dial: "+251", format: "9 digits" },
-        { name: "Fiji", dial: "+679", format: "7 digits" },
-        { name: "Finland", dial: "+358", format: "9 digits" },
-        { name: "France", dial: "+33", format: "9 digits" },
-        { name: "Gabon", dial: "+241", format: "8 digits" },
-        { name: "Gambia", dial: "+220", format: "7 digits" },
-        { name: "Georgia", dial: "+995", format: "9 digits" },
-        { name: "Germany", dial: "+49", format: "10 digits" },
-        { name: "Ghana", dial: "+233", format: "9 digits" },
-        { name: "Greece", dial: "+30", format: "10 digits" },
-        { name: "Grenada", dial: "+1-473", format: "7 digits" },
-        { name: "Guatemala", dial: "+502", format: "8 digits" },
-        { name: "Guinea", dial: "+224", format: "8 digits" },
-        { name: "Guyana", dial: "+592", format: "7 digits" },
-        { name: "Haiti", dial: "+509", format: "8 digits" },
-        { name: "Honduras", dial: "+504", format: "8 digits" },
-        { name: "Hungary", dial: "+36", format: "9 digits" },
-        { name: "Iceland", dial: "+354", format: "7 digits" },
-        { name: "India", dial: "+91", format: "10 digits" },
-        { name: "Indonesia", dial: "+62", format: "10 digits" },
-        { name: "Iran", dial: "+98", format: "10 digits" },
-        { name: "Iraq", dial: "+964", format: "10 digits" },
-        { name: "Ireland", dial: "+353", format: "9 digits" },
-        { name: "Israel", dial: "+972", format: "9 digits" },
-        { name: "Italy", dial: "+39", format: "10 digits" },
-        { name: "Jamaica", dial: "+1-876", format: "7 digits" },
-        { name: "Japan", dial: "+81", format: "10 digits" },
-        { name: "Jordan", dial: "+962", format: "9 digits" },
-        { name: "Kazakhstan", dial: "+7", format: "10 digits" },
-        { name: "Kenya", dial: "+254", format: "9 digits" },
-        { name: "Kiribati", dial: "+686", format: "5 digits" },
-        { name: "Kuwait", dial: "+965", format: "8 digits" },
-        { name: "Kyrgyzstan", dial: "+996", format: "9 digits" },
-        { name: "Laos", dial: "+856", format: "9 digits" },
-        { name: "Latvia", dial: "+371", format: "8 digits" },
-        { name: "Lebanon", dial: "+961", format: "7 digits" },
-        { name: "Lesotho", dial: "+266", format: "8 digits" },
-        { name: "Liberia", dial: "+231", format: "8 digits" },
-        { name: "Libya", dial: "+218", format: "9 digits" },
-        { name: "Liechtenstein", dial: "+423", format: "7 digits" },
-        { name: "Lithuania", dial: "+370", format: "8 digits" },
-        { name: "Luxembourg", dial: "+352", format: "8 digits" },
-        { name: "Madagascar", dial: "+261", format: "9 digits" },
-        { name: "Malawi", dial: "+265", format: "9 digits" },
-        { name: "Malaysia", dial: "+60", format: "9 digits" },
-        { name: "Maldives", dial: "+960", format: "7 digits" },
-        { name: "Mali", dial: "+223", format: "8 digits" },
-        { name: "Malta", dial: "+356", format: "8 digits" },
-        { name: "Marshall Islands", dial: "+692", format: "7 digits" },
-        { name: "Mauritania", dial: "+222", format: "8 digits" },
-        { name: "Mauritius", dial: "+230", format: "7 digits" },
-        { name: "Mexico", dial: "+52", format: "10 digits" },
-        { name: "Micronesia", dial: "+691", format: "7 digits" },
-        { name: "Moldova", dial: "+373", format: "8 digits" },
-        { name: "Monaco", dial: "+377", format: "8 digits" },
-        { name: "Mongolia", dial: "+976", format: "8 digits" },
-        { name: "Montenegro", dial: "+382", format: "8 digits" },
-        { name: "Morocco", dial: "+212", format: "9 digits" },
-        { name: "Mozambique", dial: "+258", format: "9 digits" },
-        { name: "Myanmar", dial: "+95", format: "9 digits" },
-        { name: "Namibia", dial: "+264", format: "9 digits" },
-        { name: "Nauru", dial: "+674", format: "7 digits" },
-        { name: "Nepal", dial: "+977", format: "10 digits" },
-        { name: "Netherlands", dial: "+31", format: "9 digits" },
-        { name: "New Zealand", dial: "+64", format: "9 digits" },
-        { name: "Nicaragua", dial: "+505", format: "8 digits" },
-        { name: "Niger", dial: "+227", format: "8 digits" },
-        { name: "Nigeria", dial: "+234", format: "10 digits" },
-        { name: "North Korea", dial: "+850", format: "10 digits" },
-        { name: "North Macedonia", dial: "+389", format: "8 digits" },
-        { name: "Norway", dial: "+47", format: "8 digits" },
-        { name: "Oman", dial: "+968", format: "8 digits" },
-        { name: "Pakistan", dial: "+92", format: "10 digits" },
-        { name: "Palau", dial: "+680", format: "7 digits" },
-        { name: "Palestine", dial: "+970", format: "9 digits" },
-        { name: "Panama", dial: "+507", format: "8 digits" },
-        { name: "Papua New Guinea", dial: "+675", format: "8 digits" },
-        { name: "Paraguay", dial: "+595", format: "9 digits" },
-        { name: "Peru", dial: "+51", format: "9 digits" },
-        { name: "Philippines", dial: "+63", format: "10 digits" },
-        { name: "Poland", dial: "+48", format: "9 digits" },
-        { name: "Portugal", dial: "+351", format: "9 digits" },
-        { name: "Qatar", dial: "+974", format: "8 digits" },
-        { name: "Romania", dial: "+40", format: "9 digits" },
-        { name: "Russia", dial: "+7", format: "10 digits" },
-        { name: "Rwanda", dial: "+250", format: "9 digits" },
-        { name: "Saint Kitts and Nevis", dial: "+1-869", format: "7 digits" },
-        { name: "Saint Lucia", dial: "+1-758", format: "7 digits" },
-        { name: "Saint Vincent", dial: "+1-784", format: "7 digits" },
-        { name: "Samoa", dial: "+685", format: "7 digits" },
-        { name: "San Marino", dial: "+378", format: "8 digits" },
-        { name: "Saudi Arabia", dial: "+966", format: "9 digits" },
-        { name: "Senegal", dial: "+221", format: "9 digits" },
-        { name: "Serbia", dial: "+381", format: "9 digits" },
-        { name: "Seychelles", dial: "+248", format: "7 digits" },
-        { name: "Sierra Leone", dial: "+232", format: "8 digits" },
-        { name: "Singapore", dial: "+65", format: "8 digits" },
-        { name: "Slovakia", dial: "+421", format: "9 digits" },
-        { name: "Slovenia", dial: "+386", format: "8 digits" },
-        { name: "Solomon Islands", dial: "+677", format: "7 digits" },
-        { name: "Somalia", dial: "+252", format: "8 digits" },
-        { name: "South Africa", dial: "+27", format: "9 digits" },
-        { name: "South Korea", dial: "+82", format: "10 digits" },
-        { name: "South Sudan", dial: "+211", format: "9 digits" },
-        { name: "Spain", dial: "+34", format: "9 digits" },
-        { name: "Sri Lanka", dial: "+94", format: "9 digits" },
-        { name: "Sudan", dial: "+249", format: "9 digits" },
-        { name: "Suriname", dial: "+597", format: "7 digits" },
-        { name: "Sweden", dial: "+46", format: "9 digits" },
-        { name: "Switzerland", dial: "+41", format: "9 digits" },
-        { name: "Syria", dial: "+963", format: "9 digits" },
-        { name: "Taiwan", dial: "+886", format: "9 digits" },
-        { name: "Tajikistan", dial: "+992", format: "9 digits" },
-        { name: "Tanzania", dial: "+255", format: "9 digits" },
-        { name: "Thailand", dial: "+66", format: "9 digits" },
-        { name: "Timor-Leste", dial: "+670", format: "8 digits" },
-        { name: "Togo", dial: "+228", format: "8 digits" },
-        { name: "Tonga", dial: "+676", format: "7 digits" },
-        { name: "Trinidad and Tobago", dial: "+1-868", format: "7 digits" },
-        { name: "Tunisia", dial: "+216", format: "8 digits" },
-        { name: "Turkey", dial: "+90", format: "10 digits" },
-        { name: "Turkmenistan", dial: "+993", format: "8 digits" },
-        { name: "Tuvalu", dial: "+688", format: "6 digits" },
-        { name: "Uganda", dial: "+256", format: "9 digits" },
-        { name: "Ukraine", dial: "+380", format: "9 digits" },
-        { name: "United Arab Emirates", dial: "+971", format: "9 digits" },
-        { name: "United Kingdom", dial: "+44", format: "10 digits" },
-        { name: "United States", dial: "+1", format: "10 digits" },
-        { name: "Uruguay", dial: "+598", format: "8 digits" },
-        { name: "Uzbekistan", dial: "+998", format: "9 digits" },
-        { name: "Vanuatu", dial: "+678", format: "7 digits" },
-        { name: "Vatican City", dial: "+379", format: "8 digits" },
-        { name: "Venezuela", dial: "+58", format: "10 digits" },
-        { name: "Vietnam", dial: "+84", format: "9 digits" },
-        { name: "Yemen", dial: "+967", format: "9 digits" },
-        { name: "Zambia", dial: "+260", format: "9 digits" },
-        { name: "Zimbabwe", dial: "+263", format: "9 digits" }
+        { name: "Afghanistan", dial: "+93" }, { name: "Albania", dial: "+355" }, { name: "Algeria", dial: "+213" },
+        { name: "Andorra", dial: "+376" }, { name: "Angola", dial: "+244" }, { name: "Argentina", dial: "+54" },
+        { name: "Armenia", dial: "+374" }, { name: "Australia", dial: "+61" }, { name: "Austria", dial: "+43" },
+        { name: "Azerbaijan", dial: "+994" }, { name: "Bahamas", dial: "+1-242" }, { name: "Bahrain", dial: "+973" },
+        { name: "Bangladesh", dial: "+880" }, { name: "Barbados", dial: "+1-246" }, { name: "Belarus", dial: "+375" },
+        { name: "Belgium", dial: "+32" }, { name: "Belize", dial: "+501" }, { name: "Benin", dial: "+229" },
+        { name: "Bhutan", dial: "+975" }, { name: "Bolivia", dial: "+591" }, { name: "Bosnia and Herzegovina", dial: "+387" },
+        { name: "Botswana", dial: "+267" }, { name: "Brazil", dial: "+55" }, { name: "Brunei", dial: "+673" },
+        { name: "Bulgaria", dial: "+359" }, { name: "Burkina Faso", dial: "+226" }, { name: "Burundi", dial: "+257" },
+        { name: "Cambodia", dial: "+855" }, { name: "Cameroon", dial: "+237" }, { name: "Canada", dial: "+1" },
+        { name: "Chad", dial: "+235" }, { name: "Chile", dial: "+56" }, { name: "China", dial: "+86" },
+        { name: "Colombia", dial: "+57" }, { name: "Comoros", dial: "+269" }, { name: "Congo", dial: "+242" },
+        { name: "Costa Rica", dial: "+506" }, { name: "Croatia", dial: "+385" }, { name: "Cuba", dial: "+53" },
+        { name: "Cyprus", dial: "+357" }, { name: "Czechia", dial: "+420" }, { name: "Denmark", dial: "+45" },
+        { name: "Djibouti", dial: "+253" }, { name: "Dominica", dial: "+1-767" }, { name: "Dominican Republic", dial: "+1-809" },
+        { name: "Ecuador", dial: "+593" }, { name: "Egypt", dial: "+20" }, { name: "El Salvador", dial: "+503" },
+        { name: "Estonia", dial: "+372" }, { name: "Eswatini", dial: "+268" }, { name: "Ethiopia", dial: "+251" },
+        { name: "Fiji", dial: "+679" }, { name: "Finland", dial: "+358" }, { name: "France", dial: "+33" },
+        { name: "Gabon", dial: "+241" }, { name: "Gambia", dial: "+220" }, { name: "Georgia", dial: "+995" },
+        { name: "Germany", dial: "+49" }, { name: "Ghana", dial: "+233" }, { name: "Greece", dial: "+30" },
+        { name: "Grenada", dial: "+1-473" }, { name: "Guatemala", dial: "+502" }, { name: "Guinea", dial: "+224" },
+        { name: "Guyana", dial: "+592" }, { name: "Haiti", dial: "+509" }, { name: "Honduras", dial: "+504" },
+        { name: "Hungary", dial: "+36" }, { name: "Iceland", dial: "+354" }, { name: "India", dial: "+91" },
+        { name: "Indonesia", dial: "+62" }, { name: "Iran", dial: "+98" }, { name: "Iraq", dial: "+964" },
+        { name: "Ireland", dial: "+353" }, { name: "Israel", dial: "+972" }, { name: "Italy", dial: "+39" },
+        { name: "Jamaica", dial: "+1-876" }, { name: "Japan", dial: "+81" }, { name: "Jordan", dial: "+962" },
+        { name: "Kazakhstan", dial: "+7" }, { name: "Kenya", dial: "+254" }, { name: "Kiribati", dial: "+686" },
+        { name: "Kuwait", dial: "+965" }, { name: "Kyrgyzstan", dial: "+996" }, { name: "Laos", dial: "+856" },
+        { name: "Latvia", dial: "+371" }, { name: "Lebanon", dial: "+961" }, { name: "Lesotho", dial: "+266" },
+        { name: "Liberia", dial: "+231" }, { name: "Libya", dial: "+218" }, { name: "Liechtenstein", dial: "+423" },
+        { name: "Lithuania", dial: "+370" }, { name: "Luxembourg", dial: "+352" }, { name: "Madagascar", dial: "+261" },
+        { name: "Malawi", dial: "+265" }, { name: "Malaysia", dial: "+60" }, { name: "Maldives", dial: "+960" },
+        { name: "Mali", dial: "+223" }, { name: "Malta", dial: "+356" }, { name: "Marshall Islands", dial: "+692" },
+        { name: "Mauritania", dial: "+222" }, { name: "Mauritius", dial: "+230" }, { name: "Mexico", dial: "+52" },
+        { name: "Micronesia", dial: "+691" }, { name: "Moldova", dial: "+373" }, { name: "Monaco", dial: "+377" },
+        { name: "Mongolia", dial: "+976" }, { name: "Montenegro", dial: "+382" }, { name: "Morocco", dial: "+212" },
+        { name: "Mozambique", dial: "+258" }, { name: "Myanmar", dial: "+95" }, { name: "Namibia", dial: "+264" },
+        { name: "Nauru", dial: "+674" }, { name: "Nepal", dial: "+977" }, { name: "Netherlands", dial: "+31" },
+        { name: "New Zealand", dial: "+64" }, { name: "Nicaragua", dial: "+505" }, { name: "Niger", dial: "+227" },
+        { name: "Nigeria", dial: "+234" }, { name: "North Korea", dial: "+850" }, { name: "North Macedonia", dial: "+389" },
+        { name: "Norway", dial: "+47" }, { name: "Oman", dial: "+968" }, { name: "Pakistan", dial: "+92" },
+        { name: "Palau", dial: "+680" }, { name: "Palestine", dial: "+970" }, { name: "Panama", dial: "+507" },
+        { name: "Papua New Guinea", dial: "+675" }, { name: "Paraguay", dial: "+595" }, { name: "Peru", dial: "+51" },
+        { name: "Philippines", dial: "+63" }, { name: "Poland", dial: "+48" }, { name: "Portugal", dial: "+351" },
+        { name: "Qatar", dial: "+974" }, { name: "Romania", dial: "+40" }, { name: "Russia", dial: "+7" },
+        { name: "Rwanda", dial: "+250" }, { name: "Saint Kitts and Nevis", dial: "+1-869" }, { name: "Saint Lucia", dial: "+1-758" },
+        { name: "Saint Vincent", dial: "+1-784" }, { name: "Samoa", dial: "+685" }, { name: "San Marino", dial: "+378" },
+        { name: "Saudi Arabia", dial: "+966" }, { name: "Senegal", dial: "+221" }, { name: "Serbia", dial: "+381" },
+        { name: "Seychelles", dial: "+248" }, { name: "Sierra Leone", dial: "+232" }, { name: "Singapore", dial: "+65" },
+        { name: "Slovakia", dial: "+421" }, { name: "Slovenia", dial: "+386" }, { name: "Solomon Islands", dial: "+677" },
+        { name: "Somalia", dial: "+252" }, { name: "South Africa", dial: "+27" }, { name: "South Korea", dial: "+82" },
+        { name: "South Sudan", dial: "+211" }, { name: "Spain", dial: "+34" }, { name: "Sri Lanka", dial: "+94" },
+        { name: "Sudan", dial: "+249" }, { name: "Suriname", dial: "+597" }, { name: "Sweden", dial: "+46" },
+        { name: "Switzerland", dial: "+41" }, { name: "Syria", dial: "+963" }, { name: "Taiwan", dial: "+886" },
+        { name: "Tajikistan", dial: "+992" }, { name: "Tanzania", dial: "+255" }, { name: "Thailand", dial: "+66" },
+        { name: "Timor-Leste", dial: "+670" }, { name: "Togo", dial: "+228" }, { name: "Tonga", dial: "+676" },
+        { name: "Trinidad and Tobago", dial: "+1-868" }, { name: "Tunisia", dial: "+216" }, { name: "Turkey", dial: "+90" },
+        { name: "Turkmenistan", dial: "+993" }, { name: "Tuvalu", dial: "+688" }, { name: "Uganda", dial: "+256" },
+        { name: "Ukraine", dial: "+380" }, { name: "United Arab Emirates", dial: "+971" }, { name: "United Kingdom", dial: "+44" },
+        { name: "United States", dial: "+1" }, { name: "Uruguay", dial: "+598" }, { name: "Uzbekistan", dial: "+998" },
+        { name: "Vanuatu", dial: "+678" }, { name: "Vatican City", dial: "+379" }, { name: "Venezuela", dial: "+58" },
+        { name: "Vietnam", dial: "+84" }, { name: "Yemen", dial: "+967" }, { name: "Zambia", dial: "+260" },
+        { name: "Zimbabwe", dial: "+263" }
       ];
 
       // ============================================================
@@ -3197,7 +3162,6 @@
         if (!cleaned) return '';
         if (cleaned.startsWith('92')) {
           if (cleaned.length === 12) return '+' + cleaned;
-          if (cleaned.length === 13) return '+' + cleaned;
         }
         if (cleaned.startsWith('0')) {
           if (cleaned.length === 11) return '+92' + cleaned.substring(1);
@@ -3226,8 +3190,7 @@
       // THEME
       // ============================================================
       const themeToggle = document.getElementById('themeToggle');
-      const sunIcon = document.getElementById('sunIcon');
-      const moonIcon = document.getElementById('moonIcon');
+      const themeIcon = document.getElementById('themeIcon');
       const authThemeToggle = document.getElementById('authThemeToggle');
       const authSunIcon = document.getElementById('authSunIcon');
       const authMoonIcon = document.getElementById('authMoonIcon');
@@ -3235,14 +3198,12 @@
       function applyTheme(theme) {
         if (theme === 'dark') {
           document.body.classList.add('dark');
-          moonIcon.classList.add('active-icon');
-          sunIcon.classList.remove('active-icon');
+          if (themeIcon) { themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun'); }
           if (authMoonIcon) authMoonIcon.classList.add('active-icon');
           if (authSunIcon) authSunIcon.classList.remove('active-icon');
         } else {
           document.body.classList.remove('dark');
-          sunIcon.classList.add('active-icon');
-          moonIcon.classList.remove('active-icon');
+          if (themeIcon) { themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon'); }
           if (authSunIcon) authSunIcon.classList.add('active-icon');
           if (authMoonIcon) authMoonIcon.classList.remove('active-icon');
         }
@@ -3252,17 +3213,15 @@
       let currentTheme = localStorage.getItem('earndollar_theme') || 'light';
       applyTheme(currentTheme);
 
-      themeToggle.addEventListener('click', () => {
+      if (themeToggle) themeToggle.addEventListener('click', () => {
         currentTheme = currentTheme === 'light' ? 'dark' : 'light';
         applyTheme(currentTheme);
       });
 
-      if (authThemeToggle) {
-        authThemeToggle.addEventListener('click', () => {
-          currentTheme = currentTheme === 'light' ? 'dark' : 'light';
-          applyTheme(currentTheme);
-        });
-      }
+      if (authThemeToggle) authThemeToggle.addEventListener('click', () => {
+        currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+        applyTheme(currentTheme);
+      });
 
       // ============================================================
       // PASSWORD TOGGLES
@@ -3297,7 +3256,6 @@
       const signupCard = document.getElementById('signupCard');
       const loginCard = document.getElementById('loginCard');
       const resetCard = document.getElementById('resetCard');
-      const logoutBtn = document.getElementById('logoutBtn');
 
       // ============================================================
       // AUTH NAVIGATION
@@ -3327,8 +3285,6 @@
       const phonePrefixDisplay = document.getElementById('phonePrefixDisplay');
       const phoneHint = document.getElementById('phoneHint');
 
-      let selectedCountry = { name: "Pakistan", dial: "+92", format: "10 digits" };
-
       countryTrigger.addEventListener('click', (e) => {
         e.stopPropagation();
         countryDropdown.classList.toggle('open');
@@ -3351,7 +3307,7 @@
           return;
         }
         countryList.innerHTML = filtered.map(c => `
-          <div class="country-item" data-name="${c.name}" data-dial="${c.dial}" data-format="${c.format}">
+          <div class="country-item" data-name="${c.name}" data-dial="${c.dial}">
             <span>${c.name}</span>
             <span class="dial">${c.dial}</span>
           </div>
@@ -3360,8 +3316,7 @@
           item.addEventListener('click', () => {
             const name = item.dataset.name;
             const dial = item.dataset.dial;
-            const format = item.dataset.format;
-            selectCountry(name, dial, format);
+            selectCountry(name, dial);
             countryDropdown.classList.remove('open');
             countrySearch.value = '';
             renderCountryList('');
@@ -3369,18 +3324,16 @@
         });
       }
 
-      function selectCountry(name, dial, format) {
-        selectedCountry = { name, dial, format };
+      function selectCountry(name, dial) {
         signupCountryInput.value = name;
         signupCountryDial.value = dial;
         phonePrefixDisplay.textContent = dial;
-        phoneHint.textContent = `${name}: ${format} after the country code.`;
         countryTriggerLabel.textContent = `${name} (${dial})`;
         document.getElementById('signupPhone').value = '';
       }
 
       function initCountryPicker() {
-        selectCountry("Pakistan", "+92", "10 digits");
+        selectCountry("Pakistan", "+92");
         renderCountryList('');
       }
       initCountryPicker();
@@ -3417,15 +3370,9 @@
 
         const newUser = {
           fullname, country, phone: fullPhone, email, password,
-          balance: 0,
-          totalDeposited: 0,
-          totalWithdrawn: 0,
-          activePlan: null,
-          adsWatchedToday: 0,
-          lastAdDate: null,
-          applyStatus: 'none',
-          applyTime: null,
-          applyData: null,
+          balance: 0, totalDeposited: 0, totalWithdrawn: 0,
+          activePlan: null, adsWatchedToday: 0, lastAdDate: null,
+          applyStatus: 'none', applyTime: null, applyData: null,
           createdAt: new Date().toISOString()
         };
         users.push(newUser);
@@ -3445,7 +3392,6 @@
 
         const users = getUsers();
         const lowerId = identifier.toLowerCase();
-
         let user = users.find(u => u.email.toLowerCase() === lowerId && u.password === password);
 
         if (!user) {
@@ -3488,7 +3434,6 @@
           const normalized = normalizePhone(phone);
           user = users.find(u => u.phone === normalized);
         }
-
         if (!user) return toastError('Phone number not registered.', 'Not found');
 
         user.password = newPass;
@@ -3498,7 +3443,7 @@
       });
 
       // ============================================================
-      // DASHBOARD / APP STATE
+      // APP STATE
       // ============================================================
       let currentUser = null;
       let currentView = 'dashboard';
@@ -3506,6 +3451,28 @@
       let currentBalanceTab = 'current';
       let adTimer = null;
       let adSecondsLeft = 0;
+
+      // ============================================================
+      // DRAWER
+      // ============================================================
+      const drawer = document.getElementById('drawer');
+      const drawerOverlay = document.getElementById('drawerOverlay');
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+
+      function openDrawer() {
+        drawer.classList.add('open');
+        drawerOverlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeDrawer() {
+        drawer.classList.remove('open');
+        drawerOverlay.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      hamburgerBtn.addEventListener('click', openDrawer);
+      drawerOverlay.addEventListener('click', closeDrawer);
 
       // ============================================================
       // NAVIGATION
@@ -3518,15 +3485,16 @@
         history: document.getElementById('view-history')
       };
 
-      const navItems = document.querySelectorAll('.nav-item');
+      const drawerNavItems = document.querySelectorAll('.drawer-nav-item[data-view]');
+      const bottomNavItems = document.querySelectorAll('.bottom-nav-item[data-view]');
       const pageTitle = document.getElementById('pageTitle');
       const pageSubtitle = document.getElementById('pageSubtitle');
 
       const viewTitles = {
         dashboard: { title: 'Dashboard', subtitle: 'Welcome back' },
-        apply: { title: 'Apply for Earning', subtitle: 'Fill the form to get eligible' },
-        plans: { title: 'Premium Plans', subtitle: 'Choose a plan to start earning' },
-        watch: { title: 'Watch Ads', subtitle: 'Watch 10-second ads and earn' },
+        apply: { title: 'Apply for Earning', subtitle: 'Fill form to get eligible' },
+        plans: { title: 'Premium Plans', subtitle: 'Choose a plan to earn' },
+        watch: { title: 'Watch Ads', subtitle: 'Watch 10s ads and earn' },
         history: { title: 'History', subtitle: 'All your transactions' }
       };
 
@@ -3535,7 +3503,8 @@
         Object.values(viewSections).forEach(v => v.classList.add('hidden'));
         if (viewSections[view]) viewSections[view].classList.remove('hidden');
 
-        navItems.forEach(n => n.classList.toggle('active', n.dataset.view === view));
+        drawerNavItems.forEach(n => n.classList.toggle('active', n.dataset.view === view));
+        bottomNavItems.forEach(n => n.classList.toggle('active', n.dataset.view === view));
 
         const info = viewTitles[view];
         if (info) {
@@ -3548,10 +3517,21 @@
         if (view === 'plans') renderPlansView();
         if (view === 'watch') renderWatchView();
         if (view === 'history') renderHistory();
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
-      navItems.forEach(item => {
-        item.addEventListener('click', () => switchView(item.dataset.view));
+      drawerNavItems.forEach(item => {
+        item.addEventListener('click', () => {
+          switchView(item.dataset.view);
+          closeDrawer();
+        });
+      });
+
+      bottomNavItems.forEach(item => {
+        item.addEventListener('click', () => {
+          switchView(item.dataset.view);
+        });
       });
 
       // ============================================================
@@ -3571,20 +3551,28 @@
       // PROFILE MODAL
       // ============================================================
       const profileModal = document.getElementById('profileModal');
-      const userProfileTrigger = document.getElementById('userProfileTrigger');
 
-      userProfileTrigger.addEventListener('click', () => {
+      function openProfile() {
         if (!currentUser) return;
         renderProfileModal();
         profileModal.classList.remove('hidden');
-      });
+        document.body.style.overflow = 'hidden';
+      }
 
-      document.getElementById('closeProfileModal').addEventListener('click', () => {
+      function closeProfile() {
         profileModal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+
+      document.getElementById('drawerProfileBtn').addEventListener('click', () => {
+        closeDrawer();
+        setTimeout(openProfile, 200);
       });
 
+      document.getElementById('bottomProfileBtn').addEventListener('click', openProfile);
+      document.getElementById('closeProfileModal').addEventListener('click', closeProfile);
       profileModal.addEventListener('click', (e) => {
-        if (e.target === profileModal) profileModal.classList.add('hidden');
+        if (e.target === profileModal) closeProfile();
       });
 
       function renderProfileModal() {
@@ -3604,7 +3592,7 @@
         }
 
         if (currentUser.createdAt) {
-          const joined = new Date(currentUser.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+          const joined = new Date(currentUser.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
           document.getElementById('profileJoined').textContent = joined;
         } else {
           document.getElementById('profileJoined').textContent = '—';
@@ -3633,9 +3621,7 @@
         document.getElementById('balanceDisplay').textContent = currentUser.balance.toFixed(2);
 
         const history = getUserHistory(currentUser.phone);
-        const totalLifetime = history
-          .filter(h => h.amount > 0)
-          .reduce((sum, h) => sum + h.amount, 0);
+        const totalLifetime = history.filter(h => h.amount > 0).reduce((sum, h) => sum + h.amount, 0);
         document.getElementById('totalBalanceDisplay').textContent = totalLifetime.toFixed(2);
       }
 
@@ -3656,14 +3642,13 @@
           amountClass = 'positive'; amountSign = '+';
         }
 
-        const iconHTML = `<i class="fas ${icon}"></i>`;
         return `
           <div class="history-item ${typeClass}">
             <div class="history-info">
-              <div class="history-type">${iconHTML} ${entry.description}</div>
+              <div class="history-type"><i class="fas ${icon}"></i> ${entry.description}</div>
               <div class="history-detail">${entry.detail || ''}</div>
             </div>
-            <div style="text-align:right;">
+            <div class="history-amount-wrap">
               <div class="history-amount ${amountClass}">${amountSign}$${Math.abs(entry.amount).toFixed(2)}</div>
               <div class="history-time">${entry.time}</div>
             </div>
@@ -3706,12 +3691,11 @@
         updateBalanceUI();
 
         const initials = (currentUser.fullname || 'U').charAt(0).toUpperCase();
-        document.getElementById('userAvatar').textContent = initials;
-        document.getElementById('sidebarUserName').textContent = currentUser.fullname;
+        document.getElementById('drawerAvatar').textContent = initials;
+        document.getElementById('drawerUserName').textContent = currentUser.fullname;
 
         const today = new Date().toDateString();
         const todayAds = (currentUser.lastAdDate === today) ? (currentUser.adsWatchedToday || 0) : 0;
-
         document.getElementById('statAdsWatched').textContent = todayAds;
 
         const history = getUserHistory(currentUser.phone);
@@ -3785,7 +3769,7 @@
         saveUsers(users);
         currentUser = users[idx];
 
-        toastInfo('Application submitted! You will be eligible in 20 minutes.', 'Pending approval');
+        toastInfo('Application submitted! Eligible in 20 minutes.', 'Pending approval');
         renderApplyView();
 
         setTimeout(() => {
@@ -3835,18 +3819,19 @@
           return `
             <div class="plan-card" style="border-color:${isActive ? plan.color : 'var(--border)'};">
               ${isActive ? '<div class="plan-badge" style="background:' + plan.color + ';">ACTIVE</div>' : ''}
-              <div style="display:flex;align-items:center;gap:10px;">
-                <i class="fas ${plan.icon}" style="font-size:24px;color:${plan.color};"></i>
-                <div>
+              <div class="plan-card-header">
+                <div class="plan-icon-wrap" style="background:${plan.color};">
+                  <i class="fas ${plan.icon}"></i>
+                </div>
+                <div class="plan-title">
                   <div class="plan-name">${plan.name}</div>
                   <div class="plan-deposit">$${plan.totalRequired}</div>
                 </div>
               </div>
-              <div class="plan-detail"><i class="fas fa-hand-holding-usd"></i> Deposit: $${plan.deposit}</div>
-              <div class="plan-detail"><i class="fas fa-gift"></i> Bonus: +$${plan.bonus}</div>
-              <div class="plan-detail"><i class="fas fa-play-circle"></i> ${plan.perAd.toFixed(2)} / ad</div>
+              <div class="plan-detail"><i class="fas fa-hand-holding-usd"></i> Deposit: $${plan.deposit} + Bonus: $${plan.bonus}</div>
+              <div class="plan-detail"><i class="fas fa-play-circle"></i> $${plan.perAd.toFixed(2)} per ad</div>
               <div class="plan-detail"><i class="fas fa-calendar-day"></i> Daily: $${plan.daily.toFixed(2)}</div>
-              <div class="plan-detail"><i class="fas fa-tv"></i> 10 ads / day (10 sec)</div>
+              <div class="plan-detail"><i class="fas fa-tv"></i> 10 ads/day (10 sec each)</div>
               <button class="plan-btn" data-plan-id="${plan.id}" ${isDisabled ? 'disabled' : ''} style="background:${isDisabled ? 'var(--border)' : 'linear-gradient(135deg,' + plan.color + ',' + plan.color + 'dd)'};">
                 ${isActive ? 'Active' : (isDisabled ? 'Unavailable' : 'Buy Plan')}
               </button>
@@ -3869,7 +3854,7 @@
         if (!plan) return;
         if (currentUser.activePlan) return toastWarning('You already have an active plan.', 'Plan active');
         if (currentUser.balance < plan.totalRequired) 
-          return toastError(`Insufficient balance. You need $${plan.totalRequired} but have $${currentUser.balance.toFixed(2)}.`, 'Insufficient funds');
+          return toastError(`Need $${plan.totalRequired}. You have $${currentUser.balance.toFixed(2)}.`, 'Insufficient funds');
 
         const users = getUsers();
         const idx = users.findIndex(u => u.phone === currentUser.phone);
@@ -3885,7 +3870,7 @@
         addHistory(currentUser.phone, {
           type: 'ad',
           description: `Plan purchased: ${plan.name}`,
-          detail: `Deposit: $${plan.deposit} + Bonus: $${plan.bonus} = Total: $${plan.totalRequired} • Per ad: $${plan.perAd.toFixed(2)}`,
+          detail: `Total: $${plan.totalRequired} • Per ad: $${plan.perAd.toFixed(2)}`,
           amount: -plan.totalRequired,
           time: new Date().toLocaleString()
         });
@@ -3924,7 +3909,7 @@
         } else {
           const plan = PLANS.find(p => p.id === currentUser.activePlan);
           if (!plan) {
-            adText.textContent = 'Plan error. Please contact support.';
+            adText.textContent = 'Plan error. Contact support.';
             watchBtn.disabled = true;
             return;
           }
@@ -3933,7 +3918,6 @@
 
           const today = new Date().toDateString();
           const todayAds = (currentUser.lastAdDate === today) ? (currentUser.adsWatchedToday || 0) : 0;
-
           adsTodayCount.textContent = todayAds + ' / ' + ADS_PER_DAY;
 
           const history = getUserHistory(currentUser.phone);
@@ -3947,7 +3931,7 @@
             watchBtn.disabled = true;
             watchBtn.innerHTML = '<i class="fas fa-check-circle"></i> Limit Reached';
           } else {
-            adText.textContent = 'Ready to watch. Click the button below.';
+            adText.textContent = 'Ready to watch. Tap the button below.';
             watchBtn.disabled = false;
             watchBtn.innerHTML = '<i class="fas fa-play"></i> Watch Ad (+$' + plan.perAd.toFixed(2) + ')';
           }
@@ -4008,7 +3992,7 @@
             addHistory(currentUser.phone, {
               type: 'ad',
               description: `Ad watched #${currentUser.adsWatchedToday}`,
-              detail: `+$${plan.perAd.toFixed(2)} • Plan: ${plan.name}`,
+              detail: `+$${plan.perAd.toFixed(2)} • ${plan.name}`,
               amount: plan.perAd,
               time: new Date().toLocaleString()
             });
@@ -4039,21 +4023,31 @@
       const depositModal = document.getElementById('depositModal');
       const withdrawModal = document.getElementById('withdrawModal');
 
+      function openModal(modal) {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal(modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+
       document.getElementById('depositBtn').addEventListener('click', () => {
-        depositModal.classList.remove('hidden');
+        openModal(depositModal);
         document.getElementById('depositPendingMessage').classList.add('hidden');
         document.getElementById('depositSuccessMessage').classList.add('hidden');
       });
       document.getElementById('withdrawBtn').addEventListener('click', () => {
-        withdrawModal.classList.remove('hidden');
+        openModal(withdrawModal);
         document.getElementById('withdrawPendingMessage').classList.add('hidden');
         document.getElementById('withdrawSuccessMessage').classList.add('hidden');
       });
-      document.getElementById('closeDepositModal').addEventListener('click', () => depositModal.classList.add('hidden'));
-      document.getElementById('closeWithdrawModal').addEventListener('click', () => withdrawModal.classList.add('hidden'));
+      document.getElementById('closeDepositModal').addEventListener('click', () => closeModal(depositModal));
+      document.getElementById('closeWithdrawModal').addEventListener('click', () => closeModal(withdrawModal));
       window.addEventListener('click', (e) => {
-        if (e.target === depositModal) depositModal.classList.add('hidden');
-        if (e.target === withdrawModal) withdrawModal.classList.add('hidden');
+        if (e.target === depositModal) closeModal(depositModal);
+        if (e.target === withdrawModal) closeModal(withdrawModal);
       });
 
       // Deposit method toggle
@@ -4104,7 +4098,7 @@
       // Deposit request
       document.getElementById('requestDepositBtn').addEventListener('click', () => {
         const screenshot = document.getElementById('depositScreenshot').files[0];
-        if (!screenshot) return toastWarning('Please upload a screenshot of your payment.', 'Screenshot required');
+        if (!screenshot) return toastWarning('Please upload a payment screenshot.', 'Screenshot required');
 
         let baseAmount = 0;
         if (depositMethod === 'bank') {
@@ -4125,7 +4119,7 @@
         addHistory(currentUser.phone, {
           type: 'deposit',
           description: 'Deposit request (pending)',
-          detail: depositMethod === 'bank' ? `Bank transfer • $${baseAmount.toFixed(2)} + $0.5 fee` : 'Binance',
+          detail: depositMethod === 'bank' ? `Bank • $${baseAmount.toFixed(2)} + $0.5 fee` : 'Binance',
           amount: totalDeposit,
           time: createdAt
         });
@@ -4143,7 +4137,7 @@
         });
 
         setTimeout(processPendingRequests, DEPOSIT_APPROVAL_MS + 500);
-        setTimeout(() => depositModal.classList.add('hidden'), 2000);
+        setTimeout(() => closeModal(depositModal), 2000);
       });
 
       // Withdraw method toggle
@@ -4214,18 +4208,18 @@
         if (withdrawMethod === 'binance') {
           amount = parseFloat(document.getElementById('withdrawBinanceAmount').value) || 0;
           if (!document.getElementById('withdrawBinanceAddress').value) 
-            return toastWarning('Enter your Binance wallet address.', 'Address required');
+            return toastWarning('Enter your Binance address.', 'Address required');
         } else {
           amount = parseFloat(document.getElementById('withdrawBankAmount').value) || 0;
           if (!document.getElementById('withdrawHolder').value || !document.getElementById('withdrawAccountNumber').value) 
-            return toastWarning('Please fill in your bank details.', 'Missing info');
+            return toastWarning('Please fill in bank details.', 'Missing info');
         }
         if (amount < 30) return toastError('Minimum withdrawal is $30.', 'Amount too low');
-        if (!currentUser || currentUser.balance < amount) return toastError('Insufficient balance for this withdrawal.', 'Insufficient funds');
+        if (!currentUser || currentUser.balance < amount) return toastError('Insufficient balance.', 'Insufficient funds');
 
         const fee = 0.5;
         const netAmount = amount - fee;
-        if (netAmount <= 0) return toastError('Amount must be greater than $0.5 fee.', 'Invalid amount');
+        if (netAmount <= 0) return toastError('Amount must be greater than fee.', 'Invalid amount');
 
         const createdAt = new Date().toLocaleString();
         const approveAt = Date.now() + WITHDRAW_APPROVAL_MS;
@@ -4255,7 +4249,7 @@
         });
 
         setTimeout(processPendingRequests, WITHDRAW_APPROVAL_MS + 500);
-        setTimeout(() => withdrawModal.classList.add('hidden'), 2000);
+        setTimeout(() => closeModal(withdrawModal), 2000);
       });
 
       // ============================================================
@@ -4319,7 +4313,7 @@
               const hIdx = history.findIndex(h => h.type === 'withdraw' && h.description === 'Withdraw request (pending)' && h.time === req.createdAt);
               if (hIdx !== -1) {
                 history[hIdx].description = 'Withdraw rejected';
-                history[hIdx].detail = 'Insufficient balance at approval time';
+                history[hIdx].detail = 'Insufficient balance';
                 saveUserHistory(req.phone, history);
               }
               toastError('Withdrawal failed: insufficient balance.', 'Withdrawal failed');
@@ -4347,8 +4341,8 @@
         dashboardSection.classList.remove('hidden');
 
         const initials = (currentUser.fullname || 'U').charAt(0).toUpperCase();
-        document.getElementById('userAvatar').textContent = initials;
-        document.getElementById('sidebarUserName').textContent = currentUser.fullname;
+        document.getElementById('drawerAvatar').textContent = initials;
+        document.getElementById('drawerUserName').textContent = currentUser.fullname;
 
         updateBalanceUI();
         switchView('dashboard');
@@ -4373,13 +4367,16 @@
       }
 
       // Logout
-      logoutBtn.addEventListener('click', () => {
+      function doLogout() {
         clearCurrentUser();
+        closeDrawer();
         authSection.classList.remove('hidden');
         dashboardSection.classList.add('hidden');
         currentUser = null;
         toastInfo('You have been logged out.', 'Logged out');
-      });
+      }
+
+      document.getElementById('drawerLogoutBtn').addEventListener('click', doLogout);
 
       // ============================================================
       // POLLING & VISIBILITY
@@ -4394,30 +4391,6 @@
             if (currentView === 'dashboard') renderDashboard();
             if (currentView === 'history') renderHistory();
             if (currentView === 'apply') renderApplyView();
-          }
-        }
-      });
-      window.addEventListener('focus', () => {
-        processPendingRequests();
-        if (currentUser) {
-          currentUser = getCurrentUser();
-          updateBalanceUI();
-        }
-      });
-
-      // Storage sync across tabs
-      window.addEventListener('storage', (e) => {
-        if (e.key === 'earndollar_currentUser' || e.key === 'earndollar_users' || e.key === 'earndollar_pending' || e.key.startsWith('earndollar_history_')) {
-          if (!getCurrentUser()) {
-            authSection.classList.remove('hidden');
-            dashboardSection.classList.add('hidden');
-            currentUser = null;
-          } else {
-            currentUser = getCurrentUser();
-            updateBalanceUI();
-            if (currentView === 'dashboard') renderDashboard();
-            if (currentView === 'history') renderHistory();
-            processPendingRequests();
           }
         }
       });

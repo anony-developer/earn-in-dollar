@@ -1,0 +1,3860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+  <title>Earn In Dollar · Watch & Earn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ---- RESET & GLOBAL ---- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --bg: #f1f5f9;
+      --surface: #ffffff;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --border: #e2e8f0;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --purple: #8b5cf6;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow: 0 4px 12px rgba(0,0,0,0.05);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,0.08);
+      --card-radius: 24px;
+      --input-radius: 14px;
+      --transition: all 0.2s ease;
+      --sidebar-w: 280px;
+    }
+
+    body.dark {
+      --bg: #0b0f19;
+      --surface: #151e2c;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --border: #2a3446;
+      --primary: #3b82f6;
+      --primary-hover: #60a5fa;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+      --shadow: 0 4px 12px rgba(0,0,0,0.4);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,0.6);
+    }
+
+    html, body {
+      overflow-x: hidden;
+      width: 100%;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-primary);
+      transition: background-color 0.3s, color 0.3s;
+      min-height: 100vh;
+      display: flex;
+      padding: 12px;
+      background-image: radial-gradient(circle at 10% 20%, rgba(59,130,246,0.03) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(139,92,246,0.03) 0%, transparent 40%);
+      -webkit-text-size-adjust: 100%;
+    }
+
+    /* ---- APP CONTAINER ---- */
+    .app-container {
+      display: flex;
+      width: 100%;
+      max-width: 1600px;
+      margin: 0 auto;
+      gap: 20px;
+      min-height: calc(100vh - 24px);
+    }
+
+    /* ---- SIDEBAR ---- */
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      background: var(--surface);
+      border-radius: var(--card-radius);
+      padding: 22px 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition);
+      height: fit-content;
+      position: sticky;
+      top: 12px;
+    }
+
+    .sidebar-logo {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 8px 18px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    .sidebar-logo i {
+      font-size: 26px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+    }
+
+    .nav-item i {
+      font-size: 18px;
+      width: 22px;
+      text-align: center;
+      color: var(--text-secondary);
+      transition: var(--transition);
+    }
+
+    .nav-item:hover {
+      background: rgba(59,130,246,0.06);
+      color: var(--text-primary);
+    }
+
+    .nav-item.active {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+      box-shadow: 0 8px 20px rgba(59,130,246,0.3);
+    }
+
+    .nav-item.active i {
+      color: white;
+    }
+
+    .sidebar-footer {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* ---- USER PROFILE TRIGGER ---- */
+    .user-profile-trigger {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      background: var(--bg);
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1.5px solid var(--border);
+      width: 100%;
+      text-align: left;
+    }
+
+    .user-profile-trigger:hover {
+      border-color: var(--primary);
+      background: rgba(59,130,246,0.06);
+      color: var(--text-primary);
+    }
+
+    .user-profile-trigger .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .user-profile-trigger .user-info {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .user-profile-trigger .user-info .name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-profile-trigger .user-info .role {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .user-profile-trigger .chevron {
+      color: var(--text-secondary);
+      font-size: 13px;
+      transition: var(--transition);
+    }
+
+    .logout-btn-side {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--danger);
+      background: transparent;
+      border: 1.5px solid var(--border);
+      cursor: pointer;
+      transition: var(--transition);
+      width: 100%;
+      text-align: left;
+    }
+
+    .logout-btn-side:hover {
+      background: var(--danger);
+      color: white;
+      border-color: var(--danger);
+    }
+
+    /* ---- MAIN CONTENT ---- */
+    .main-content {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* ---- TOP BAR ---- */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 0 4px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .top-bar-left h1 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text-primary);
+    }
+
+    .top-bar-left p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .top-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .theme-toggle {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 40px;
+      width: 52px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8px;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .theme-toggle i {
+      font-size: 13px;
+      color: var(--text-secondary);
+      transition: var(--transition);
+    }
+
+    .theme-toggle .active-icon {
+      color: var(--primary);
+    }
+
+    /* ---- CARDS & SECTIONS ---- */
+    .card {
+      background: var(--surface);
+      border-radius: var(--card-radius);
+      padding: 24px 20px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: -0.3px;
+    }
+
+    .card-title i {
+      color: var(--primary);
+    }
+
+    /* ---- BALANCE TABS ---- */
+    .balance-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+      background: var(--bg);
+      padding: 5px;
+      border-radius: 40px;
+      border: 1px solid var(--border);
+    }
+
+    .balance-tab {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 36px;
+      border: none;
+      background: transparent;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .balance-tab i {
+      font-size: 15px;
+    }
+
+    .balance-tab.active {
+      background: var(--surface);
+      color: var(--text-primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ---- BALANCE CARD ---- */
+    .balance-card {
+      position: relative;
+      border-radius: 28px;
+      padding: 26px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
+      overflow: hidden;
+      color: white;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(255,255,255,0.28) 0%, transparent 45%),
+        radial-gradient(circle at 85% 90%, rgba(255,255,255,0.18) 0%, transparent 50%),
+        linear-gradient(135deg, #6366f1 0%, #8b5cf6 45%, #ec4899 100%);
+      box-shadow: 0 18px 40px rgba(99,102,241,0.35), 0 6px 16px rgba(236,72,153,0.2), inset 0 1px 0 rgba(255,255,255,0.25);
+    }
+
+    .balance-card.total-card {
+      background:
+        radial-gradient(circle at 15% 15%, rgba(255,255,255,0.28) 0%, transparent 45%),
+        radial-gradient(circle at 85% 90%, rgba(255,255,255,0.18) 0%, transparent 50%),
+        linear-gradient(135deg, #059669 0%, #10b981 45%, #34d399 100%);
+      box-shadow: 0 18px 40px rgba(16,185,129,0.35), 0 6px 16px rgba(5,150,105,0.2), inset 0 1px 0 rgba(255,255,255,0.25);
+    }
+
+    .balance-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -30%;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.22) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .balance-card::after {
+      content: '';
+      position: absolute;
+      bottom: -60%;
+      left: -20%;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .balance-label {
+      position: relative;
+      z-index: 1;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .balance-label i {
+      font-size: 15px;
+      color: #fde68a;
+    }
+
+    .balance-amount {
+      position: relative;
+      z-index: 1;
+      font-size: 46px;
+      font-weight: 900;
+      letter-spacing: -2.5px;
+      color: #ffffff;
+      line-height: 1.05;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: baseline;
+    }
+
+    .balance-amount span {
+      font-size: 24px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.92);
+      margin-right: 4px;
+      letter-spacing: -1px;
+    }
+
+    .balance-sparkle {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      z-index: 1;
+      font-size: 18px;
+      color: rgba(255,255,255,0.85);
+      animation: sparkle 2.4s ease-in-out infinite;
+      filter: drop-shadow(0 1px 3px rgba(0,0,0,0.2));
+    }
+
+    @keyframes sparkle {
+      0%, 100% { opacity: 0.6; transform: scale(1) rotate(0deg); }
+      50% { opacity: 1; transform: scale(1.15) rotate(15deg); }
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      border: none;
+      border-radius: 100px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      transition: var(--transition);
+      color: white;
+      box-shadow: var(--shadow-lg);
+      letter-spacing: 0.3px;
+      min-height: 56px;
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .action-btn i {
+      font-size: 20px;
+      color: white;
+    }
+
+    .action-btn.deposit-btn {
+      background: linear-gradient(135deg, #10b981, #059669);
+    }
+
+    .action-btn.deposit-btn:hover {
+      background: linear-gradient(135deg, #059669, #047857);
+      transform: translateY(-2px);
+      box-shadow: 0 18px 40px rgba(16,185,129,0.35);
+    }
+
+    .action-btn.withdraw-btn {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+
+    .action-btn.withdraw-btn:hover {
+      background: linear-gradient(135deg, #d97706, #b45309);
+      transform: translateY(-2px);
+      box-shadow: 0 18px 40px rgba(245,158,11,0.35);
+    }
+
+    /* ---- PLANS GRID ---- */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+    }
+
+    .plan-card {
+      background: var(--bg);
+      border-radius: 18px;
+      padding: 18px 14px;
+      border: 1.5px solid var(--border);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary);
+    }
+
+    .plan-card .plan-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .plan-card .plan-deposit {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--primary);
+      letter-spacing: -0.5px;
+    }
+
+    .plan-card .plan-detail {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .plan-card .plan-detail i {
+      width: 14px;
+      color: var(--primary);
+    }
+
+    .plan-card .plan-btn {
+      margin-top: 8px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: var(--transition);
+      width: 100%;
+    }
+
+    .plan-card .plan-btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 20px rgba(59,130,246,0.35);
+    }
+
+    .plan-card .plan-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .plan-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--success);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 30px;
+      letter-spacing: 0.5px;
+    }
+
+    /* ---- APPLY EARNING SECTION ---- */
+    .apply-section {
+      background: var(--bg);
+      border-radius: 18px;
+      padding: 20px;
+      border: 2px dashed var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: var(--transition);
+    }
+
+    .apply-section.eligible {
+      border-color: var(--success);
+      background: rgba(16,185,129,0.06);
+    }
+
+    .apply-input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: var(--input-radius);
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--text-primary);
+      font-size: 15px;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .apply-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(59,130,246,0.1);
+    }
+
+    .apply-btn {
+      padding: 16px 24px;
+      border-radius: var(--input-radius);
+      border: none;
+      background: linear-gradient(135deg, #8b5cf6, #6366f1);
+      color: white;
+      font-weight: 800;
+      font-size: 16px;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 8px 24px rgba(139,92,246,0.35);
+      min-height: 56px;
+    }
+
+    .apply-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(139,92,246,0.45);
+    }
+
+    .apply-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .apply-status {
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .apply-status i {
+      font-size: 18px;
+    }
+
+    /* ---- ADS WATCHING ---- */
+    .ad-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding: 10px 0;
+    }
+
+    .ad-box {
+      width: 100%;
+      max-width: 500px;
+      aspect-ratio: 16/9;
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid var(--border);
+    }
+
+    .ad-box .ad-icon {
+      font-size: 48px;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .ad-box .ad-text {
+      font-size: 16px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    .ad-box .ad-countdown {
+      font-size: 40px;
+      font-weight: 900;
+      color: #fbbf24;
+      text-shadow: 0 0 20px rgba(251,191,36,0.4);
+    }
+
+    .ad-progress {
+      width: 100%;
+      height: 6px;
+      background: var(--bg);
+      border-radius: 30px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .ad-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      border-radius: 30px;
+      transition: width 1s linear;
+    }
+
+    .ad-stats {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .ad-stat-item {
+      background: var(--bg);
+      padding: 12px 20px;
+      border-radius: 16px;
+      text-align: center;
+      flex: 1;
+      min-width: 100px;
+      border: 1px solid var(--border);
+    }
+
+    .ad-stat-item .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .ad-stat-item .value {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-top: 2px;
+    }
+
+    /* ---- HISTORY ---- */
+    .history-subtabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .history-subtab {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 100px;
+      padding: 10px 18px;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition);
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      justify-content: center;
+      flex: 1;
+      min-width: 90px;
+    }
+
+    .history-subtab i {
+      font-size: 13px;
+    }
+
+    .history-subtab:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .history-subtab.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+      box-shadow: 0 6px 16px rgba(59,130,246,0.35);
+    }
+
+    .history-subtab.subtab-deposit.active {
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-color: #10b981;
+      box-shadow: 0 6px 16px rgba(16,185,129,0.35);
+    }
+
+    .history-subtab.subtab-withdraw.active {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      border-color: #f59e0b;
+      box-shadow: 0 6px 16px rgba(245,158,11,0.35);
+    }
+
+    .history-subtab.subtab-bet.active {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      border-color: #3b82f6;
+      box-shadow: 0 6px 16px rgba(59,130,246,0.35);
+    }
+
+    .history-subtab.subtab-ad.active {
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      border-color: #8b5cf6;
+      box-shadow: 0 6px 16px rgba(139,92,246,0.35);
+    }
+
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 520px;
+      overflow-y: auto;
+      padding-right: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .history-item {
+      background: var(--bg);
+      border-radius: 16px;
+      padding: 14px 16px;
+      border-left: 4px solid var(--primary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      transition: var(--transition);
+    }
+
+    .history-item.deposit { border-left-color: var(--success); }
+    .history-item.withdraw { border-left-color: var(--warning); }
+    .history-item.bet { border-left-color: var(--primary); }
+    .history-item.ad { border-left-color: var(--purple); }
+
+    .history-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .history-type {
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .history-detail {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      word-break: break-word;
+    }
+
+    .history-amount {
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: -0.5px;
+      white-space: nowrap;
+    }
+
+    .history-amount.positive { color: var(--success); }
+    .history-amount.negative { color: var(--danger); }
+
+    .history-time {
+      font-size: 11px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .empty-history {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-secondary);
+    }
+
+    .empty-history i {
+      font-size: 38px;
+      margin-bottom: 12px;
+      opacity: 0.4;
+      display: block;
+    }
+
+    .empty-history p {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* ---- AUTH CARDS ---- */
+    .auth-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 24px);
+      width: 100%;
+      padding: 20px;
+    }
+
+    .auth-card {
+      background: var(--surface);
+      border-radius: var(--card-radius);
+      padding: 32px 26px;
+      max-width: 470px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .auth-card h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      text-align: center;
+      letter-spacing: -0.5px;
+    }
+
+    .auth-sub {
+      text-align: center;
+      color: var(--text-secondary);
+      margin-bottom: 22px;
+      font-size: 14px;
+    }
+
+    .input-group {
+      margin-bottom: 16px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-secondary);
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: var(--input-radius);
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--text-primary);
+      font-size: 16px;
+      transition: var(--transition);
+      font-weight: 500;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(59,130,246,0.1);
+    }
+
+    .password-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .password-wrapper .input-field {
+      padding-right: 52px;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 18px;
+      transition: var(--transition);
+      background: transparent;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      min-width: 40px;
+      min-height: 40px;
+    }
+
+    .toggle-password:hover {
+      color: var(--primary);
+    }
+
+    .btn {
+      border: none;
+      border-radius: var(--input-radius);
+      padding: 15px 20px;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      transition: var(--transition);
+      background: var(--primary);
+      color: white;
+      width: 100%;
+      letter-spacing: 0.3px;
+      min-height: 50px;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(59,130,246,0.3);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #10b981, #059669);
+      box-shadow: 0 8px 20px rgba(16,185,129,0.3);
+    }
+
+    .btn-success:hover {
+      background: linear-gradient(135deg, #059669, #047857);
+      box-shadow: 0 8px 24px rgba(16,185,129,0.4);
+    }
+
+    .auth-switch {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .auth-switch a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .auth-switch a:hover {
+      text-decoration: underline;
+    }
+
+    .hidden { display: none !important; }
+
+    /* ---- COUNTRY PICKER ---- */
+    .country-picker-wrapper {
+      position: relative;
+    }
+
+    .country-trigger {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: var(--input-radius);
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--text-primary);
+      font-size: 16px;
+      font-weight: 500;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: var(--transition);
+      min-height: 50px;
+    }
+
+    .country-trigger:hover {
+      border-color: var(--primary);
+    }
+
+    .country-trigger i {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .country-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+      z-index: 100;
+      max-height: 260px;
+      overflow-y: auto;
+      display: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .country-dropdown.open {
+      display: block;
+    }
+
+    .country-search {
+      width: 100%;
+      padding: 14px 16px;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-primary);
+      font-size: 16px;
+      outline: none;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      font-weight: 500;
+    }
+
+    .country-list {
+      padding: 6px 0;
+    }
+
+    .country-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 13px 16px;
+      cursor: pointer;
+      transition: background 0.12s;
+      font-size: 15px;
+      font-weight: 500;
+      min-height: 48px;
+    }
+
+    .country-item:hover,
+    .country-item:active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .country-item .dial {
+      font-size: 13px;
+      color: var(--text-secondary);
+      background: rgba(0,0,0,0.04);
+      padding: 3px 12px;
+      border-radius: 30px;
+      font-weight: 600;
+    }
+
+    .country-item:hover .dial,
+    .country-item:active .dial {
+      color: white;
+      background: rgba(255,255,255,0.2);
+    }
+
+    .phone-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .phone-prefix-box {
+      width: 82px;
+      padding: 14px 8px;
+      border-radius: var(--input-radius);
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--text-primary);
+      font-size: 15px;
+      font-weight: 700;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+    }
+
+    .phone-input-box {
+      flex: 1;
+      padding: 14px 16px;
+      border-radius: var(--input-radius);
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--text-primary);
+      font-size: 16px;
+      font-weight: 500;
+      min-height: 50px;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .phone-hint-text {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 6px;
+      padding-left: 4px;
+    }
+
+    /* ---- MODALS ---- */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 12px;
+      overflow-y: auto;
+    }
+
+    .modal-content {
+      background: var(--surface);
+      border-radius: 24px;
+      max-width: 520px;
+      width: 100%;
+      padding: 26px 20px;
+      border: 1px solid var(--border);
+      box-shadow: 0 40px 80px rgba(0,0,0,0.3);
+      max-height: 92vh;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: auto;
+      position: relative;
+    }
+
+    .modal-content h3 {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 14px;
+      letter-spacing: -0.5px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      font-size: 26px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: var(--transition);
+      line-height: 1;
+      padding: 4px 8px;
+      min-width: 40px;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+    }
+
+    .modal-close:hover {
+      color: var(--danger);
+      transform: rotate(90deg);
+    }
+
+    .method-selector {
+      display: flex;
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .method-btn {
+      flex: 1;
+      padding: 14px 8px;
+      border-radius: 16px;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--text-secondary);
+      min-height: 50px;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .method-btn.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 8px 20px rgba(59,130,246,0.3);
+    }
+
+    .deposit-detail-box {
+      background: var(--bg);
+      padding: 14px;
+      border-radius: 18px;
+      margin: 14px 0;
+      word-break: break-word;
+      font-size: 14px;
+    }
+
+    .scanner-full-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: linear-gradient(135deg, var(--primary), #2563eb);
+      color: white;
+      font-weight: 800;
+      font-size: 17px;
+      padding: 20px 20px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      width: 100%;
+      margin: 12px 0;
+      box-shadow: 0 10px 28px rgba(59,130,246,0.4);
+      text-align: center;
+      min-height: 62px;
+    }
+
+    .scanner-full-btn i {
+      font-size: 22px;
+    }
+
+    .scanner-full-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 40px rgba(59,130,246,0.5);
+    }
+
+    .amount-summary {
+      background: var(--bg);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 14px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .amount-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 600;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .amount-row.total {
+      font-weight: 800;
+      font-size: 17px;
+      border-top: 2px solid var(--border);
+      padding-top: 10px;
+      margin-top: 4px;
+    }
+
+    .amount-row .pkr-value {
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .amount-input-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .amount-input-row .input-field {
+      flex: 1;
+      font-weight: 700;
+      text-align: right;
+      padding: 10px 12px;
+      min-height: 44px;
+      font-size: 16px;
+    }
+
+    .screenshot-upload {
+      margin: 14px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .screenshot-upload label {
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .file-input {
+      padding: 14px;
+      border: 2px dashed var(--border);
+      border-radius: 16px;
+      background: var(--bg);
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--text-secondary);
+      min-height: 50px;
+      width: 100%;
+    }
+
+    .file-input:hover {
+      border-color: var(--primary);
+    }
+
+    .toast-message {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      padding: 12px 18px;
+      border-radius: 100px;
+      font-weight: 700;
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+      font-size: 14px;
+      box-shadow: 0 8px 20px rgba(16,185,129,0.3);
+      text-align: center;
+    }
+
+    .toast-message.pending {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      box-shadow: 0 8px 20px rgba(245,158,11,0.3);
+    }
+
+    /* ---- TOAST SYSTEM ---- */
+    .toast-container {
+      position: fixed;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      max-width: 480px;
+      pointer-events: none;
+      padding: 0 10px;
+    }
+
+    .custom-toast {
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.1);
+      opacity: 0;
+      transform: translateY(-24px) scale(0.96);
+      animation: toastIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .custom-toast.toast-out {
+      animation: toastOut 0.3s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+    }
+
+    @keyframes toastIn {
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes toastOut {
+      to { opacity: 0; transform: translateY(-16px) scale(0.95); }
+    }
+
+    .custom-toast .toast-icon-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      border-radius: 11px;
+      background: rgba(255,255,255,0.2);
+      font-size: 16px;
+    }
+
+    .custom-toast .toast-content {
+      flex: 1;
+      line-height: 1.4;
+      min-width: 0;
+    }
+
+    .custom-toast .toast-title {
+      font-weight: 800;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      opacity: 0.9;
+      margin-bottom: 2px;
+    }
+
+    .custom-toast .toast-body {
+      font-weight: 500;
+      font-size: 13px;
+      opacity: 0.98;
+      word-break: break-word;
+    }
+
+    .custom-toast .toast-close {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      opacity: 0.75;
+      transition: opacity 0.2s;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 32px;
+      min-height: 32px;
+    }
+
+    .custom-toast .toast-close:hover { opacity: 1; }
+
+    .custom-toast .toast-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 4px;
+      background: rgba(255,255,255,0.5);
+      width: 100%;
+      transform-origin: left;
+      animation: toastProgress linear forwards;
+    }
+
+    @keyframes toastProgress {
+      from { transform: scaleX(1); }
+      to { transform: scaleX(0); }
+    }
+
+    .custom-toast.toast-success {
+      background: linear-gradient(135deg, #10b981, #059669);
+      box-shadow: 0 12px 32px rgba(16,185,129,0.35), 0 4px 12px rgba(16,185,129,0.2);
+    }
+    .custom-toast.toast-success .toast-progress { background: rgba(255,255,255,0.6); }
+
+    .custom-toast.toast-error {
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+      box-shadow: 0 12px 32px rgba(239,68,68,0.35), 0 4px 12px rgba(239,68,68,0.2);
+    }
+    .custom-toast.toast-error .toast-progress { background: rgba(255,255,255,0.6); }
+
+    .custom-toast.toast-warning {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      box-shadow: 0 12px 32px rgba(245,158,11,0.35), 0 4px 12px rgba(245,158,11,0.2);
+    }
+    .custom-toast.toast-warning .toast-progress { background: rgba(255,255,255,0.6); }
+
+    .custom-toast.toast-info {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      box-shadow: 0 12px 32px rgba(59,130,246,0.35), 0 4px 12px rgba(59,130,246,0.2);
+    }
+    .custom-toast.toast-info .toast-progress { background: rgba(255,255,255,0.6); }
+
+    /* ---- PROFILE MODAL ---- */
+    .profile-modal-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 32px;
+      font-weight: 800;
+      margin: 0 auto 16px;
+      box-shadow: 0 10px 25px rgba(59,130,246,0.35);
+    }
+
+    .profile-modal-name {
+      text-align: center;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .profile-modal-role {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+
+    .profile-details {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .profile-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      background: var(--bg);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .profile-row .label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .profile-row .label i {
+      color: var(--primary);
+      width: 16px;
+    }
+
+    .profile-row .value {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      word-break: break-all;
+      text-align: right;
+    }
+
+    .toggle-password-inline {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 15px;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      transition: var(--transition);
+      min-width: 32px;
+      min-height: 32px;
+    }
+
+    .toggle-password-inline:hover {
+      color: var(--primary);
+      background: rgba(59,130,246,0.08);
+    }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 1024px) {
+      .app-container { flex-direction: column; }
+      .sidebar {
+        width: 100%;
+        position: static;
+        padding: 16px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+        border-radius: 20px;
+      }
+      .sidebar-logo {
+        padding: 0 12px 0 0;
+        border-bottom: none;
+        margin-bottom: 0;
+        border-right: 1px solid var(--border);
+        flex: 0 0 auto;
+        font-size: 20px;
+      }
+      .sidebar-logo i { font-size: 22px; }
+      .sidebar-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        flex: 1;
+        gap: 4px;
+      }
+      .nav-item {
+        padding: 10px 16px;
+        font-size: 13px;
+        flex: 0 0 auto;
+        border-radius: 12px;
+      }
+      .nav-item i { font-size: 15px; width: 18px; }
+      .sidebar-footer {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+      }
+      .user-profile-trigger { padding: 8px 12px; font-size: 12px; flex: 0 0 auto; }
+      .user-profile-trigger .avatar { width: 30px; height: 30px; font-size: 13px; }
+      .user-profile-trigger .user-info .name { font-size: 12px; }
+      .user-profile-trigger .user-info .role { font-size: 10px; }
+      .logout-btn-side { padding: 8px 14px; font-size: 12px; }
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 8px; }
+      .app-container { gap: 12px; }
+      .card { padding: 18px 14px; border-radius: 18px; }
+      .top-bar-left h1 { font-size: 20px; }
+      .balance-amount { font-size: 38px; }
+      .balance-amount span { font-size: 20px; }
+      .action-btn { font-size: 14px; padding: 14px 12px; min-height: 50px; }
+      .action-btn i { font-size: 18px; }
+      .plans-grid { grid-template-columns: 1fr 1fr; }
+      .plan-card .plan-deposit { font-size: 20px; }
+      .auth-card { padding: 24px 18px; }
+      .auth-card h2 { font-size: 20px; }
+      .modal-content { padding: 20px 16px; }
+      .history-subtab { font-size: 12px; padding: 8px 12px; min-width: 70px; }
+      .history-subtab i { font-size: 11px; }
+      .ad-box .ad-countdown { font-size: 32px; }
+      .ad-stat-item { min-width: 70px; padding: 10px 12px; }
+      .ad-stat-item .value { font-size: 16px; }
+      .nav-item { padding: 8px 12px; font-size: 12px; }
+      .nav-item i { font-size: 13px; width: 16px; }
+      .user-profile-trigger { padding: 6px 10px; font-size: 11px; }
+      .user-profile-trigger .avatar { width: 26px; height: 26px; font-size: 12px; }
+      .user-profile-trigger .user-info .name { font-size: 11px; }
+      .user-profile-trigger .user-info .role { font-size: 9px; }
+      .logout-btn-side { font-size: 11px; padding: 6px 12px; }
+      .balance-tab { font-size: 12px; padding: 10px 12px; }
+      .profile-row { padding: 12px 14px; }
+      .profile-row .value { font-size: 13px; }
+      .profile-modal-avatar { width: 64px; height: 64px; font-size: 26px; }
+    }
+
+    @media (max-width: 400px) {
+      .plans-grid { grid-template-columns: 1fr; }
+      .action-buttons { flex-direction: column; }
+      .action-btn { min-width: 100%; }
+      .history-subtab { font-size: 11px; padding: 6px 10px; min-width: 60px; }
+      .balance-tab { font-size: 11px; padding: 8px 10px; gap: 4px; }
+      .profile-row { flex-direction: column; align-items: flex-start; }
+      .profile-row .value { text-align: left; width: 100%; }
+    }
+
+    /* iOS Safe area */
+    @supports (padding: env(safe-area-inset-top)) {
+      body {
+        padding-top: max(12px, env(safe-area-inset-top));
+        padding-bottom: max(12px, env(safe-area-inset-bottom));
+        padding-left: max(12px, env(safe-area-inset-left));
+        padding-right: max(12px, env(safe-area-inset-right));
+      }
+      .toast-container { top: max(12px, env(safe-area-inset-top)); }
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 30px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+  </style>
+</head>
+<body>
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ========== AUTH SECTION ========== -->
+  <div id="authSection" class="auth-wrapper">
+    <!-- Signup -->
+    <div id="signupCard" class="auth-card">
+      <h2>Create account</h2>
+      <p class="auth-sub">Join Earn In Dollar and start earning</p>
+      <div class="input-group">
+        <label>Full name</label>
+        <input type="text" id="signupFullname" class="input-field" placeholder="Your full name" autocomplete="name">
+      </div>
+      <div class="input-group">
+        <label>Country</label>
+        <div class="country-picker-wrapper">
+          <div class="country-trigger" id="countryTrigger">
+            <span id="countryTriggerLabel">Pakistan (+92)</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="country-dropdown" id="countryDropdown">
+            <input type="text" class="country-search" id="countrySearch" placeholder="Search country...">
+            <div class="country-list" id="countryList"></div>
+          </div>
+        </div>
+        <input type="hidden" id="signupCountry" value="Pakistan">
+        <input type="hidden" id="signupCountryDial" value="+92">
+      </div>
+      <div class="input-group">
+        <label>Phone number</label>
+        <div class="phone-row">
+          <div class="phone-prefix-box" id="phonePrefixDisplay">+92</div>
+          <input type="tel" id="signupPhone" class="phone-input-box" placeholder="300 1234567" inputmode="numeric" autocomplete="tel">
+        </div>
+        <div class="phone-hint-text" id="phoneHint">Pakistan: 10 digits after the country code.</div>
+      </div>
+      <div class="input-group">
+        <label>Gmail</label>
+        <input type="email" id="signupEmail" class="input-field" placeholder="you@gmail.com" inputmode="email" autocomplete="email">
+      </div>
+      <div class="input-group">
+        <label>Password</label>
+        <div class="password-wrapper">
+          <input type="password" id="signupPassword" class="input-field" placeholder="6+ characters" autocomplete="new-password">
+          <button type="button" class="toggle-password" id="toggleSignupPassword" aria-label="Show password">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Confirm password</label>
+        <div class="password-wrapper">
+          <input type="password" id="signupConfirm" class="input-field" placeholder="Repeat password" autocomplete="new-password">
+          <button type="button" class="toggle-password" id="toggleSignupConfirm" aria-label="Show password">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+      </div>
+      <button class="btn btn-success" id="signupBtn">Create account</button>
+      <div class="auth-switch">
+        Already have an account? <a id="goToLogin">Log in</a>
+      </div>
+    </div>
+
+    <!-- Login -->
+    <div id="loginCard" class="auth-card hidden">
+      <h2>Welcome back</h2>
+      <p class="auth-sub">Log in to your account</p>
+      <div class="input-group">
+        <label>Gmail or phone</label>
+        <input type="text" id="loginIdentifier" class="input-field" placeholder="you@gmail.com or phone" autocomplete="username">
+      </div>
+      <div class="input-group">
+        <label>Password</label>
+        <div class="password-wrapper">
+          <input type="password" id="loginPassword" class="input-field" placeholder="••••••••" autocomplete="current-password">
+          <button type="button" class="toggle-password" id="toggleLoginPassword" aria-label="Show password">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+      </div>
+      <button class="btn" id="loginBtn">Log in</button>
+      <div class="auth-switch">
+        <a id="goToReset">Forgot password?</a> · <a id="goToSignupFromLogin">Sign up</a>
+      </div>
+    </div>
+
+    <!-- Reset password -->
+    <div id="resetCard" class="auth-card hidden">
+      <h2>Reset password</h2>
+      <p class="auth-sub">Enter your registered phone number and new password</p>
+      <div class="input-group">
+        <label>Registered phone number</label>
+        <input type="tel" id="resetPhone" class="input-field" placeholder="03XXXXXXXXX" inputmode="tel">
+      </div>
+      <div class="input-group">
+        <label>New password</label>
+        <div class="password-wrapper">
+          <input type="password" id="resetNewPassword" class="input-field" placeholder="••••••••" autocomplete="new-password">
+          <button type="button" class="toggle-password" id="toggleResetPassword" aria-label="Show password">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+      </div>
+      <button class="btn" id="resetBtn">Update password</button>
+      <div class="auth-switch">
+        <a id="backToLoginFromReset">Back to login</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== DASHBOARD SECTION ========== -->
+  <div id="dashboardSection" class="app-container hidden">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <i class="fas fa-dollar-sign"></i> Earn In Dollar
+      </div>
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-view="dashboard">
+          <i class="fas fa-home"></i> Dashboard
+        </button>
+        <button class="nav-item" data-view="apply">
+          <i class="fas fa-file-signature"></i> Apply for Earning
+        </button>
+        <button class="nav-item" data-view="plans">
+          <i class="fas fa-crown"></i> Premium Plans
+        </button>
+        <button class="nav-item" data-view="watch">
+          <i class="fas fa-tv"></i> Watch Ads
+        </button>
+        <button class="nav-item" data-view="history">
+          <i class="fas fa-history"></i> History
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <!-- User Profile Trigger (opens profile modal) -->
+        <button class="user-profile-trigger" id="userProfileTrigger">
+          <div class="avatar" id="userAvatar">U</div>
+          <div class="user-info">
+            <div class="name" id="sidebarUserName">User</div>
+            <div class="role">View Profile</div>
+          </div>
+          <i class="fas fa-chevron-right chevron"></i>
+        </button>
+        <button class="logout-btn-side" id="logoutBtn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <!-- TOP BAR -->
+      <div class="top-bar">
+        <div class="top-bar-left">
+          <h1 id="pageTitle">Dashboard</h1>
+          <p id="pageSubtitle">Welcome back, User</p>
+        </div>
+        <div class="top-bar-right">
+          <div class="theme-toggle" id="themeToggle">
+            <i class="fas fa-sun" id="sunIcon"></i>
+            <i class="fas fa-moon" id="moonIcon"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== VIEW: DASHBOARD ====== -->
+      <div id="view-dashboard" class="view-section">
+        <!-- Balance Tabs -->
+        <div class="balance-tabs" id="balanceTabs">
+          <button class="balance-tab active" data-tab="current">
+            <i class="fas fa-wallet"></i> Current Balance
+          </button>
+          <button class="balance-tab" data-tab="total">
+            <i class="fas fa-chart-line"></i> Total Balance
+          </button>
+        </div>
+
+        <!-- Current Balance Card -->
+        <div id="currentBalanceView">
+          <div class="balance-card">
+            <div class="balance-sparkle"><i class="fas fa-star"></i></div>
+            <div class="balance-label"><i class="fas fa-wallet"></i> Current balance</div>
+            <div class="balance-amount"><span>$</span><span id="balanceDisplay">0.00</span></div>
+          </div>
+        </div>
+
+        <!-- Total Balance Card -->
+        <div id="totalBalanceView" class="hidden">
+          <div class="balance-card total-card">
+            <div class="balance-sparkle"><i class="fas fa-star"></i></div>
+            <div class="balance-label"><i class="fas fa-chart-line"></i> Total balance (lifetime)</div>
+            <div class="balance-amount"><span>$</span><span id="totalBalanceDisplay">0.00</span></div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons" style="margin-top:14px;">
+          <button class="action-btn deposit-btn" id="depositBtn"><i class="fas fa-arrow-down"></i> Deposit</button>
+          <button class="action-btn withdraw-btn" id="withdrawBtn"><i class="fas fa-arrow-up"></i> Withdraw</button>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="card" style="margin-top:4px;">
+          <div class="card-title"><i class="fas fa-chart-bar"></i> Quick Stats</div>
+          <div class="ad-stats">
+            <div class="ad-stat-item">
+              <div class="label">Ads Watched</div>
+              <div class="value" id="statAdsWatched">0</div>
+            </div>
+            <div class="ad-stat-item">
+              <div class="label">Today's Earnings</div>
+              <div class="value" id="statTodayEarned">$0.00</div>
+            </div>
+            <div class="ad-stat-item">
+              <div class="label">Active Plan</div>
+              <div class="value" id="statActivePlan" style="font-size:15px;">None</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="card">
+          <div class="card-title"><i class="fas fa-clock"></i> Recent Activity</div>
+          <div class="history-list" id="recentActivityList">
+            <div class="empty-history">
+              <i class="fas fa-inbox"></i>
+              <p>No transactions yet.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== VIEW: APPLY FOR EARNING ====== -->
+      <div id="view-apply" class="view-section hidden">
+        <div class="card">
+          <div class="card-title"><i class="fas fa-file-signature"></i> Apply for Earning</div>
+          <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">
+            Fill in your details below. After submitting, you'll become eligible for earning and receive a <strong>$5 bonus</strong> in your wallet. The normal approval time for earning is <strong>20 minutes</strong>.
+          </p>
+          <div class="apply-section" id="applySection">
+            <input type="text" id="applyFullName" class="apply-input" placeholder="Full name (as on CNIC)">
+            <input type="text" id="applyCnic" class="apply-input" placeholder="CNIC number (e.g., 35202-1234567-1)">
+            <input type="text" id="applyCity" class="apply-input" placeholder="City">
+            <button class="apply-btn" id="applySubmitBtn">Submit Application</button>
+          </div>
+          <div id="applyStatusBox" style="margin-top:14px;"></div>
+        </div>
+      </div>
+
+      <!-- ====== VIEW: PREMIUM PLANS ====== -->
+      <div id="view-plans" class="view-section hidden">
+        <div class="card">
+          <div class="card-title"><i class="fas fa-crown"></i> Premium Plans</div>
+          <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">
+            Choose a plan to start watching ads and earning. All plans include <strong>10 ads per day</strong>, each <strong>10 seconds</strong> long. <strong>$5 bonus</strong> is added to your deposit.
+          </p>
+          <div class="plans-grid" id="plansGrid">
+            <!-- Plans will be rendered by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== VIEW: WATCH ADS ====== -->
+      <div id="view-watch" class="view-section hidden">
+        <div class="card">
+          <div class="card-title"><i class="fas fa-tv"></i> Watch & Earn</div>
+          <div class="ad-container">
+            <div class="ad-box" id="adBox">
+              <i class="fas fa-play-circle ad-icon" id="adIcon"></i>
+              <div class="ad-text" id="adText">Select a plan to start watching ads</div>
+              <div class="ad-countdown hidden" id="adCountdown">10</div>
+            </div>
+            <div class="ad-progress" id="adProgressContainer" style="display:none;">
+              <div class="ad-progress-bar" id="adProgressBar" style="width:0%;"></div>
+            </div>
+            <button class="btn" id="watchAdBtn" style="max-width:400px;width:100%;" disabled>
+              <i class="fas fa-play"></i> Watch Ad
+            </button>
+            <div class="ad-stats">
+              <div class="ad-stat-item">
+                <div class="label">Ads Today</div>
+                <div class="value" id="adsTodayCount">0 / 10</div>
+              </div>
+              <div class="ad-stat-item">
+                <div class="label">Per Ad</div>
+                <div class="value" id="perAdEarning">$0.00</div>
+              </div>
+              <div class="ad-stat-item">
+                <div class="label">Earned Today</div>
+                <div class="value" id="todayEarnedDisplay">$0.00</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== VIEW: HISTORY ====== -->
+      <div id="view-history" class="view-section hidden">
+        <div class="card">
+          <div class="card-title"><i class="fas fa-history"></i> Transaction History</div>
+          <div class="history-subtabs" id="historySubtabs">
+            <button class="history-subtab active" data-subtab="all"><i class="fas fa-list-ul"></i> All</button>
+            <button class="history-subtab subtab-deposit" data-subtab="deposit"><i class="fas fa-arrow-down"></i> Deposits</button>
+            <button class="history-subtab subtab-withdraw" data-subtab="withdraw"><i class="fas fa-arrow-up"></i> Withdrawals</button>
+            <button class="history-subtab subtab-ad" data-subtab="ad"><i class="fas fa-play-circle"></i> Ad Earnings</button>
+          </div>
+          <div class="history-list" id="historyList">
+            <div class="empty-history">
+              <i class="fas fa-inbox"></i>
+              <p>No transactions yet.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ========== MODAL: PROFILE ========== -->
+  <div id="profileModal" class="modal-overlay hidden">
+    <div class="modal-content" style="max-width:440px;">
+      <button class="modal-close" id="closeProfileModal">&times;</button>
+      <div class="profile-modal-avatar" id="profileModalAvatar">U</div>
+      <div class="profile-modal-name" id="profileModalName">User</div>
+      <div class="profile-modal-role">Verified Member</div>
+      <div class="profile-details">
+        <div class="profile-row">
+          <div class="label"><i class="fas fa-user"></i> Full Name</div>
+          <div class="value" id="profileFullName">—</div>
+        </div>
+        <div class="profile-row">
+          <div class="label"><i class="fas fa-phone"></i> Phone Number</div>
+          <div class="value" id="profilePhone">—</div>
+        </div>
+        <div class="profile-row">
+          <div class="label"><i class="fas fa-envelope"></i> Gmail</div>
+          <div class="value" id="profileEmail">—</div>
+        </div>
+        <div class="profile-row">
+          <div class="label"><i class="fas fa-lock"></i> Password</div>
+          <div class="value">
+            <span id="profilePassword">••••••••</span>
+            <button class="toggle-password-inline" id="toggleProfilePassword" aria-label="Show password">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+        </div>
+        <div class="profile-row">
+          <div class="label"><i class="fas fa-calendar"></i> Member Since</div>
+          <div class="value" id="profileJoined">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MODAL: DEPOSIT ========== -->
+  <div id="depositModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <button class="modal-close" id="closeDepositModal">&times;</button>
+      <h3>Deposit funds</h3>
+      <div class="method-selector">
+        <button class="method-btn active" data-method="binance">Binance</button>
+        <button class="method-btn" data-method="bank">Bank</button>
+      </div>
+      <div id="depositBinanceDetails" class="deposit-detail-box">
+        <p><strong>Binance Pay ID:</strong> 371289456</p>
+        <p class="text-muted mt-2" style="color:var(--text-secondary);font-size:13px;margin-top:6px;">Send USDT (TRC20) to this address. After payment, upload screenshot.</p>
+      </div>
+      <div id="depositBankDetails" class="deposit-detail-box hidden">
+        <p><strong>Bank transfer (scanner):</strong></p>
+        <a href="https://drive.google.com/file/d/1_GRyYWqU8uOKmbKhUH_eqf3molYoOPuw/view?usp=drive_link" 
+           target="_blank" 
+           rel="noopener noreferrer"
+           class="scanner-full-btn">
+          <i class="fas fa-qrcode"></i> Open Payment Scanner
+        </a>
+        <p class="text-muted mt-2" style="color:var(--text-secondary);font-size:13px;margin-top:6px;text-align:center;">Scan the QR code to pay.</p>
+      </div>
+      <div id="pkrExtraFields" class="hidden">
+        <div class="amount-summary">
+          <div class="amount-row">
+            <span>Deposit amount (USD) — min $10</span>
+            <div class="amount-input-row">
+              <input type="number" id="depositUsd" class="input-field" value="10" step="0.01" inputmode="decimal">
+            </div>
+          </div>
+          <div class="amount-row">
+            <span>Transaction fee</span>
+            <span style="font-weight:600; color:var(--warning);">+ $0.50</span>
+          </div>
+          <div class="amount-row total">
+            <span>Total deposit</span>
+            <span id="depositTotalUsd">$10.50</span>
+          </div>
+          <div class="amount-row">
+            <span class="pkr-value">Amount in PKR (auto)</span>
+            <span class="pkr-value" id="depositPkr">₨ 2,887.50</span>
+          </div>
+        </div>
+      </div>
+      <div class="screenshot-upload">
+        <label>Screenshot proof</label>
+        <input type="file" id="depositScreenshot" class="file-input" accept="image/*">
+      </div>
+      <button class="btn" id="requestDepositBtn">Request deposit</button>
+      <div id="depositPendingMessage" class="toast-message pending hidden">
+        <i class="fas fa-clock"></i> Deposit will approve within 3 Minutes.
+      </div>
+      <div id="depositSuccessMessage" class="toast-message hidden">
+        <i class="fas fa-check-circle"></i> Deposit approved! Balance updated.
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MODAL: WITHDRAW ========== -->
+  <div id="withdrawModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <button class="modal-close" id="closeWithdrawModal">&times;</button>
+      <h3>Withdraw funds</h3>
+      <div class="method-selector">
+        <button class="method-btn active" data-wmethod="binance">Binance</button>
+        <button class="method-btn" data-wmethod="bank">Bank / EasyPaisa / JazzCash</button>
+      </div>
+      <div id="withdrawBinanceFields">
+        <div class="input-group">
+          <label>Binance wallet address</label>
+          <input type="text" id="withdrawBinanceAddress" class="input-field" placeholder="TRC20 address">
+        </div>
+        <div class="amount-summary">
+          <div class="amount-row">
+            <span>Withdraw amount (USD) — min $30</span>
+            <div class="amount-input-row">
+              <input type="number" id="withdrawBinanceAmount" class="input-field" value="30" step="0.01" inputmode="decimal">
+            </div>
+          </div>
+          <div class="amount-row">
+            <span>Transaction fee</span>
+            <span style="font-weight:600; color:var(--danger);">- $0.50</span>
+          </div>
+          <div class="amount-row total">
+            <span>You receive</span>
+            <span id="withdrawBinanceReceive">$29.50</span>
+          </div>
+          <div class="amount-row">
+            <span class="pkr-value">Amount in PKR (auto)</span>
+            <span class="pkr-value" id="withdrawBinancePkr">₨ 8,112.50</span>
+          </div>
+        </div>
+      </div>
+      <div id="withdrawBankFields" class="hidden">
+        <div class="input-group">
+          <label>Holder name</label>
+          <input type="text" id="withdrawHolder" class="input-field" placeholder="Full name">
+        </div>
+        <div class="input-group">
+          <label>Select bank / service</label>
+          <select id="withdrawBankSelect" class="input-field">
+            <option>EasyPaisa</option><option>JazzCash</option><option>HBL</option><option>UBL</option>
+            <option>Bank of America</option><option>Chase</option><option>Wells Fargo</option><option>Other</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>Account number</label>
+          <input type="text" id="withdrawAccountNumber" class="input-field" placeholder="Number" inputmode="numeric">
+        </div>
+        <div class="amount-summary">
+          <div class="amount-row">
+            <span>Withdraw amount (USD) — min $30</span>
+            <div class="amount-input-row">
+              <input type="number" id="withdrawBankAmount" class="input-field" value="30" step="0.01" inputmode="decimal">
+            </div>
+          </div>
+          <div class="amount-row">
+            <span>Transaction fee</span>
+            <span style="font-weight:600; color:var(--danger);">- $0.50</span>
+          </div>
+          <div class="amount-row total">
+            <span>You receive</span>
+            <span id="withdrawBankReceive">$29.50</span>
+          </div>
+          <div class="amount-row">
+            <span class="pkr-value">Amount in PKR (auto)</span>
+            <span class="pkr-value" id="withdrawBankPkr">₨ 8,112.50</span>
+          </div>
+        </div>
+      </div>
+      <button class="btn" id="requestWithdrawBtn">Request withdrawal</button>
+      <div id="withdrawPendingMessage" class="toast-message pending hidden">
+        <i class="fas fa-clock"></i> Withdraw will approve within 5 Minutes.
+      </div>
+      <div id="withdrawSuccessMessage" class="toast-message hidden">
+        <i class="fas fa-check-circle"></i> Withdraw approved! Amount sent.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ============================================================
+      // TOAST SYSTEM
+      // ============================================================
+      const toastContainer = document.getElementById('toastContainer');
+
+      function showToast(message, type = 'info', title = null, duration = 4000) {
+        const icons = {
+          success: 'fa-check-circle', error: 'fa-times-circle',
+          warning: 'fa-exclamation-triangle', info: 'fa-info-circle'
+        };
+        const titles = {
+          success: 'Success', error: 'Error',
+          warning: 'Warning', info: 'Info'
+        };
+        const finalTitle = title || titles[type] || 'Notice';
+        const icon = icons[type] || 'fa-info-circle';
+
+        const toast = document.createElement('div');
+        toast.className = `custom-toast toast-${type}`;
+        toast.innerHTML = `
+          <div class="toast-icon-wrap"><i class="fas ${icon}"></i></div>
+          <div class="toast-content">
+            <div class="toast-title">${finalTitle}</div>
+            <div class="toast-body">${message}</div>
+          </div>
+          <button class="toast-close" aria-label="Close"><i class="fas fa-times"></i></button>
+          <div class="toast-progress" style="animation-duration: ${duration}ms;"></div>
+        `;
+
+        toastContainer.appendChild(toast);
+        const timeoutId = setTimeout(() => dismissToast(toast), duration);
+        toast.querySelector('.toast-close').addEventListener('click', () => {
+          clearTimeout(timeoutId);
+          dismissToast(toast);
+        });
+      }
+
+      function dismissToast(toast) {
+        if (!toast.parentNode) return;
+        toast.classList.add('toast-out');
+        toast.addEventListener('animationend', () => {
+          if (toast.parentNode) toast.parentNode.removeChild(toast);
+        }, { once: true });
+      }
+
+      window.toastSuccess = (msg, title) => showToast(msg, 'success', title);
+      window.toastError = (msg, title) => showToast(msg, 'error', title);
+      window.toastWarning = (msg, title) => showToast(msg, 'warning', title);
+      window.toastInfo = (msg, title) => showToast(msg, 'info', title);
+
+      // ============================================================
+      // CONFIG
+      // ============================================================
+      const DEPOSIT_APPROVAL_MS = 3 * 60 * 1000;
+      const WITHDRAW_APPROVAL_MS = 5 * 60 * 1000;
+      const POLL_INTERVAL_MS = 5000;
+      const AD_DURATION_SEC = 10;
+      const ADS_PER_DAY = 10;
+      const APPLY_ELIGIBILITY_MS = 20 * 60 * 1000; // 20 minutes
+      const REGISTRATION_BONUS = 5;
+
+      // ---- UPDATED PLANS: deposit + 5$ bonus ----
+      const PLANS = [
+        { id: 'plan1', name: 'Starter', deposit: 10, bonus: 5, totalRequired: 15, perAd: 0.5, daily: 5, color: '#10b981', icon: 'fa-seedling' },
+        { id: 'plan2', name: 'Bronze', deposit: 20, bonus: 5, totalRequired: 25, perAd: 1, daily: 10, color: '#3b82f6', icon: 'fa-medal' },
+        { id: 'plan3', name: 'Silver', deposit: 50, bonus: 5, totalRequired: 55, perAd: 2.5, daily: 25, color: '#8b5cf6', icon: 'fa-star' },
+        { id: 'plan4', name: 'Gold', deposit: 100, bonus: 5, totalRequired: 105, perAd: 5, daily: 50, color: '#f59e0b', icon: 'fa-crown' },
+        { id: 'plan5', name: 'Platinum', deposit: 200, bonus: 5, totalRequired: 205, perAd: 10, daily: 100, color: '#ef4444', icon: 'fa-gem' }
+      ];
+
+      // ============================================================
+      // COUNTRY DATA
+      // ============================================================
+      const countries = [
+        { name: "Afghanistan", dial: "+93", format: "9 digits" },
+        { name: "Albania", dial: "+355", format: "9 digits" },
+        { name: "Algeria", dial: "+213", format: "9 digits" },
+        { name: "Andorra", dial: "+376", format: "6 digits" },
+        { name: "Angola", dial: "+244", format: "9 digits" },
+        { name: "Argentina", dial: "+54", format: "10 digits" },
+        { name: "Armenia", dial: "+374", format: "8 digits" },
+        { name: "Australia", dial: "+61", format: "9 digits" },
+        { name: "Austria", dial: "+43", format: "10 digits" },
+        { name: "Azerbaijan", dial: "+994", format: "9 digits" },
+        { name: "Bahamas", dial: "+1-242", format: "7 digits" },
+        { name: "Bahrain", dial: "+973", format: "8 digits" },
+        { name: "Bangladesh", dial: "+880", format: "10 digits" },
+        { name: "Barbados", dial: "+1-246", format: "7 digits" },
+        { name: "Belarus", dial: "+375", format: "9 digits" },
+        { name: "Belgium", dial: "+32", format: "9 digits" },
+        { name: "Belize", dial: "+501", format: "7 digits" },
+        { name: "Benin", dial: "+229", format: "8 digits" },
+        { name: "Bhutan", dial: "+975", format: "8 digits" },
+        { name: "Bolivia", dial: "+591", format: "8 digits" },
+        { name: "Bosnia and Herzegovina", dial: "+387", format: "8 digits" },
+        { name: "Botswana", dial: "+267", format: "8 digits" },
+        { name: "Brazil", dial: "+55", format: "11 digits" },
+        { name: "Brunei", dial: "+673", format: "7 digits" },
+        { name: "Bulgaria", dial: "+359", format: "9 digits" },
+        { name: "Burkina Faso", dial: "+226", format: "8 digits" },
+        { name: "Burundi", dial: "+257", format: "8 digits" },
+        { name: "Cambodia", dial: "+855", format: "9 digits" },
+        { name: "Cameroon", dial: "+237", format: "9 digits" },
+        { name: "Canada", dial: "+1", format: "10 digits" },
+        { name: "Chad", dial: "+235", format: "8 digits" },
+        { name: "Chile", dial: "+56", format: "9 digits" },
+        { name: "China", dial: "+86", format: "11 digits" },
+        { name: "Colombia", dial: "+57", format: "10 digits" },
+        { name: "Comoros", dial: "+269", format: "7 digits" },
+        { name: "Congo", dial: "+242", format: "9 digits" },
+        { name: "Costa Rica", dial: "+506", format: "8 digits" },
+        { name: "Croatia", dial: "+385", format: "9 digits" },
+        { name: "Cuba", dial: "+53", format: "8 digits" },
+        { name: "Cyprus", dial: "+357", format: "8 digits" },
+        { name: "Czechia", dial: "+420", format: "9 digits" },
+        { name: "Denmark", dial: "+45", format: "8 digits" },
+        { name: "Djibouti", dial: "+253", format: "8 digits" },
+        { name: "Dominica", dial: "+1-767", format: "7 digits" },
+        { name: "Dominican Republic", dial: "+1-809", format: "7 digits" },
+        { name: "Ecuador", dial: "+593", format: "9 digits" },
+        { name: "Egypt", dial: "+20", format: "10 digits" },
+        { name: "El Salvador", dial: "+503", format: "8 digits" },
+        { name: "Estonia", dial: "+372", format: "8 digits" },
+        { name: "Eswatini", dial: "+268", format: "8 digits" },
+        { name: "Ethiopia", dial: "+251", format: "9 digits" },
+        { name: "Fiji", dial: "+679", format: "7 digits" },
+        { name: "Finland", dial: "+358", format: "9 digits" },
+        { name: "France", dial: "+33", format: "9 digits" },
+        { name: "Gabon", dial: "+241", format: "8 digits" },
+        { name: "Gambia", dial: "+220", format: "7 digits" },
+        { name: "Georgia", dial: "+995", format: "9 digits" },
+        { name: "Germany", dial: "+49", format: "10 digits" },
+        { name: "Ghana", dial: "+233", format: "9 digits" },
+        { name: "Greece", dial: "+30", format: "10 digits" },
+        { name: "Grenada", dial: "+1-473", format: "7 digits" },
+        { name: "Guatemala", dial: "+502", format: "8 digits" },
+        { name: "Guinea", dial: "+224", format: "8 digits" },
+        { name: "Guyana", dial: "+592", format: "7 digits" },
+        { name: "Haiti", dial: "+509", format: "8 digits" },
+        { name: "Honduras", dial: "+504", format: "8 digits" },
+        { name: "Hungary", dial: "+36", format: "9 digits" },
+        { name: "Iceland", dial: "+354", format: "7 digits" },
+        { name: "India", dial: "+91", format: "10 digits" },
+        { name: "Indonesia", dial: "+62", format: "10 digits" },
+        { name: "Iran", dial: "+98", format: "10 digits" },
+        { name: "Iraq", dial: "+964", format: "10 digits" },
+        { name: "Ireland", dial: "+353", format: "9 digits" },
+        { name: "Israel", dial: "+972", format: "9 digits" },
+        { name: "Italy", dial: "+39", format: "10 digits" },
+        { name: "Jamaica", dial: "+1-876", format: "7 digits" },
+        { name: "Japan", dial: "+81", format: "10 digits" },
+        { name: "Jordan", dial: "+962", format: "9 digits" },
+        { name: "Kazakhstan", dial: "+7", format: "10 digits" },
+        { name: "Kenya", dial: "+254", format: "9 digits" },
+        { name: "Kiribati", dial: "+686", format: "5 digits" },
+        { name: "Kuwait", dial: "+965", format: "8 digits" },
+        { name: "Kyrgyzstan", dial: "+996", format: "9 digits" },
+        { name: "Laos", dial: "+856", format: "9 digits" },
+        { name: "Latvia", dial: "+371", format: "8 digits" },
+        { name: "Lebanon", dial: "+961", format: "7 digits" },
+        { name: "Lesotho", dial: "+266", format: "8 digits" },
+        { name: "Liberia", dial: "+231", format: "8 digits" },
+        { name: "Libya", dial: "+218", format: "9 digits" },
+        { name: "Liechtenstein", dial: "+423", format: "7 digits" },
+        { name: "Lithuania", dial: "+370", format: "8 digits" },
+        { name: "Luxembourg", dial: "+352", format: "8 digits" },
+        { name: "Madagascar", dial: "+261", format: "9 digits" },
+        { name: "Malawi", dial: "+265", format: "9 digits" },
+        { name: "Malaysia", dial: "+60", format: "9 digits" },
+        { name: "Maldives", dial: "+960", format: "7 digits" },
+        { name: "Mali", dial: "+223", format: "8 digits" },
+        { name: "Malta", dial: "+356", format: "8 digits" },
+        { name: "Marshall Islands", dial: "+692", format: "7 digits" },
+        { name: "Mauritania", dial: "+222", format: "8 digits" },
+        { name: "Mauritius", dial: "+230", format: "7 digits" },
+        { name: "Mexico", dial: "+52", format: "10 digits" },
+        { name: "Micronesia", dial: "+691", format: "7 digits" },
+        { name: "Moldova", dial: "+373", format: "8 digits" },
+        { name: "Monaco", dial: "+377", format: "8 digits" },
+        { name: "Mongolia", dial: "+976", format: "8 digits" },
+        { name: "Montenegro", dial: "+382", format: "8 digits" },
+        { name: "Morocco", dial: "+212", format: "9 digits" },
+        { name: "Mozambique", dial: "+258", format: "9 digits" },
+        { name: "Myanmar", dial: "+95", format: "9 digits" },
+        { name: "Namibia", dial: "+264", format: "9 digits" },
+        { name: "Nauru", dial: "+674", format: "7 digits" },
+        { name: "Nepal", dial: "+977", format: "10 digits" },
+        { name: "Netherlands", dial: "+31", format: "9 digits" },
+        { name: "New Zealand", dial: "+64", format: "9 digits" },
+        { name: "Nicaragua", dial: "+505", format: "8 digits" },
+        { name: "Niger", dial: "+227", format: "8 digits" },
+        { name: "Nigeria", dial: "+234", format: "10 digits" },
+        { name: "North Korea", dial: "+850", format: "10 digits" },
+        { name: "North Macedonia", dial: "+389", format: "8 digits" },
+        { name: "Norway", dial: "+47", format: "8 digits" },
+        { name: "Oman", dial: "+968", format: "8 digits" },
+        { name: "Pakistan", dial: "+92", format: "10 digits" },
+        { name: "Palau", dial: "+680", format: "7 digits" },
+        { name: "Palestine", dial: "+970", format: "9 digits" },
+        { name: "Panama", dial: "+507", format: "8 digits" },
+        { name: "Papua New Guinea", dial: "+675", format: "8 digits" },
+        { name: "Paraguay", dial: "+595", format: "9 digits" },
+        { name: "Peru", dial: "+51", format: "9 digits" },
+        { name: "Philippines", dial: "+63", format: "10 digits" },
+        { name: "Poland", dial: "+48", format: "9 digits" },
+        { name: "Portugal", dial: "+351", format: "9 digits" },
+        { name: "Qatar", dial: "+974", format: "8 digits" },
+        { name: "Romania", dial: "+40", format: "9 digits" },
+        { name: "Russia", dial: "+7", format: "10 digits" },
+        { name: "Rwanda", dial: "+250", format: "9 digits" },
+        { name: "Saint Kitts and Nevis", dial: "+1-869", format: "7 digits" },
+        { name: "Saint Lucia", dial: "+1-758", format: "7 digits" },
+        { name: "Saint Vincent", dial: "+1-784", format: "7 digits" },
+        { name: "Samoa", dial: "+685", format: "7 digits" },
+        { name: "San Marino", dial: "+378", format: "8 digits" },
+        { name: "Saudi Arabia", dial: "+966", format: "9 digits" },
+        { name: "Senegal", dial: "+221", format: "9 digits" },
+        { name: "Serbia", dial: "+381", format: "9 digits" },
+        { name: "Seychelles", dial: "+248", format: "7 digits" },
+        { name: "Sierra Leone", dial: "+232", format: "8 digits" },
+        { name: "Singapore", dial: "+65", format: "8 digits" },
+        { name: "Slovakia", dial: "+421", format: "9 digits" },
+        { name: "Slovenia", dial: "+386", format: "8 digits" },
+        { name: "Solomon Islands", dial: "+677", format: "7 digits" },
+        { name: "Somalia", dial: "+252", format: "8 digits" },
+        { name: "South Africa", dial: "+27", format: "9 digits" },
+        { name: "South Korea", dial: "+82", format: "10 digits" },
+        { name: "South Sudan", dial: "+211", format: "9 digits" },
+        { name: "Spain", dial: "+34", format: "9 digits" },
+        { name: "Sri Lanka", dial: "+94", format: "9 digits" },
+        { name: "Sudan", dial: "+249", format: "9 digits" },
+        { name: "Suriname", dial: "+597", format: "7 digits" },
+        { name: "Sweden", dial: "+46", format: "9 digits" },
+        { name: "Switzerland", dial: "+41", format: "9 digits" },
+        { name: "Syria", dial: "+963", format: "9 digits" },
+        { name: "Taiwan", dial: "+886", format: "9 digits" },
+        { name: "Tajikistan", dial: "+992", format: "9 digits" },
+        { name: "Tanzania", dial: "+255", format: "9 digits" },
+        { name: "Thailand", dial: "+66", format: "9 digits" },
+        { name: "Timor-Leste", dial: "+670", format: "8 digits" },
+        { name: "Togo", dial: "+228", format: "8 digits" },
+        { name: "Tonga", dial: "+676", format: "7 digits" },
+        { name: "Trinidad and Tobago", dial: "+1-868", format: "7 digits" },
+        { name: "Tunisia", dial: "+216", format: "8 digits" },
+        { name: "Turkey", dial: "+90", format: "10 digits" },
+        { name: "Turkmenistan", dial: "+993", format: "8 digits" },
+        { name: "Tuvalu", dial: "+688", format: "6 digits" },
+        { name: "Uganda", dial: "+256", format: "9 digits" },
+        { name: "Ukraine", dial: "+380", format: "9 digits" },
+        { name: "United Arab Emirates", dial: "+971", format: "9 digits" },
+        { name: "United Kingdom", dial: "+44", format: "10 digits" },
+        { name: "United States", dial: "+1", format: "10 digits" },
+        { name: "Uruguay", dial: "+598", format: "8 digits" },
+        { name: "Uzbekistan", dial: "+998", format: "9 digits" },
+        { name: "Vanuatu", dial: "+678", format: "7 digits" },
+        { name: "Vatican City", dial: "+379", format: "8 digits" },
+        { name: "Venezuela", dial: "+58", format: "10 digits" },
+        { name: "Vietnam", dial: "+84", format: "9 digits" },
+        { name: "Yemen", dial: "+967", format: "9 digits" },
+        { name: "Zambia", dial: "+260", format: "9 digits" },
+        { name: "Zimbabwe", dial: "+263", format: "9 digits" }
+      ];
+
+      // ============================================================
+      // STORAGE
+      // ============================================================
+      function getUsers() { return JSON.parse(localStorage.getItem('earndollar_users') || '[]'); }
+      function saveUsers(users) { localStorage.setItem('earndollar_users', JSON.stringify(users)); }
+      function getCurrentUser() {
+        const phone = localStorage.getItem('earndollar_currentUser');
+        if (!phone) return null;
+        return getUsers().find(u => u.phone === phone) || null;
+      }
+      function setCurrentUser(phone) { localStorage.setItem('earndollar_currentUser', phone); }
+      function clearCurrentUser() { localStorage.removeItem('earndollar_currentUser'); }
+      function getUserHistory(phone) { return JSON.parse(localStorage.getItem('earndollar_history_' + phone) || '[]'); }
+      function saveUserHistory(phone, history) { localStorage.setItem('earndollar_history_' + phone, JSON.stringify(history)); }
+      function addHistory(phone, entry) {
+        const history = getUserHistory(phone);
+        history.unshift(entry);
+        saveUserHistory(phone, history);
+      }
+      function getPendingRequests() { 
+        try { return JSON.parse(localStorage.getItem('earndollar_pending') || '[]'); } 
+        catch (e) { return []; }
+      }
+      function savePendingRequests(queue) { localStorage.setItem('earndollar_pending', JSON.stringify(queue)); }
+      function addPendingRequest(request) {
+        const queue = getPendingRequests();
+        queue.push(request);
+        savePendingRequests(queue);
+      }
+
+      // ============================================================
+      // PHONE NORMALIZATION
+      // ============================================================
+      function normalizePhone(input) {
+        if (!input) return '';
+        let cleaned = input.trim().replace(/\D/g, '');
+        if (!cleaned) return '';
+        if (cleaned.startsWith('92')) {
+          if (cleaned.length === 12) return '+' + cleaned;
+          if (cleaned.length === 13) return '+' + cleaned;
+        }
+        if (cleaned.startsWith('0')) {
+          if (cleaned.length === 11) return '+92' + cleaned.substring(1);
+          cleaned = '92' + cleaned.substring(1);
+        } else if (cleaned.length === 10 && !cleaned.startsWith('92')) {
+          cleaned = '92' + cleaned;
+        } else if (cleaned.length === 11 && cleaned.startsWith('3')) {
+          cleaned = '92' + cleaned;
+        }
+        return '+' + cleaned;
+      }
+
+      function lookupPhones(input) {
+        const results = [];
+        const cleaned = input.trim().replace(/\D/g, '');
+        if (!cleaned) return results;
+        if (cleaned.startsWith('92')) results.push('+' + cleaned);
+        if (cleaned.startsWith('0')) results.push('+92' + cleaned.substring(1));
+        if (cleaned.startsWith('3')) results.push('+92' + cleaned);
+        if (cleaned.length === 10 && !cleaned.startsWith('92')) results.push('+92' + cleaned);
+        if (cleaned.length === 11 && cleaned.startsWith('0')) results.push('+92' + cleaned.substring(1));
+        return [...new Set(results)];
+      }
+
+      // ============================================================
+      // THEME
+      // ============================================================
+      const themeToggle = document.getElementById('themeToggle');
+      const sunIcon = document.getElementById('sunIcon');
+      const moonIcon = document.getElementById('moonIcon');
+      function applyTheme(theme) {
+        if (theme === 'dark') {
+          document.body.classList.add('dark');
+          moonIcon.classList.add('active-icon');
+          sunIcon.classList.remove('active-icon');
+        } else {
+          document.body.classList.remove('dark');
+          sunIcon.classList.add('active-icon');
+          moonIcon.classList.remove('active-icon');
+        }
+        localStorage.setItem('earndollar_theme', theme);
+      }
+      let currentTheme = localStorage.getItem('earndollar_theme') || 'light';
+      applyTheme(currentTheme);
+      themeToggle.addEventListener('click', () => {
+        currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+        applyTheme(currentTheme);
+      });
+
+      // ============================================================
+      // PASSWORD TOGGLES
+      // ============================================================
+      function setupPasswordToggle(toggleId, inputId) {
+        const toggle = document.getElementById(toggleId);
+        const input = document.getElementById(inputId);
+        if (!toggle || !input) return;
+        toggle.addEventListener('click', () => {
+          const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+          input.setAttribute('type', type);
+          const icon = toggle.querySelector('i');
+          if (type === 'text') {
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+          } else {
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+          }
+        });
+      }
+      setupPasswordToggle('toggleSignupPassword', 'signupPassword');
+      setupPasswordToggle('toggleSignupConfirm', 'signupConfirm');
+      setupPasswordToggle('toggleLoginPassword', 'loginPassword');
+      setupPasswordToggle('toggleResetPassword', 'resetNewPassword');
+
+      // ============================================================
+      // DOM REFS
+      // ============================================================
+      const authSection = document.getElementById('authSection');
+      const dashboardSection = document.getElementById('dashboardSection');
+      const signupCard = document.getElementById('signupCard');
+      const loginCard = document.getElementById('loginCard');
+      const resetCard = document.getElementById('resetCard');
+      const logoutBtn = document.getElementById('logoutBtn');
+
+      // ============================================================
+      // AUTH NAVIGATION
+      // ============================================================
+      function showAuthCard(card) {
+        signupCard.classList.add('hidden');
+        loginCard.classList.add('hidden');
+        resetCard.classList.add('hidden');
+        card.classList.remove('hidden');
+      }
+
+      document.getElementById('goToLogin').addEventListener('click', () => showAuthCard(loginCard));
+      document.getElementById('goToSignupFromLogin').addEventListener('click', () => showAuthCard(signupCard));
+      document.getElementById('goToReset').addEventListener('click', () => showAuthCard(resetCard));
+      document.getElementById('backToLoginFromReset').addEventListener('click', () => showAuthCard(loginCard));
+
+      // ============================================================
+      // COUNTRY PICKER
+      // ============================================================
+      const countryTrigger = document.getElementById('countryTrigger');
+      const countryTriggerLabel = document.getElementById('countryTriggerLabel');
+      const countryDropdown = document.getElementById('countryDropdown');
+      const countrySearch = document.getElementById('countrySearch');
+      const countryList = document.getElementById('countryList');
+      const signupCountryInput = document.getElementById('signupCountry');
+      const signupCountryDial = document.getElementById('signupCountryDial');
+      const phonePrefixDisplay = document.getElementById('phonePrefixDisplay');
+      const phoneHint = document.getElementById('phoneHint');
+
+      let selectedCountry = { name: "Pakistan", dial: "+92", format: "10 digits" };
+
+      countryTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        countryDropdown.classList.toggle('open');
+        if (countryDropdown.classList.contains('open')) {
+          countrySearch.focus();
+        }
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!countryTrigger.contains(e.target) && !countryDropdown.contains(e.target)) {
+          countryDropdown.classList.remove('open');
+        }
+      });
+
+      function renderCountryList(filter = '') {
+        const lower = filter.toLowerCase().trim();
+        const filtered = lower ? countries.filter(c => c.name.toLowerCase().includes(lower)) : countries;
+        if (filtered.length === 0) {
+          countryList.innerHTML = '<div style="padding:16px;text-align:center;color:var(--text-secondary);">No countries found</div>';
+          return;
+        }
+        countryList.innerHTML = filtered.map(c => `
+          <div class="country-item" data-name="${c.name}" data-dial="${c.dial}" data-format="${c.format}">
+            <span>${c.name}</span>
+            <span class="dial">${c.dial}</span>
+          </div>
+        `).join('');
+        countryList.querySelectorAll('.country-item').forEach(item => {
+          item.addEventListener('click', () => {
+            const name = item.dataset.name;
+            const dial = item.dataset.dial;
+            const format = item.dataset.format;
+            selectCountry(name, dial, format);
+            countryDropdown.classList.remove('open');
+            countrySearch.value = '';
+            renderCountryList('');
+          });
+        });
+      }
+
+      function selectCountry(name, dial, format) {
+        selectedCountry = { name, dial, format };
+        signupCountryInput.value = name;
+        signupCountryDial.value = dial;
+        phonePrefixDisplay.textContent = dial;
+        phoneHint.textContent = `${name}: ${format} after the country code.`;
+        countryTriggerLabel.textContent = `${name} (${dial})`;
+        document.getElementById('signupPhone').value = '';
+      }
+
+      function initCountryPicker() {
+        selectCountry("Pakistan", "+92", "10 digits");
+        renderCountryList('');
+      }
+      initCountryPicker();
+
+      countrySearch.addEventListener('input', (e) => {
+        renderCountryList(e.target.value);
+      });
+
+      // ============================================================
+      // SIGNUP
+      // ============================================================
+      document.getElementById('signupBtn').addEventListener('click', () => {
+        const fullname = document.getElementById('signupFullname').value.trim();
+        const country = signupCountryInput.value;
+        const countryDial = signupCountryDial.value;
+        const phoneInput = document.getElementById('signupPhone').value.trim();
+        const email = document.getElementById('signupEmail').value.trim();
+        const password = document.getElementById('signupPassword').value;
+        const confirm = document.getElementById('signupConfirm').value;
+
+        if (!fullname || !phoneInput || !email || !password || !confirm) 
+          return toastWarning('Please fill all fields.', 'Missing info');
+        if (password !== confirm) return toastError('Passwords do not match.', 'Password mismatch');
+        if (!email.includes('@gmail.com')) return toastError('Please use a Gmail address.', 'Invalid email');
+
+        const digitsOnly = phoneInput.replace(/\D/g, '');
+        if (digitsOnly.length < 5) return toastError('Please enter a valid phone number.', 'Invalid phone');
+
+        const fullPhone = countryDial + digitsOnly;
+
+        const users = getUsers();
+        if (users.find(u => u.phone === fullPhone)) return toastError('Phone already registered.', 'Account exists');
+        if (users.find(u => u.email === email)) return toastError('Email already registered.', 'Account exists');
+
+        const newUser = {
+          fullname, country, phone: fullPhone, email, password,
+          balance: 0,
+          totalDeposited: 0,
+          totalWithdrawn: 0,
+          activePlan: null,
+          adsWatchedToday: 0,
+          lastAdDate: null,
+          applyStatus: 'none',
+          applyTime: null,
+          applyData: null,
+          createdAt: new Date().toISOString()
+        };
+        users.push(newUser);
+        saveUsers(users);
+        setCurrentUser(fullPhone);
+        toastSuccess('Account created!', 'Welcome aboard');
+        showDashboard();
+      });
+
+      // ============================================================
+      // LOGIN
+      // ============================================================
+      document.getElementById('loginBtn').addEventListener('click', () => {
+        const identifier = document.getElementById('loginIdentifier').value.trim();
+        const password = document.getElementById('loginPassword').value;
+        if (!identifier || !password) return toastWarning('Please enter your credentials.', 'Missing info');
+
+        const users = getUsers();
+        const lowerId = identifier.toLowerCase();
+
+        let user = users.find(u => u.email.toLowerCase() === lowerId && u.password === password);
+
+        if (!user) {
+          const possiblePhones = lookupPhones(identifier);
+          for (const p of possiblePhones) {
+            user = users.find(u => u.phone === p && u.password === password);
+            if (user) break;
+          }
+        }
+
+        if (!user) {
+          const normalized = normalizePhone(identifier);
+          user = users.find(u => u.phone === normalized && u.password === password);
+        }
+
+        if (!user) return toastError('Invalid credentials. Please try again.', 'Login failed');
+
+        setCurrentUser(user.phone);
+        toastSuccess(`Welcome back, ${user.fullname}!`, 'Logged in');
+        showDashboard();
+      });
+
+      // ============================================================
+      // RESET PASSWORD
+      // ============================================================
+      document.getElementById('resetBtn').addEventListener('click', () => {
+        const phone = document.getElementById('resetPhone').value.trim();
+        const newPass = document.getElementById('resetNewPassword').value;
+        if (!phone || !newPass) return toastWarning('Please fill all fields.', 'Missing info');
+        if (newPass.length < 6) return toastError('Password must be at least 6 characters.', 'Weak password');
+
+        const users = getUsers();
+        let user = null;
+        const possiblePhones = lookupPhones(phone);
+        for (const p of possiblePhones) {
+          user = users.find(u => u.phone === p);
+          if (user) break;
+        }
+        if (!user) {
+          const normalized = normalizePhone(phone);
+          user = users.find(u => u.phone === normalized);
+        }
+
+        if (!user) return toastError('Phone number not registered.', 'Not found');
+
+        user.password = newPass;
+        saveUsers(users);
+        toastSuccess('Password updated! Please log in.', 'Success');
+        showAuthCard(loginCard);
+      });
+
+      // ============================================================
+      // DASHBOARD / APP STATE
+      // ============================================================
+      let currentUser = null;
+      let currentView = 'dashboard';
+      let currentHistoryFilter = 'all';
+      let currentBalanceTab = 'current';
+      let adTimer = null;
+      let adSecondsLeft = 0;
+
+      // ============================================================
+      // NAVIGATION
+      // ============================================================
+      const viewSections = {
+        dashboard: document.getElementById('view-dashboard'),
+        apply: document.getElementById('view-apply'),
+        plans: document.getElementById('view-plans'),
+        watch: document.getElementById('view-watch'),
+        history: document.getElementById('view-history')
+      };
+
+      const navItems = document.querySelectorAll('.nav-item');
+      const pageTitle = document.getElementById('pageTitle');
+      const pageSubtitle = document.getElementById('pageSubtitle');
+
+      const viewTitles = {
+        dashboard: { title: 'Dashboard', subtitle: 'Welcome back' },
+        apply: { title: 'Apply for Earning', subtitle: 'Fill the form to get eligible' },
+        plans: { title: 'Premium Plans', subtitle: 'Choose a plan to start earning' },
+        watch: { title: 'Watch Ads', subtitle: 'Watch 10-second ads and earn' },
+        history: { title: 'History', subtitle: 'All your transactions' }
+      };
+
+      function switchView(view) {
+        currentView = view;
+        Object.values(viewSections).forEach(v => v.classList.add('hidden'));
+        if (viewSections[view]) viewSections[view].classList.remove('hidden');
+
+        navItems.forEach(n => n.classList.toggle('active', n.dataset.view === view));
+
+        const info = viewTitles[view];
+        if (info) {
+          pageTitle.textContent = info.title;
+          pageSubtitle.textContent = info.subtitle + (currentUser ? `, ${currentUser.fullname}` : '');
+        }
+
+        if (view === 'dashboard') renderDashboard();
+        if (view === 'apply') renderApplyView();
+        if (view === 'plans') renderPlansView();
+        if (view === 'watch') renderWatchView();
+        if (view === 'history') renderHistory();
+      }
+
+      navItems.forEach(item => {
+        item.addEventListener('click', () => switchView(item.dataset.view));
+      });
+
+      // ============================================================
+      // BALANCE TABS
+      // ============================================================
+      document.querySelectorAll('.balance-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.balance-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          currentBalanceTab = tab.dataset.tab;
+          document.getElementById('currentBalanceView').classList.toggle('hidden', currentBalanceTab !== 'current');
+          document.getElementById('totalBalanceView').classList.toggle('hidden', currentBalanceTab !== 'total');
+        });
+      });
+
+      // ============================================================
+      // PROFILE MODAL
+      // ============================================================
+      const profileModal = document.getElementById('profileModal');
+      const userProfileTrigger = document.getElementById('userProfileTrigger');
+
+      userProfileTrigger.addEventListener('click', () => {
+        if (!currentUser) return;
+        renderProfileModal();
+        profileModal.classList.remove('hidden');
+      });
+
+      document.getElementById('closeProfileModal').addEventListener('click', () => {
+        profileModal.classList.add('hidden');
+      });
+
+      profileModal.addEventListener('click', (e) => {
+        if (e.target === profileModal) profileModal.classList.add('hidden');
+      });
+
+      function renderProfileModal() {
+        if (!currentUser) return;
+        const initials = (currentUser.fullname || 'U').charAt(0).toUpperCase();
+        document.getElementById('profileModalAvatar').textContent = initials;
+        document.getElementById('profileModalName').textContent = currentUser.fullname;
+        document.getElementById('profileFullName').textContent = currentUser.fullname || '—';
+        document.getElementById('profilePhone').textContent = currentUser.phone || '—';
+        document.getElementById('profileEmail').textContent = currentUser.email || '—';
+        document.getElementById('profilePassword').textContent = '••••••••';
+        
+        // Reset password toggle icon
+        const toggleIcon = document.querySelector('#toggleProfilePassword i');
+        if (toggleIcon) {
+          toggleIcon.classList.remove('fa-eye-slash');
+          toggleIcon.classList.add('fa-eye');
+        }
+
+        // Joined date
+        if (currentUser.createdAt) {
+          const joined = new Date(currentUser.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+          document.getElementById('profileJoined').textContent = joined;
+        } else {
+          document.getElementById('profileJoined').textContent = '—';
+        }
+      }
+
+      document.getElementById('toggleProfilePassword').addEventListener('click', function() {
+        const span = document.getElementById('profilePassword');
+        const icon = this.querySelector('i');
+        if (span.textContent === '••••••••') {
+          span.textContent = currentUser ? currentUser.password : '';
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+        } else {
+          span.textContent = '••••••••';
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+        }
+      });
+
+      // ============================================================
+      // RENDER HELPERS
+      // ============================================================
+      function updateBalanceUI() {
+        if (!currentUser) return;
+        document.getElementById('balanceDisplay').textContent = currentUser.balance.toFixed(2);
+
+        const history = getUserHistory(currentUser.phone);
+        const totalLifetime = history
+          .filter(h => h.amount > 0)
+          .reduce((sum, h) => sum + h.amount, 0);
+        document.getElementById('totalBalanceDisplay').textContent = totalLifetime.toFixed(2);
+      }
+
+      function formatHistoryEntry(entry) {
+        let icon = 'fa-circle';
+        let typeClass = '';
+        let amountClass = '';
+        let amountSign = '';
+
+        if (entry.type === 'deposit') {
+          icon = 'fa-arrow-down'; typeClass = 'deposit';
+          amountClass = 'positive'; amountSign = '+';
+        } else if (entry.type === 'withdraw') {
+          icon = 'fa-arrow-up'; typeClass = 'withdraw';
+          amountClass = 'negative'; amountSign = '-';
+        } else if (entry.type === 'ad') {
+          icon = 'fa-play-circle'; typeClass = 'ad';
+          amountClass = 'positive'; amountSign = '+';
+        }
+
+        const iconHTML = `<i class="fas ${icon}"></i>`;
+        return `
+          <div class="history-item ${typeClass}">
+            <div class="history-info">
+              <div class="history-type">${iconHTML} ${entry.description}</div>
+              <div class="history-detail">${entry.detail || ''}</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="history-amount ${amountClass}">${amountSign}$${Math.abs(entry.amount).toFixed(2)}</div>
+              <div class="history-time">${entry.time}</div>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderHistory() {
+        if (!currentUser) return;
+        const allHistory = getUserHistory(currentUser.phone);
+        const container = document.getElementById('historyList');
+        const recentContainer = document.getElementById('recentActivityList');
+
+        let history = allHistory;
+        if (currentHistoryFilter !== 'all') {
+          history = allHistory.filter(h => h.type === currentHistoryFilter);
+        }
+
+        if (history.length === 0) {
+          const iconMap = { all: 'fa-inbox', deposit: 'fa-arrow-down', withdraw: 'fa-arrow-up', ad: 'fa-play-circle' };
+          const labelMap = { all: 'No transactions yet.', deposit: 'No deposits yet.', withdraw: 'No withdrawals yet.', ad: 'No ad earnings yet.' };
+          container.innerHTML = `<div class="empty-history"><i class="fas ${iconMap[currentHistoryFilter] || 'fa-inbox'}"></i><p>${labelMap[currentHistoryFilter] || 'No transactions yet.'}</p></div>`;
+        } else {
+          container.innerHTML = history.map(formatHistoryEntry).join('');
+        }
+
+        const recent = allHistory.slice(0, 5);
+        if (recent.length === 0) {
+          recentContainer.innerHTML = `<div class="empty-history"><i class="fas fa-inbox"></i><p>No transactions yet.</p></div>`;
+        } else {
+          recentContainer.innerHTML = recent.map(formatHistoryEntry).join('');
+        }
+      }
+
+      // ============================================================
+      // DASHBOARD VIEW
+      // ============================================================
+      function renderDashboard() {
+        if (!currentUser) return;
+        updateBalanceUI();
+
+        // Update sidebar user info
+        const initials = (currentUser.fullname || 'U').charAt(0).toUpperCase();
+        document.getElementById('userAvatar').textContent = initials;
+        document.getElementById('sidebarUserName').textContent = currentUser.fullname;
+
+        // Stats
+        const today = new Date().toDateString();
+        const todayAds = (currentUser.lastAdDate === today) ? (currentUser.adsWatchedToday || 0) : 0;
+
+        document.getElementById('statAdsWatched').textContent = todayAds;
+
+        const history = getUserHistory(currentUser.phone);
+        const todayEarnings = history
+          .filter(h => h.type === 'ad' && h.time && h.time.includes(new Date().toLocaleDateString()))
+          .reduce((sum, h) => sum + h.amount, 0);
+        document.getElementById('statTodayEarned').textContent = '$' + todayEarnings.toFixed(2);
+
+        if (currentUser.activePlan) {
+          const plan = PLANS.find(p => p.id === currentUser.activePlan);
+          document.getElementById('statActivePlan').textContent = plan ? plan.name : 'None';
+        } else {
+          document.getElementById('statActivePlan').textContent = 'None';
+        }
+
+        renderHistory();
+      }
+
+      // ============================================================
+      // APPLY VIEW
+      // ============================================================
+      function renderApplyView() {
+        if (!currentUser) return;
+        const statusBox = document.getElementById('applyStatusBox');
+        const applySection = document.getElementById('applySection');
+        const submitBtn = document.getElementById('applySubmitBtn');
+
+        if (currentUser.applyStatus === 'pending') {
+          applySection.classList.remove('eligible');
+          submitBtn.disabled = true;
+          statusBox.innerHTML = `
+            <div class="apply-status" style="border-color:var(--warning);background:rgba(245,158,11,0.08);">
+              <i class="fas fa-clock" style="color:var(--warning);"></i>
+              <span>Application pending. The normal approval time for earning is <strong>20 minutes</strong>. $5 will be credited automatically.</span>
+            </div>
+          `;
+        } else if (currentUser.applyStatus === 'eligible') {
+          applySection.classList.add('eligible');
+          submitBtn.disabled = true;
+          statusBox.innerHTML = `
+            <div class="apply-status" style="border-color:var(--success);background:rgba(16,185,129,0.08);">
+              <i class="fas fa-check-circle" style="color:var(--success);"></i>
+              <span>You're eligible! <strong>$5</strong> has been credited to your wallet.</span>
+            </div>
+          `;
+        } else {
+          applySection.classList.remove('eligible');
+          submitBtn.disabled = false;
+          statusBox.innerHTML = '';
+        }
+      }
+
+      document.getElementById('applySubmitBtn').addEventListener('click', () => {
+        if (!currentUser) return;
+        if (currentUser.applyStatus === 'pending' || currentUser.applyStatus === 'eligible') return;
+
+        const fullName = document.getElementById('applyFullName').value.trim();
+        const cnic = document.getElementById('applyCnic').value.trim();
+        const city = document.getElementById('applyCity').value.trim();
+
+        if (!fullName || !cnic || !city) return toastWarning('Please fill all fields.', 'Missing info');
+        if (!/^\d{5}-\d{7}-\d$/.test(cnic)) return toastError('CNIC must be in format 35202-1234567-1', 'Invalid CNIC');
+
+        const users = getUsers();
+        const idx = users.findIndex(u => u.phone === currentUser.phone);
+        if (idx === -1) return;
+
+        users[idx].applyStatus = 'pending';
+        users[idx].applyTime = new Date().toISOString();
+        users[idx].applyData = { fullName, cnic, city };
+        saveUsers(users);
+        currentUser = users[idx];
+
+        toastInfo('Application submitted! You will be eligible in 20 minutes.', 'Pending approval');
+        renderApplyView();
+
+        setTimeout(() => {
+          processApplyApproval(currentUser.phone);
+        }, APPLY_ELIGIBILITY_MS + 1000);
+      });
+
+      function processApplyApproval(phone) {
+        const users = getUsers();
+        const idx = users.findIndex(u => u.phone === phone);
+        if (idx === -1) return;
+        if (users[idx].applyStatus !== 'pending') return;
+
+        users[idx].applyStatus = 'eligible';
+        users[idx].balance = (users[idx].balance || 0) + 5;
+        saveUsers(users);
+
+        addHistory(phone, {
+          type: 'ad',
+          description: 'Eligibility bonus',
+          detail: 'Application approved — $5 credited',
+          amount: 5,
+          time: new Date().toLocaleString()
+        });
+
+        if (currentUser && currentUser.phone === phone) {
+          currentUser = users[idx];
+          updateBalanceUI();
+          if (currentView === 'apply') renderApplyView();
+          if (currentView === 'dashboard') renderDashboard();
+        }
+
+        toastSuccess('$5 eligibility bonus credited!', 'Application approved');
+      }
+
+      // ============================================================
+      // PLANS VIEW — UPDATED with bonus display
+      // ============================================================
+      function renderPlansView() {
+        if (!currentUser) return;
+        const grid = document.getElementById('plansGrid');
+        const activePlanId = currentUser.activePlan;
+
+        grid.innerHTML = PLANS.map(plan => {
+          const isActive = activePlanId === plan.id;
+          const isDisabled = !!activePlanId && !isActive;
+          return `
+            <div class="plan-card" style="border-color:${isActive ? plan.color : 'var(--border)'};">
+              ${isActive ? '<div class="plan-badge" style="background:' + plan.color + ';">ACTIVE</div>' : ''}
+              <div style="display:flex;align-items:center;gap:10px;">
+                <i class="fas ${plan.icon}" style="font-size:24px;color:${plan.color};"></i>
+                <div>
+                  <div class="plan-name">${plan.name}</div>
+                  <div class="plan-deposit">$${plan.totalRequired}</div>
+                </div>
+              </div>
+              <div class="plan-detail"><i class="fas fa-hand-holding-usd"></i> Deposit: $${plan.deposit}</div>
+              <div class="plan-detail"><i class="fas fa-gift"></i> Bonus: +$${plan.bonus}</div>
+              <div class="plan-detail"><i class="fas fa-play-circle"></i> ${plan.perAd.toFixed(2)} / ad</div>
+              <div class="plan-detail"><i class="fas fa-calendar-day"></i> Daily: $${plan.daily.toFixed(2)}</div>
+              <div class="plan-detail"><i class="fas fa-tv"></i> 10 ads / day (10 sec)</div>
+              <button class="plan-btn" data-plan-id="${plan.id}" ${isDisabled ? 'disabled' : ''} style="background:${isDisabled ? 'var(--border)' : 'linear-gradient(135deg,' + plan.color + ',' + plan.color + 'dd)'};">
+                ${isActive ? 'Active' : (isDisabled ? 'Unavailable' : 'Buy Plan')}
+              </button>
+            </div>
+          `;
+        }).join('');
+
+        grid.querySelectorAll('.plan-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const planId = btn.dataset.planId;
+            if (btn.disabled) return;
+            buyPlan(planId);
+          });
+        });
+      }
+
+      function buyPlan(planId) {
+        if (!currentUser) return;
+        const plan = PLANS.find(p => p.id === planId);
+        if (!plan) return;
+        if (currentUser.activePlan) return toastWarning('You already have an active plan.', 'Plan active');
+        if (currentUser.balance < plan.totalRequired) 
+          return toastError(`Insufficient balance. You need $${plan.totalRequired} but have $${currentUser.balance.toFixed(2)}.`, 'Insufficient funds');
+
+        const users = getUsers();
+        const idx = users.findIndex(u => u.phone === currentUser.phone);
+        if (idx === -1) return;
+
+        // Deduct the deposit amount (user pays deposit, bonus is already in balance)
+        users[idx].balance -= plan.totalRequired;
+        users[idx].activePlan = plan.id;
+        users[idx].adsWatchedToday = 0;
+        users[idx].lastAdDate = null;
+        saveUsers(users);
+        currentUser = users[idx];
+
+        addHistory(currentUser.phone, {
+          type: 'ad',
+          description: `Plan purchased: ${plan.name}`,
+          detail: `Deposit: $${plan.deposit} + Bonus: $${plan.bonus} = Total: $${plan.totalRequired} • Per ad: $${plan.perAd.toFixed(2)}`,
+          amount: -plan.totalRequired,
+          time: new Date().toLocaleString()
+        });
+
+        updateBalanceUI();
+        toastSuccess(`Plan "${plan.name}" activated!`, 'Plan purchased');
+        renderPlansView();
+        renderDashboard();
+      }
+
+      // ============================================================
+      // WATCH VIEW
+      // ============================================================
+      function renderWatchView() {
+        if (!currentUser) return;
+        const watchBtn = document.getElementById('watchAdBtn');
+        const adIcon = document.getElementById('adIcon');
+        const adText = document.getElementById('adText');
+        const adCountdown = document.getElementById('adCountdown');
+        const progressContainer = document.getElementById('adProgressContainer');
+        const progressBar = document.getElementById('adProgressBar');
+        const adsTodayCount = document.getElementById('adsTodayCount');
+        const perAdEarning = document.getElementById('perAdEarning');
+        const todayEarnedDisplay = document.getElementById('todayEarnedDisplay');
+
+        adIcon.classList.remove('hidden');
+        adCountdown.classList.add('hidden');
+        progressContainer.style.display = 'none';
+        progressBar.style.width = '0%';
+
+        if (!currentUser.activePlan) {
+          adText.textContent = 'Select a plan to start watching ads';
+          watchBtn.disabled = true;
+          watchBtn.innerHTML = '<i class="fas fa-lock"></i> No Active Plan';
+          perAdEarning.textContent = '$0.00';
+        } else {
+          const plan = PLANS.find(p => p.id === currentUser.activePlan);
+          if (!plan) {
+            adText.textContent = 'Plan error. Please contact support.';
+            watchBtn.disabled = true;
+            return;
+          }
+
+          perAdEarning.textContent = '$' + plan.perAd.toFixed(2);
+
+          const today = new Date().toDateString();
+          const todayAds = (currentUser.lastAdDate === today) ? (currentUser.adsWatchedToday || 0) : 0;
+
+          adsTodayCount.textContent = todayAds + ' / ' + ADS_PER_DAY;
+
+          const history = getUserHistory(currentUser.phone);
+          const todayEarnings = history
+            .filter(h => h.type === 'ad' && h.time && h.time.includes(new Date().toLocaleDateString()))
+            .reduce((sum, h) => sum + h.amount, 0);
+          todayEarnedDisplay.textContent = '$' + todayEarnings.toFixed(2);
+
+          if (todayAds >= ADS_PER_DAY) {
+            adText.textContent = 'Daily limit reached! Come back tomorrow.';
+            watchBtn.disabled = true;
+            watchBtn.innerHTML = '<i class="fas fa-check-circle"></i> Limit Reached';
+          } else {
+            adText.textContent = 'Ready to watch. Click the button below.';
+            watchBtn.disabled = false;
+            watchBtn.innerHTML = '<i class="fas fa-play"></i> Watch Ad (+$' + plan.perAd.toFixed(2) + ')';
+          }
+        }
+      }
+
+      document.getElementById('watchAdBtn').addEventListener('click', () => {
+        if (!currentUser || !currentUser.activePlan) return;
+        const plan = PLANS.find(p => p.id === currentUser.activePlan);
+        if (!plan) return;
+
+        const today = new Date().toDateString();
+        if (currentUser.lastAdDate !== today) {
+          currentUser.adsWatchedToday = 0;
+          currentUser.lastAdDate = today;
+        }
+        if (currentUser.adsWatchedToday >= ADS_PER_DAY) return toastWarning('Daily ad limit reached.', 'Limit reached');
+
+        const watchBtn = document.getElementById('watchAdBtn');
+        const adIcon = document.getElementById('adIcon');
+        const adText = document.getElementById('adText');
+        const adCountdown = document.getElementById('adCountdown');
+        const progressContainer = document.getElementById('adProgressContainer');
+        const progressBar = document.getElementById('adProgressBar');
+
+        watchBtn.disabled = true;
+        adIcon.classList.add('hidden');
+        adCountdown.classList.remove('hidden');
+        progressContainer.style.display = 'block';
+        adSecondsLeft = AD_DURATION_SEC;
+        adCountdown.textContent = adSecondsLeft;
+        adText.textContent = 'Watching ad...';
+        progressBar.style.width = '0%';
+
+        if (adTimer) clearInterval(adTimer);
+        adTimer = setInterval(() => {
+          adSecondsLeft--;
+          adCountdown.textContent = adSecondsLeft;
+          progressBar.style.width = ((AD_DURATION_SEC - adSecondsLeft) / AD_DURATION_SEC * 100) + '%';
+
+          if (adSecondsLeft <= 0) {
+            clearInterval(adTimer);
+            adTimer = null;
+
+            const users = getUsers();
+            const idx = users.findIndex(u => u.phone === currentUser.phone);
+            if (idx === -1) return;
+
+            users[idx].balance += plan.perAd;
+            users[idx].adsWatchedToday = (users[idx].adsWatchedToday || 0) + 1;
+            if (!users[idx].lastAdDate || users[idx].lastAdDate !== today) {
+              users[idx].adsWatchedToday = 1;
+              users[idx].lastAdDate = today;
+            }
+            saveUsers(users);
+            currentUser = users[idx];
+
+            addHistory(currentUser.phone, {
+              type: 'ad',
+              description: `Ad watched #${currentUser.adsWatchedToday}`,
+              detail: `+$${plan.perAd.toFixed(2)} • Plan: ${plan.name}`,
+              amount: plan.perAd,
+              time: new Date().toLocaleString()
+            });
+
+            updateBalanceUI();
+            toastSuccess(`Earned $${plan.perAd.toFixed(2)}!`, 'Ad completed');
+            renderWatchView();
+            renderDashboard();
+          }
+        }, 1000);
+      });
+
+      // ============================================================
+      // HISTORY SUB-TABS
+      // ============================================================
+      document.querySelectorAll('.history-subtab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.history-subtab').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentHistoryFilter = btn.dataset.subtab;
+          renderHistory();
+        });
+      });
+
+      // ============================================================
+      // MODALS: DEPOSIT & WITHDRAW
+      // ============================================================
+      const depositModal = document.getElementById('depositModal');
+      const withdrawModal = document.getElementById('withdrawModal');
+
+      document.getElementById('depositBtn').addEventListener('click', () => {
+        depositModal.classList.remove('hidden');
+        document.getElementById('depositPendingMessage').classList.add('hidden');
+        document.getElementById('depositSuccessMessage').classList.add('hidden');
+      });
+      document.getElementById('withdrawBtn').addEventListener('click', () => {
+        withdrawModal.classList.remove('hidden');
+        document.getElementById('withdrawPendingMessage').classList.add('hidden');
+        document.getElementById('withdrawSuccessMessage').classList.add('hidden');
+      });
+      document.getElementById('closeDepositModal').addEventListener('click', () => depositModal.classList.add('hidden'));
+      document.getElementById('closeWithdrawModal').addEventListener('click', () => withdrawModal.classList.add('hidden'));
+      window.addEventListener('click', (e) => {
+        if (e.target === depositModal) depositModal.classList.add('hidden');
+        if (e.target === withdrawModal) withdrawModal.classList.add('hidden');
+      });
+
+      // Deposit method toggle
+      const depositMethodBtns = document.querySelectorAll('[data-method]');
+      const binanceDetail = document.getElementById('depositBinanceDetails');
+      const bankDetail = document.getElementById('depositBankDetails');
+      const pkrExtra = document.getElementById('pkrExtraFields');
+      let depositMethod = 'binance';
+      depositMethodBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          depositMethodBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          depositMethod = btn.dataset.method;
+          if (depositMethod === 'binance') {
+            binanceDetail.classList.remove('hidden');
+            bankDetail.classList.add('hidden');
+            pkrExtra.classList.add('hidden');
+          } else {
+            binanceDetail.classList.add('hidden');
+            bankDetail.classList.remove('hidden');
+            pkrExtra.classList.remove('hidden');
+          }
+        });
+      });
+
+      // Deposit amount
+      const depositUsd = document.getElementById('depositUsd');
+      const depositTotalUsd = document.getElementById('depositTotalUsd');
+      const depositPkr = document.getElementById('depositPkr');
+
+      function refreshDepositSummary() {
+        const raw = parseFloat(depositUsd.value);
+        const usd = isNaN(raw) ? 0 : raw;
+        const fee = 0.5;
+        const total = usd + fee;
+        depositTotalUsd.textContent = '$' + (usd >= 10 ? total.toFixed(2) : '0.00');
+        depositPkr.textContent = '₨ ' + (usd >= 10 ? (total * 275).toFixed(2) : '0.00');
+      }
+      depositUsd.addEventListener('input', refreshDepositSummary);
+      depositUsd.addEventListener('blur', () => {
+        let val = parseFloat(depositUsd.value);
+        if (isNaN(val) || val < 10) val = 10;
+        depositUsd.value = val;
+        refreshDepositSummary();
+      });
+      refreshDepositSummary();
+
+      // Deposit request
+      document.getElementById('requestDepositBtn').addEventListener('click', () => {
+        const screenshot = document.getElementById('depositScreenshot').files[0];
+        if (!screenshot) return toastWarning('Please upload a screenshot of your payment.', 'Screenshot required');
+
+        let baseAmount = 0;
+        if (depositMethod === 'bank') {
+          baseAmount = parseFloat(depositUsd.value) || 0;
+          if (baseAmount < 10) return toastError('Minimum deposit is $10.', 'Amount too low');
+        } else {
+          baseAmount = 50;
+        }
+        const fee = depositMethod === 'bank' ? 0.5 : 0;
+        const totalDeposit = baseAmount + fee;
+        const createdAt = new Date().toLocaleString();
+        const approveAt = Date.now() + DEPOSIT_APPROVAL_MS;
+
+        document.getElementById('depositPendingMessage').classList.remove('hidden');
+        document.getElementById('depositSuccessMessage').classList.add('hidden');
+        toastInfo(`Deposit will approve within 3 Minutes.`, 'Request pending');
+
+        addHistory(currentUser.phone, {
+          type: 'deposit',
+          description: 'Deposit request (pending)',
+          detail: depositMethod === 'bank' ? `Bank transfer • $${baseAmount.toFixed(2)} + $0.5 fee` : 'Binance',
+          amount: totalDeposit,
+          time: createdAt
+        });
+        renderHistory();
+
+        addPendingRequest({
+          id: 'dep_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+          type: 'deposit',
+          phone: currentUser.phone,
+          baseAmount: baseAmount,
+          fee: fee,
+          detailApproved: depositMethod === 'bank' ? `Bank transfer • $${baseAmount.toFixed(2)} + $0.5 fee` : 'Binance',
+          createdAt: createdAt,
+          approveAt: approveAt
+        });
+
+        setTimeout(processPendingRequests, DEPOSIT_APPROVAL_MS + 500);
+        setTimeout(() => depositModal.classList.add('hidden'), 2000);
+      });
+
+      // Withdraw method toggle
+      const withdrawMethodBtns = document.querySelectorAll('[data-wmethod]');
+      const binanceWithdrawFields = document.getElementById('withdrawBinanceFields');
+      const bankWithdrawFields = document.getElementById('withdrawBankFields');
+      let withdrawMethod = 'binance';
+      withdrawMethodBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          withdrawMethodBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          withdrawMethod = btn.dataset.wmethod;
+          if (withdrawMethod === 'binance') {
+            binanceWithdrawFields.classList.remove('hidden');
+            bankWithdrawFields.classList.add('hidden');
+          } else {
+            binanceWithdrawFields.classList.add('hidden');
+            bankWithdrawFields.classList.remove('hidden');
+          }
+        });
+      });
+
+      // Withdraw amount
+      const withdrawBinanceAmount = document.getElementById('withdrawBinanceAmount');
+      const withdrawBinanceReceive = document.getElementById('withdrawBinanceReceive');
+      const withdrawBinancePkr = document.getElementById('withdrawBinancePkr');
+      const withdrawBankAmount = document.getElementById('withdrawBankAmount');
+      const withdrawBankReceive = document.getElementById('withdrawBankReceive');
+      const withdrawBankPkr = document.getElementById('withdrawBankPkr');
+
+      function refreshWithdrawBinanceSummary() {
+        const raw = parseFloat(withdrawBinanceAmount.value);
+        const amt = isNaN(raw) ? 0 : raw;
+        const fee = 0.5;
+        const net = Math.max(0, amt - fee);
+        withdrawBinanceReceive.textContent = '$' + (amt >= 30 ? net.toFixed(2) : '0.00');
+        withdrawBinancePkr.textContent = '₨ ' + (amt >= 30 ? (net * 275).toFixed(2) : '0.00');
+      }
+      withdrawBinanceAmount.addEventListener('input', refreshWithdrawBinanceSummary);
+      withdrawBinanceAmount.addEventListener('blur', () => {
+        let val = parseFloat(withdrawBinanceAmount.value);
+        if (isNaN(val) || val < 30) val = 30;
+        withdrawBinanceAmount.value = val;
+        refreshWithdrawBinanceSummary();
+      });
+      refreshWithdrawBinanceSummary();
+
+      function refreshWithdrawBankSummary() {
+        const raw = parseFloat(withdrawBankAmount.value);
+        const amt = isNaN(raw) ? 0 : raw;
+        const fee = 0.5;
+        const net = Math.max(0, amt - fee);
+        withdrawBankReceive.textContent = '$' + (amt >= 30 ? net.toFixed(2) : '0.00');
+        withdrawBankPkr.textContent = '₨ ' + (amt >= 30 ? (net * 275).toFixed(2) : '0.00');
+      }
+      withdrawBankAmount.addEventListener('input', refreshWithdrawBankSummary);
+      withdrawBankAmount.addEventListener('blur', () => {
+        let val = parseFloat(withdrawBankAmount.value);
+        if (isNaN(val) || val < 30) val = 30;
+        withdrawBankAmount.value = val;
+        refreshWithdrawBankSummary();
+      });
+      refreshWithdrawBankSummary();
+
+      // Withdraw request
+      document.getElementById('requestWithdrawBtn').addEventListener('click', () => {
+        let amount = 0;
+        if (withdrawMethod === 'binance') {
+          amount = parseFloat(document.getElementById('withdrawBinanceAmount').value) || 0;
+          if (!document.getElementById('withdrawBinanceAddress').value) 
+            return toastWarning('Enter your Binance wallet address.', 'Address required');
+        } else {
+          amount = parseFloat(document.getElementById('withdrawBankAmount').value) || 0;
+          if (!document.getElementById('withdrawHolder').value || !document.getElementById('withdrawAccountNumber').value) 
+            return toastWarning('Please fill in your bank details.', 'Missing info');
+        }
+        if (amount < 30) return toastError('Minimum withdrawal is $30.', 'Amount too low');
+        if (!currentUser || currentUser.balance < amount) return toastError('Insufficient balance for this withdrawal.', 'Insufficient funds');
+
+        const fee = 0.5;
+        const netAmount = amount - fee;
+        if (netAmount <= 0) return toastError('Amount must be greater than $0.5 fee.', 'Invalid amount');
+
+        const createdAt = new Date().toLocaleString();
+        const approveAt = Date.now() + WITHDRAW_APPROVAL_MS;
+
+        document.getElementById('withdrawPendingMessage').classList.remove('hidden');
+        document.getElementById('withdrawSuccessMessage').classList.add('hidden');
+        toastInfo(`Withdraw will approve within 5 Minutes.`, 'Request pending');
+
+        addHistory(currentUser.phone, {
+          type: 'withdraw',
+          description: 'Withdraw request (pending)',
+          detail: withdrawMethod === 'binance' ? 'Binance' : 'Bank / Mobile',
+          amount: amount,
+          time: createdAt
+        });
+        renderHistory();
+
+        addPendingRequest({
+          id: 'wd_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+          type: 'withdraw',
+          phone: currentUser.phone,
+          amount: amount,
+          fee: fee,
+          netAmount: netAmount,
+          createdAt: createdAt,
+          approveAt: approveAt
+        });
+
+        setTimeout(processPendingRequests, WITHDRAW_APPROVAL_MS + 500);
+        setTimeout(() => withdrawModal.classList.add('hidden'), 2000);
+      });
+
+      // ============================================================
+      // PENDING REQUEST PROCESSOR
+      // ============================================================
+      function processPendingRequests() {
+        const now = Date.now();
+        const queue = getPendingRequests();
+        let changed = false;
+
+        for (let i = queue.length - 1; i >= 0; i--) {
+          const req = queue[i];
+          if (now < req.approveAt) continue;
+
+          const users = getUsers();
+          const idx = users.findIndex(u => u.phone === req.phone);
+          if (idx === -1) { queue.splice(i, 1); continue; }
+
+          if (req.type === 'deposit') {
+            users[idx].balance += req.baseAmount;
+            saveUsers(users);
+
+            const history = getUserHistory(req.phone);
+            const hIdx = history.findIndex(h => h.type === 'deposit' && h.description === 'Deposit request (pending)' && h.time === req.createdAt);
+            if (hIdx !== -1) {
+              history[hIdx].description = 'Deposit approved';
+              history[hIdx].detail = req.detailApproved;
+              history[hIdx].amount = req.baseAmount;
+              saveUserHistory(req.phone, history);
+            }
+
+            if (currentUser && currentUser.phone === req.phone) {
+              currentUser = users[idx];
+              updateBalanceUI();
+              renderDashboard();
+              renderHistory();
+            }
+            toastSuccess(`Deposit of $${req.baseAmount.toFixed(2)} approved!`, 'Deposit complete');
+          } else if (req.type === 'withdraw') {
+            if (users[idx].balance >= req.amount) {
+              users[idx].balance -= req.amount;
+              saveUsers(users);
+
+              const history = getUserHistory(req.phone);
+              const hIdx = history.findIndex(h => h.type === 'withdraw' && h.description === 'Withdraw request (pending)' && h.time === req.createdAt);
+              if (hIdx !== -1) {
+                history[hIdx].description = 'Withdraw approved';
+                history[hIdx].detail = `Fee: $${req.fee.toFixed(2)} • Net: $${req.netAmount.toFixed(2)}`;
+                saveUserHistory(req.phone, history);
+              }
+
+              if (currentUser && currentUser.phone === req.phone) {
+                currentUser = users[idx];
+                updateBalanceUI();
+                renderDashboard();
+                renderHistory();
+              }
+              toastSuccess(`Withdrawal of $${req.amount.toFixed(2)} approved!`, 'Withdrawal complete');
+            } else {
+              const history = getUserHistory(req.phone);
+              const hIdx = history.findIndex(h => h.type === 'withdraw' && h.description === 'Withdraw request (pending)' && h.time === req.createdAt);
+              if (hIdx !== -1) {
+                history[hIdx].description = 'Withdraw rejected';
+                history[hIdx].detail = 'Insufficient balance at approval time';
+                saveUserHistory(req.phone, history);
+              }
+              toastError('Withdrawal failed: insufficient balance.', 'Withdrawal failed');
+            }
+          }
+
+          queue.splice(i, 1);
+          changed = true;
+        }
+
+        if (changed) savePendingRequests(queue);
+      }
+
+      // ============================================================
+      // SESSION / DASHBOARD LOAD
+      // ============================================================
+      function showDashboard() {
+        currentUser = getCurrentUser();
+        if (!currentUser) {
+          authSection.classList.remove('hidden');
+          dashboardSection.classList.add('hidden');
+          return;
+        }
+        authSection.classList.add('hidden');
+        dashboardSection.classList.remove('hidden');
+
+        // Update sidebar user info
+        const initials = (currentUser.fullname || 'U').charAt(0).toUpperCase();
+        document.getElementById('userAvatar').textContent = initials;
+        document.getElementById('sidebarUserName').textContent = currentUser.fullname;
+
+        updateBalanceUI();
+        switchView('dashboard');
+
+        if (currentUser.applyStatus === 'pending') {
+          const elapsed = Date.now() - new Date(currentUser.applyTime).getTime();
+          if (elapsed >= APPLY_ELIGIBILITY_MS) {
+            processApplyApproval(currentUser.phone);
+          } else {
+            setTimeout(() => processApplyApproval(currentUser.phone), APPLY_ELIGIBILITY_MS - elapsed + 500);
+          }
+        }
+
+        processPendingRequests();
+      }
+
+      if (getCurrentUser()) {
+        showDashboard();
+      } else {
+        authSection.classList.remove('hidden');
+        dashboardSection.classList.add('hidden');
+      }
+
+      // Logout
+      logoutBtn.addEventListener('click', () => {
+        clearCurrentUser();
+        authSection.classList.remove('hidden');
+        dashboardSection.classList.add('hidden');
+        currentUser = null;
+        toastInfo('You have been logged out.', 'Logged out');
+      });
+
+      // ============================================================
+      // POLLING & VISIBILITY
+      // ============================================================
+      setInterval(processPendingRequests, POLL_INTERVAL_MS);
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+          processPendingRequests();
+          if (currentUser) {
+            currentUser = getCurrentUser();
+            updateBalanceUI();
+            if (currentView === 'dashboard') renderDashboard();
+            if (currentView === 'history') renderHistory();
+            if (currentView === 'apply') renderApplyView();
+          }
+        }
+      });
+      window.addEventListener('focus', () => {
+        processPendingRequests();
+        if (currentUser) {
+          currentUser = getCurrentUser();
+          updateBalanceUI();
+        }
+      });
+
+      // Storage sync across tabs
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'earndollar_currentUser' || e.key === 'earndollar_users' || e.key === 'earndollar_pending' || e.key.startsWith('earndollar_history_')) {
+          if (!getCurrentUser()) {
+            authSection.classList.remove('hidden');
+            dashboardSection.classList.add('hidden');
+            currentUser = null;
+          } else {
+            currentUser = getCurrentUser();
+            updateBalanceUI();
+            if (currentView === 'dashboard') renderDashboard();
+            if (currentView === 'history') renderHistory();
+            processPendingRequests();
+          }
+        }
+      });
+
+      window.showDashboard = showDashboard;
+    })();
+  </script>
+</body>
+</html>

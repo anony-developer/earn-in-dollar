@@ -960,40 +960,179 @@
       font-weight: 500;
     }
 
-    /* ---- AUTH CARDS ---- */
+    /* ============================================================
+       AUTH PAGES — STUNNING PREMIUM THEME
+       ============================================================ */
     .auth-wrapper {
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: calc(100vh - 24px);
+      min-height: 100vh;
       width: 100%;
       padding: 20px;
+      position: fixed;
+      inset: 0;
+      overflow-y: auto;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(99,102,241,0.55) 0%, transparent 45%),
+        radial-gradient(circle at 90% 15%, rgba(236,72,153,0.45) 0%, transparent 45%),
+        radial-gradient(circle at 80% 90%, rgba(139,92,246,0.5) 0%, transparent 50%),
+        radial-gradient(circle at 15% 85%, rgba(16,185,129,0.35) 0%, transparent 45%),
+        linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+      animation: authBgShift 20s ease-in-out infinite;
+      z-index: 500;
+    }
+
+    @keyframes authBgShift {
+      0%, 100% {
+        background-position: 0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%;
+      }
+      50% {
+        background-position: 5% 5%, 95% 5%, 95% 95%, 5% 95%, 100% 100%;
+      }
+    }
+
+    /* Floating glowing orbs */
+    .auth-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.65;
+      pointer-events: none;
+      animation: floatOrb 15s ease-in-out infinite;
+    }
+
+    .auth-orb.orb-1 {
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+      top: -80px;
+      left: -80px;
+      animation-delay: 0s;
+    }
+
+    .auth-orb.orb-2 {
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, #ec4899 0%, transparent 70%);
+      top: 20%;
+      right: -100px;
+      animation-delay: -5s;
+    }
+
+    .auth-orb.orb-3 {
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, #10b981 0%, transparent 70%);
+      bottom: -100px;
+      left: 30%;
+      animation-delay: -10s;
+      opacity: 0.5;
+    }
+
+    .auth-orb.orb-4 {
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, #8b5cf6 0%, transparent 70%);
+      top: 55%;
+      left: 5%;
+      animation-delay: -7s;
+      opacity: 0.55;
+    }
+
+    .auth-orb.orb-5 {
+      width: 240px;
+      height: 240px;
+      background: radial-gradient(circle, #06b6d4 0%, transparent 70%);
+      bottom: 5%;
+      right: 8%;
+      animation-delay: -3s;
+      opacity: 0.45;
+    }
+
+    @keyframes floatOrb {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(30px, -40px) scale(1.08); }
+      50% { transform: translate(-25px, 25px) scale(0.94); }
+      75% { transform: translate(20px, 35px) scale(1.04); }
+    }
+
+    /* Sparkling stars overlay */
+    .auth-stars {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(2px 2px at 15% 25%, rgba(255,255,255,0.9), transparent),
+        radial-gradient(2px 2px at 75% 15%, rgba(255,255,255,0.85), transparent),
+        radial-gradient(1.5px 1.5px at 45% 55%, rgba(255,255,255,0.75), transparent),
+        radial-gradient(2px 2px at 85% 75%, rgba(255,255,255,0.9), transparent),
+        radial-gradient(1.5px 1.5px at 25% 85%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1px 1px at 55% 10%, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 65% 90%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1.5px 1.5px at 5% 60%, rgba(255,255,255,0.75), transparent);
+      background-size: 100% 100%;
+      pointer-events: none;
+      animation: twinkle 5s ease-in-out infinite alternate;
+      opacity: 0.75;
+    }
+
+    @keyframes twinkle {
+      0% { opacity: 0.5; }
+      100% { opacity: 0.95; }
     }
 
     .auth-card {
-      background: var(--surface);
-      border-radius: var(--card-radius);
-      padding: 32px 26px;
-      max-width: 470px;
+      position: relative;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(30px) saturate(180%);
+      -webkit-backdrop-filter: blur(30px) saturate(180%);
+      border-radius: 30px;
+      padding: 38px 30px;
+      max-width: 480px;
       width: 100%;
-      box-shadow: var(--shadow-lg);
-      border: 1px solid var(--border);
+      box-shadow:
+        0 30px 70px rgba(0, 0, 0, 0.45),
+        0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+        0 0 60px rgba(99, 102, 241, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       transition: var(--transition);
+      color: #f8fafc;
+    }
+
+    .auth-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 30px;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.6), rgba(236,72,153,0.4), rgba(16,185,129,0.4), rgba(139,92,246,0.6));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0.8;
     }
 
     .auth-card h2 {
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 4px;
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 6px;
       text-align: center;
       letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #ffffff 0%, #c7d2fe 50%, #fbcfe8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 2px 20px rgba(139, 92, 246, 0.3);
     }
 
     .auth-sub {
       text-align: center;
-      color: var(--text-secondary);
-      margin-bottom: 22px;
+      color: rgba(226, 232, 240, 0.75);
+      margin-bottom: 26px;
       font-size: 14px;
+      font-weight: 500;
     }
 
     .input-group {
@@ -1004,28 +1143,36 @@
       display: block;
       font-size: 13px;
       font-weight: 600;
-      margin-bottom: 6px;
-      color: var(--text-secondary);
+      margin-bottom: 7px;
+      color: rgba(226, 232, 240, 0.9);
+      letter-spacing: 0.2px;
     }
 
     .input-field {
       width: 100%;
-      padding: 14px 16px;
-      border-radius: var(--input-radius);
-      border: 1.5px solid var(--border);
-      background: var(--bg);
-      color: var(--text-primary);
-      font-size: 16px;
+      padding: 15px 18px;
+      border-radius: 14px;
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.06);
+      color: #ffffff;
+      font-size: 15px;
       transition: var(--transition);
       font-weight: 500;
       -webkit-appearance: none;
       appearance: none;
     }
 
+    .input-field::placeholder {
+      color: rgba(226, 232, 240, 0.45);
+    }
+
     .input-field:focus {
       outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 4px rgba(59,130,246,0.1);
+      border-color: rgba(139, 92, 246, 0.8);
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow:
+        0 0 0 4px rgba(139, 92, 246, 0.2),
+        0 0 20px rgba(139, 92, 246, 0.25);
     }
 
     .password-wrapper {
@@ -1042,9 +1189,9 @@
       right: 14px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--text-secondary);
+      color: rgba(226, 232, 240, 0.7);
       cursor: pointer;
-      font-size: 18px;
+      font-size: 17px;
       transition: var(--transition);
       background: transparent;
       border: none;
@@ -1054,66 +1201,240 @@
       padding: 8px;
       min-width: 40px;
       min-height: 40px;
+      border-radius: 8px;
     }
 
     .toggle-password:hover {
-      color: var(--primary);
+      color: #c4b5fd;
+      background: rgba(255, 255, 255, 0.08);
     }
 
     .btn {
       border: none;
-      border-radius: var(--input-radius);
-      padding: 15px 20px;
-      font-weight: 700;
+      border-radius: 14px;
+      padding: 16px 22px;
+      font-weight: 800;
       font-size: 16px;
       cursor: pointer;
       transition: var(--transition);
-      background: var(--primary);
       color: white;
       width: 100%;
-      letter-spacing: 0.3px;
-      min-height: 50px;
+      letter-spacing: 0.4px;
+      min-height: 54px;
       -webkit-appearance: none;
       appearance: none;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+      box-shadow:
+        0 12px 30px rgba(139, 92, 246, 0.45),
+        0 4px 12px rgba(236, 72, 153, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #6366f1 100%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      border-radius: 14px;
+    }
+
+    .btn:hover::before {
+      opacity: 1;
+    }
+
+    .btn > * {
+      position: relative;
+      z-index: 1;
     }
 
     .btn:hover {
-      background: var(--primary-hover);
-      transform: translateY(-1px);
-      box-shadow: 0 8px 20px rgba(59,130,246,0.3);
+      transform: translateY(-2px);
+      box-shadow:
+        0 18px 40px rgba(139, 92, 246, 0.55),
+        0 6px 18px rgba(236, 72, 153, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    .btn:active {
+      transform: translateY(0);
     }
 
     .btn-success {
-      background: linear-gradient(135deg, #10b981, #059669);
-      box-shadow: 0 8px 20px rgba(16,185,129,0.3);
+      background: linear-gradient(135deg, #10b981 0%, #059669 50%, #06b6d4 100%);
+      box-shadow:
+        0 12px 30px rgba(16, 185, 129, 0.45),
+        0 4px 12px rgba(6, 182, 212, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-success::before {
+      background: linear-gradient(135deg, #06b6d4 0%, #059669 50%, #10b981 100%);
     }
 
     .btn-success:hover {
-      background: linear-gradient(135deg, #059669, #047857);
-      box-shadow: 0 8px 24px rgba(16,185,129,0.4);
+      box-shadow:
+        0 18px 40px rgba(16, 185, 129, 0.55),
+        0 6px 18px rgba(6, 182, 212, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
 
     .auth-switch {
       text-align: center;
-      margin-top: 20px;
+      margin-top: 22px;
       font-size: 14px;
-      color: var(--text-secondary);
+      color: rgba(226, 232, 240, 0.75);
+      font-weight: 500;
     }
 
     .auth-switch a {
-      color: var(--primary);
+      color: #c4b5fd;
       text-decoration: none;
       font-weight: 700;
       cursor: pointer;
+      transition: var(--transition);
     }
 
     .auth-switch a:hover {
+      color: #fbcfe8;
       text-decoration: underline;
+      text-shadow: 0 0 12px rgba(196, 181, 253, 0.5);
     }
 
     .hidden { display: none !important; }
 
-    /* ---- COUNTRY PICKER ---- */
+    /* Auth page country picker override for dark theme */
+    .auth-card .country-trigger {
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.06);
+      color: #ffffff;
+    }
+
+    .auth-card .country-trigger:hover {
+      border-color: rgba(139, 92, 246, 0.8);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .auth-card .country-trigger i {
+      color: rgba(226, 232, 240, 0.7);
+    }
+
+    .auth-card .country-dropdown {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    }
+
+    .auth-card .country-search {
+      background: rgba(15, 23, 42, 0.95);
+      color: #ffffff;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .auth-card .country-search::placeholder {
+      color: rgba(226, 232, 240, 0.5);
+    }
+
+    .auth-card .country-item {
+      color: #e2e8f0;
+    }
+
+    .auth-card .country-item .dial {
+      background: rgba(255, 255, 255, 0.08);
+      color: #c4b5fd;
+    }
+
+    .auth-card .country-item:hover {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+    }
+
+    .auth-card .country-item:hover .dial {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    .auth-card .phone-prefix-box {
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.06);
+      color: #ffffff;
+    }
+
+    .auth-card .phone-input-box {
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.06);
+      color: #ffffff;
+    }
+
+    .auth-card .phone-input-box::placeholder {
+      color: rgba(226, 232, 240, 0.45);
+    }
+
+    .auth-card .phone-input-box:focus {
+      outline: none;
+      border-color: rgba(139, 92, 246, 0.8);
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2);
+    }
+
+    .auth-card .phone-hint-text {
+      color: rgba(226, 232, 240, 0.6);
+    }
+
+    /* Brand mark in auth card */
+    .auth-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .auth-brand-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #6366f1, #ec4899, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 32px;
+      box-shadow:
+        0 15px 40px rgba(139, 92, 246, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+      animation: brandPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes brandPulse {
+      0%, 100% {
+        box-shadow:
+          0 15px 40px rgba(139, 92, 246, 0.5),
+          0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+      }
+      50% {
+        box-shadow:
+          0 20px 50px rgba(236, 72, 153, 0.6),
+          0 0 0 1px rgba(255, 255, 255, 0.25) inset;
+      }
+    }
+
+    .auth-brand-name {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #ffffff 0%, #c4b5fd 40%, #fbcfe8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ---- COUNTRY PICKER (base) ---- */
     .country-picker-wrapper {
       position: relative;
     }
@@ -1789,8 +2110,13 @@
       .action-btn i { font-size: 18px; }
       .plans-grid { grid-template-columns: 1fr 1fr; }
       .plan-card .plan-deposit { font-size: 20px; }
-      .auth-card { padding: 24px 18px; }
-      .auth-card h2 { font-size: 20px; }
+      .auth-card { padding: 28px 20px; border-radius: 24px; }
+      .auth-card h2 { font-size: 22px; }
+      .auth-brand-icon { width: 58px; height: 58px; font-size: 26px; }
+      .auth-brand-name { font-size: 18px; }
+      .auth-orb.orb-1 { width: 220px; height: 220px; }
+      .auth-orb.orb-2 { width: 180px; height: 180px; }
+      .auth-orb.orb-3 { width: 200px; height: 200px; }
       .modal-content { padding: 20px 16px; }
       .history-subtab { font-size: 12px; padding: 8px 12px; min-width: 70px; }
       .history-subtab i { font-size: 11px; }
@@ -1818,6 +2144,8 @@
       .balance-tab { font-size: 11px; padding: 8px 10px; gap: 4px; }
       .profile-row { flex-direction: column; align-items: flex-start; }
       .profile-row .value { text-align: left; width: 100%; }
+      .auth-card { padding: 24px 16px; }
+      .auth-card h2 { font-size: 20px; }
     }
 
     /* iOS Safe area */
@@ -1829,6 +2157,10 @@
         padding-right: max(12px, env(safe-area-inset-right));
       }
       .toast-container { top: max(12px, env(safe-area-inset-top)); }
+      .auth-wrapper {
+        padding-top: max(20px, env(safe-area-inset-top));
+        padding-bottom: max(20px, env(safe-area-inset-bottom));
+      }
     }
 
     /* Custom scrollbar */
@@ -1836,6 +2168,10 @@
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 30px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+    /* Scrollbar for auth country dropdown */
+    .auth-card .country-dropdown::-webkit-scrollbar { width: 5px; }
+    .auth-card .country-dropdown::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.5); border-radius: 30px; }
   </style>
 </head>
 <body>
@@ -1843,8 +2179,20 @@
 
   <!-- ========== AUTH SECTION ========== -->
   <div id="authSection" class="auth-wrapper">
+    <!-- Floating orbs & stars -->
+    <div class="auth-orb orb-1"></div>
+    <div class="auth-orb orb-2"></div>
+    <div class="auth-orb orb-3"></div>
+    <div class="auth-orb orb-4"></div>
+    <div class="auth-orb orb-5"></div>
+    <div class="auth-stars"></div>
+
     <!-- Signup -->
     <div id="signupCard" class="auth-card">
+      <div class="auth-brand">
+        <div class="auth-brand-icon"><i class="fas fa-dollar-sign"></i></div>
+        <div class="auth-brand-name">Earn In Dollar</div>
+      </div>
       <h2>Create account</h2>
       <p class="auth-sub">Join Earn In Dollar and start earning</p>
       <div class="input-group">
@@ -1896,7 +2244,7 @@
           </button>
         </div>
       </div>
-      <button class="btn btn-success" id="signupBtn">Create account</button>
+      <button class="btn btn-success" id="signupBtn"><i class="fas fa-user-plus" style="margin-right:8px;"></i>Create account</button>
       <div class="auth-switch">
         Already have an account? <a id="goToLogin">Log in</a>
       </div>
@@ -1904,6 +2252,10 @@
 
     <!-- Login -->
     <div id="loginCard" class="auth-card hidden">
+      <div class="auth-brand">
+        <div class="auth-brand-icon"><i class="fas fa-dollar-sign"></i></div>
+        <div class="auth-brand-name">Earn In Dollar</div>
+      </div>
       <h2>Welcome back</h2>
       <p class="auth-sub">Log in to your account</p>
       <div class="input-group">
@@ -1919,7 +2271,7 @@
           </button>
         </div>
       </div>
-      <button class="btn" id="loginBtn">Log in</button>
+      <button class="btn" id="loginBtn"><i class="fas fa-sign-in-alt" style="margin-right:8px;"></i>Log in</button>
       <div class="auth-switch">
         <a id="goToReset">Forgot password?</a> · <a id="goToSignupFromLogin">Sign up</a>
       </div>
@@ -1927,6 +2279,10 @@
 
     <!-- Reset password -->
     <div id="resetCard" class="auth-card hidden">
+      <div class="auth-brand">
+        <div class="auth-brand-icon"><i class="fas fa-key"></i></div>
+        <div class="auth-brand-name">Earn In Dollar</div>
+      </div>
       <h2>Reset password</h2>
       <p class="auth-sub">Enter your registered phone number and new password</p>
       <div class="input-group">
@@ -1942,7 +2298,7 @@
           </button>
         </div>
       </div>
-      <button class="btn" id="resetBtn">Update password</button>
+      <button class="btn" id="resetBtn"><i class="fas fa-sync-alt" style="margin-right:8px;"></i>Update password</button>
       <div class="auth-switch">
         <a id="backToLoginFromReset">Back to login</a>
       </div>
@@ -1974,7 +2330,6 @@
         </button>
       </nav>
       <div class="sidebar-footer">
-        <!-- User Profile Trigger (opens profile modal) -->
         <button class="user-profile-trigger" id="userProfileTrigger">
           <div class="avatar" id="userAvatar">U</div>
           <div class="user-info">
@@ -2007,7 +2362,6 @@
 
       <!-- ====== VIEW: DASHBOARD ====== -->
       <div id="view-dashboard" class="view-section">
-        <!-- Balance Tabs -->
         <div class="balance-tabs" id="balanceTabs">
           <button class="balance-tab active" data-tab="current">
             <i class="fas fa-wallet"></i> Current Balance
@@ -2017,7 +2371,6 @@
           </button>
         </div>
 
-        <!-- Current Balance Card -->
         <div id="currentBalanceView">
           <div class="balance-card">
             <div class="balance-sparkle"><i class="fas fa-star"></i></div>
@@ -2026,7 +2379,6 @@
           </div>
         </div>
 
-        <!-- Total Balance Card -->
         <div id="totalBalanceView" class="hidden">
           <div class="balance-card total-card">
             <div class="balance-sparkle"><i class="fas fa-star"></i></div>
@@ -2035,13 +2387,11 @@
           </div>
         </div>
 
-        <!-- Action Buttons -->
         <div class="action-buttons" style="margin-top:14px;">
           <button class="action-btn deposit-btn" id="depositBtn"><i class="fas fa-arrow-down"></i> Deposit</button>
           <button class="action-btn withdraw-btn" id="withdrawBtn"><i class="fas fa-arrow-up"></i> Withdraw</button>
         </div>
 
-        <!-- Quick Stats -->
         <div class="card" style="margin-top:4px;">
           <div class="card-title"><i class="fas fa-chart-bar"></i> Quick Stats</div>
           <div class="ad-stats">
@@ -2060,7 +2410,6 @@
           </div>
         </div>
 
-        <!-- Recent Activity -->
         <div class="card">
           <div class="card-title"><i class="fas fa-clock"></i> Recent Activity</div>
           <div class="history-list" id="recentActivityList">
@@ -2096,9 +2445,7 @@
           <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">
             Choose a plan to start watching ads and earning. All plans include <strong>10 ads per day</strong>, each <strong>10 seconds</strong> long. <strong>$5 bonus</strong> is added to your deposit.
           </p>
-          <div class="plans-grid" id="plansGrid">
-            <!-- Plans will be rendered by JS -->
-          </div>
+          <div class="plans-grid" id="plansGrid"></div>
         </div>
       </div>
 
@@ -2395,10 +2742,9 @@
       const POLL_INTERVAL_MS = 5000;
       const AD_DURATION_SEC = 10;
       const ADS_PER_DAY = 10;
-      const APPLY_ELIGIBILITY_MS = 20 * 60 * 1000; // 20 minutes
+      const APPLY_ELIGIBILITY_MS = 20 * 60 * 1000;
       const REGISTRATION_BONUS = 5;
 
-      // ---- UPDATED PLANS: deposit + 5$ bonus ----
       const PLANS = [
         { id: 'plan1', name: 'Starter', deposit: 10, bonus: 5, totalRequired: 15, perAd: 0.5, daily: 5, color: '#10b981', icon: 'fa-seedling' },
         { id: 'plan2', name: 'Bronze', deposit: 20, bonus: 5, totalRequired: 25, perAd: 1, daily: 10, color: '#3b82f6', icon: 'fa-medal' },
@@ -3022,14 +3368,12 @@
         document.getElementById('profileEmail').textContent = currentUser.email || '—';
         document.getElementById('profilePassword').textContent = '••••••••';
         
-        // Reset password toggle icon
         const toggleIcon = document.querySelector('#toggleProfilePassword i');
         if (toggleIcon) {
           toggleIcon.classList.remove('fa-eye-slash');
           toggleIcon.classList.add('fa-eye');
         }
 
-        // Joined date
         if (currentUser.createdAt) {
           const joined = new Date(currentUser.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
           document.getElementById('profileJoined').textContent = joined;
@@ -3132,12 +3476,10 @@
         if (!currentUser) return;
         updateBalanceUI();
 
-        // Update sidebar user info
         const initials = (currentUser.fullname || 'U').charAt(0).toUpperCase();
         document.getElementById('userAvatar').textContent = initials;
         document.getElementById('sidebarUserName').textContent = currentUser.fullname;
 
-        // Stats
         const today = new Date().toDateString();
         const todayAds = (currentUser.lastAdDate === today) ? (currentUser.adsWatchedToday || 0) : 0;
 
@@ -3251,7 +3593,7 @@
       }
 
       // ============================================================
-      // PLANS VIEW — UPDATED with bonus display
+      // PLANS VIEW
       // ============================================================
       function renderPlansView() {
         if (!currentUser) return;
@@ -3304,7 +3646,6 @@
         const idx = users.findIndex(u => u.phone === currentUser.phone);
         if (idx === -1) return;
 
-        // Deduct the deposit amount (user pays deposit, bonus is already in balance)
         users[idx].balance -= plan.totalRequired;
         users[idx].activePlan = plan.id;
         users[idx].adsWatchedToday = 0;
@@ -3776,7 +4117,6 @@
         authSection.classList.add('hidden');
         dashboardSection.classList.remove('hidden');
 
-        // Update sidebar user info
         const initials = (currentUser.fullname || 'U').charAt(0).toUpperCase();
         document.getElementById('userAvatar').textContent = initials;
         document.getElementById('sidebarUserName').textContent = currentUser.fullname;

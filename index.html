@@ -54,9 +54,6 @@
       --shadow-lg: 0 10px 30px rgba(0,0,0,0.6);
     }
 
-    /* ============================================================
-       SCROLL FIX — html is the scroll container
-       ============================================================ */
     html {
       overflow-x: hidden;
       overflow-y: auto;
@@ -81,7 +78,6 @@
       position: relative;
     }
 
-    /* ---- APP SHELL ---- */
     .app-shell {
       display: flex;
       flex-direction: column;
@@ -90,9 +86,7 @@
       max-width: 100%;
     }
 
-    /* ============================================================
-       MOBILE TOP APP BAR
-       ============================================================ */
+    /* ---- TOP APP BAR ---- */
     .app-bar {
       position: fixed;
       top: 0;
@@ -217,9 +211,7 @@
       font-size: 16px;
     }
 
-    /* ============================================================
-       SLIDE-OUT NAVIGATION DRAWER
-       ============================================================ */
+    /* ---- SLIDE-OUT NAVIGATION DRAWER ---- */
     .drawer-overlay {
       position: fixed;
       inset: 0;
@@ -414,9 +406,7 @@
       border-color: var(--danger);
     }
 
-    /* ============================================================
-       MAIN CONTENT
-       ============================================================ */
+    /* ---- MAIN CONTENT ---- */
     .main-content {
       flex: 1;
       padding: calc(var(--header-h) + 14px) 14px calc(var(--bottom-nav-h) + 24px);
@@ -443,9 +433,7 @@
       font-weight: 500;
     }
 
-    /* ============================================================
-       BOTTOM NAVIGATION BAR
-       ============================================================ */
+    /* ---- BOTTOM NAVIGATION BAR ---- */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -515,9 +503,7 @@
       transform: scale(0.95);
     }
 
-    /* ============================================================
-       CARDS & SECTIONS
-       ============================================================ */
+    /* ---- CARDS & SECTIONS ---- */
     .card {
       background: var(--surface);
       border-radius: var(--card-radius);
@@ -774,9 +760,7 @@
       text-overflow: ellipsis;
     }
 
-    /* ============================================================
-       PLANS GRID
-       ============================================================ */
+    /* ---- PLANS GRID ---- */
     .plans-grid {
       display: flex;
       flex-direction: column;
@@ -924,6 +908,11 @@
       box-shadow: 0 0 0 4px rgba(59,130,246,0.1);
     }
 
+    .apply-input:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
     .apply-btn {
       padding: 16px 20px;
       border-radius: var(--input-radius);
@@ -951,18 +940,19 @@
       font-size: 13px;
       font-weight: 600;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 10px;
       padding: 14px 16px;
       border-radius: 14px;
       background: var(--surface);
       border: 1px solid var(--border);
-      line-height: 1.45;
+      line-height: 1.5;
     }
 
     .apply-status i {
       font-size: 18px;
       flex-shrink: 0;
+      margin-top: 1px;
     }
 
     /* ---- ADS WATCHING ---- */
@@ -1204,9 +1194,7 @@
       font-weight: 500;
     }
 
-    /* ============================================================
-       AUTH PAGES
-       ============================================================ */
+    /* ---- AUTH PAGES ---- */
     .auth-wrapper {
       display: flex;
       align-items: center;
@@ -1758,9 +1746,7 @@
 
     body.dark .phone-hint-text { color: rgba(226, 232, 240, 0.6); }
 
-    /* ============================================================
-       MODALS (bottom-sheet style on mobile)
-       ============================================================ */
+    /* ---- MODALS ---- */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -2208,9 +2194,7 @@
       background: rgba(59,130,246,0.08);
     }
 
-    /* ============================================================
-       TOAST SYSTEM
-       ============================================================ */
+    /* ---- TOAST SYSTEM ---- */
     .toast-container {
       position: fixed;
       top: calc(env(safe-area-inset-top) + 10px);
@@ -2327,9 +2311,7 @@
     .custom-toast.toast-warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
     .custom-toast.toast-info { background: linear-gradient(135deg, #3b82f6, #2563eb); }
 
-    /* ============================================================
-       TABLET+ ADJUSTMENTS
-       ============================================================ */
+    /* ---- TABLET+ ---- */
     @media (min-width: 640px) {
       .main-content {
         padding: calc(var(--header-h) + 20px) 24px calc(var(--bottom-nav-h) + 32px);
@@ -2369,7 +2351,6 @@
       .main-content { max-width: 900px; }
     }
 
-    /* Very small phones */
     @media (max-width: 360px) {
       .balance-amount { font-size: 32px; }
       .balance-amount span:first-child { font-size: 17px; }
@@ -2386,7 +2367,6 @@
       .plan-selector-item .plan-sel-icon { width: 40px; height: 40px; font-size: 17px; }
     }
 
-    /* Landscape phones */
     @media (max-height: 500px) and (orientation: landscape) {
       .auth-wrapper { align-items: flex-start; padding: 12px; }
       .auth-brand { margin-bottom: 12px; }
@@ -2395,7 +2375,6 @@
       .auth-sub { margin-bottom: 14px; }
     }
 
-    /* iOS Safe area */
     @supports (padding: env(safe-area-inset-top)) {
       .app-bar {
         padding-top: env(safe-area-inset-top);
@@ -2406,7 +2385,6 @@
       }
     }
 
-    /* Scrollbar */
     ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 30px; }
@@ -2824,17 +2802,14 @@
         Select one of the plans below. The USD and PKR amounts will be calculated automatically.
       </p>
 
-      <!-- Plan selector list -->
       <div class="plan-selector-list" id="depositPlanList"></div>
 
-      <!-- Payment method -->
       <div style="margin-top:6px;font-size:12.5px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.6px;">Payment Method</div>
       <div class="method-selector">
         <button class="method-btn active" data-method="binance">Binance</button>
         <button class="method-btn" data-method="bank">Bank</button>
       </div>
 
-      <!-- Selected plan summary -->
       <div class="amount-summary" id="depositSummary">
         <div class="amount-row">
           <span>Selected Plan</span>
@@ -3028,9 +3003,9 @@
       const AD_DURATION_SEC = 10;
       const ADS_PER_DAY = 10;
       const APPLY_ELIGIBILITY_MS = 20 * 60 * 1000;
-      const USD_TO_PKR = 275; // conversion rate used across the app
+      const USD_TO_PKR = 275;
       const DEPOSIT_FEE = 0.5;
-      const MIN_WITHDRAW = 20; // ⬅️ updated from 30 → 20
+      const MIN_WITHDRAW = 20;
 
       const PLANS = [
         { id: 'plan1', name: 'Starter', deposit: 10, bonus: 5, totalRequired: 15, perAd: 0.5, daily: 5, color: '#10b981', icon: 'fa-seedling' },
@@ -3422,7 +3397,7 @@
       let currentBalanceTab = 'current';
       let adTimer = null;
       let adSecondsLeft = 0;
-      let selectedDepositPlanId = null; // ⬅️ which plan the user picked in deposit modal
+      let selectedDepositPlanId = null;
 
       // ============================================================
       // DRAWER
@@ -3683,35 +3658,51 @@
       }
 
       // ============================================================
-      // APPLY VIEW
+      // APPLY VIEW — Now shows submission time and date
       // ============================================================
       function renderApplyView() {
         if (!currentUser) return;
         const statusBox = document.getElementById('applyStatusBox');
         const applySection = document.getElementById('applySection');
         const submitBtn = document.getElementById('applySubmitBtn');
+        const inputs = applySection.querySelectorAll('.apply-input');
 
         if (currentUser.applyStatus === 'pending') {
           applySection.classList.remove('eligible');
           submitBtn.disabled = true;
+          inputs.forEach(i => i.disabled = true);
+
+          // Build the submission time from stored applyTime
+          let submittedText = '';
+          if (currentUser.applyTime) {
+            const d = new Date(currentUser.applyTime);
+            const timeStr = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+            const dateStr = d.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+            submittedText = `<strong>${currentUser.fullname}</strong>, you submitted the request at <strong>${timeStr}</strong> on <strong>${dateStr}</strong>.`;
+          } else {
+            submittedText = `<strong>${currentUser.fullname}</strong>, your request has been submitted.`;
+          }
+
           statusBox.innerHTML = `
             <div class="apply-status" style="border-color:var(--warning);background:rgba(245,158,11,0.08);">
               <i class="fas fa-clock" style="color:var(--warning);"></i>
-              <span>Application pending. The normal approval time for earning is <strong>20 minutes</strong>. $5 will be credited automatically.</span>
+              <span>${submittedText} $5 will be credited automatically.</span>
             </div>
           `;
         } else if (currentUser.applyStatus === 'eligible') {
           applySection.classList.add('eligible');
           submitBtn.disabled = true;
+          inputs.forEach(i => i.disabled = true);
           statusBox.innerHTML = `
             <div class="apply-status" style="border-color:var(--success);background:rgba(16,185,129,0.08);">
               <i class="fas fa-check-circle" style="color:var(--success);"></i>
-              <span>You're eligible! <strong>$5</strong> has been credited to your wallet.</span>
+              <span><strong>${currentUser.fullname}</strong>, you're eligible! <strong>$5</strong> has been credited to your wallet.</span>
             </div>
           `;
         } else {
           applySection.classList.remove('eligible');
           submitBtn.disabled = false;
+          inputs.forEach(i => i.disabled = false);
           statusBox.innerHTML = '';
         }
       }
@@ -3984,7 +3975,7 @@
       });
 
       // ============================================================
-      // DEPOSIT MODAL — PLAN SELECTOR LOGIC
+      // DEPOSIT MODAL
       // ============================================================
       const depositModal = document.getElementById('depositModal');
       const depositPlanList = document.getElementById('depositPlanList');
@@ -3994,7 +3985,6 @@
       const summaryTotalUsd = document.getElementById('summaryTotalUsd');
       const summaryPkr = document.getElementById('summaryPkr');
 
-      // Build the plan selector list once
       function buildDepositPlanList() {
         depositPlanList.innerHTML = PLANS.map(plan => `
           <div class="plan-selector-item" data-plan-id="${plan.id}">
@@ -4069,7 +4059,6 @@
         if (e.target === depositModal) depositModal.classList.add('hidden');
       });
 
-      // Deposit method toggle
       const depositMethodBtns = document.querySelectorAll('[data-method]');
       const binanceDetail = document.getElementById('depositBinanceDetails');
       const bankDetail = document.getElementById('depositBankDetails');
@@ -4091,7 +4080,6 @@
         });
       });
 
-      // Deposit request
       document.getElementById('requestDepositBtn').addEventListener('click', () => {
         if (!selectedDepositPlanId) return toastWarning('Please select a plan to deposit.', 'No plan selected');
         const screenshot = document.getElementById('depositScreenshot').files[0];
@@ -4153,7 +4141,6 @@
         if (e.target === withdrawModal) withdrawModal.classList.add('hidden');
       });
 
-      // Withdraw method toggle
       const withdrawMethodBtns = document.querySelectorAll('[data-wmethod]');
       const binanceWithdrawFields = document.getElementById('withdrawBinanceFields');
       const bankWithdrawFields = document.getElementById('withdrawBankFields');

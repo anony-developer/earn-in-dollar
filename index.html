@@ -54,11 +54,18 @@
       --shadow-lg: 0 10px 30px rgba(0,0,0,0.6);
     }
 
-    html, body {
+    /* ============================================================
+       SCROLL FIX — html is the scroll container
+       ============================================================ */
+    html {
       overflow-x: hidden;
+      overflow-y: auto;
       width: 100%;
+      min-height: 100%;
       -webkit-text-size-adjust: 100%;
       text-size-adjust: 100%;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
     }
 
     body {
@@ -69,7 +76,9 @@
       padding: 0;
       padding-bottom: env(safe-area-inset-bottom);
       -webkit-font-smoothing: antialiased;
-      overscroll-behavior-y: none;
+      overflow-x: hidden;
+      width: 100%;
+      position: relative;
     }
 
     /* ---- APP SHELL ---- */
@@ -410,7 +419,7 @@
        ============================================================ */
     .main-content {
       flex: 1;
-      padding: calc(var(--header-h) + 14px) 14px 90px;
+      padding: calc(var(--header-h) + 14px) 14px calc(var(--bottom-nav-h) + 24px);
       max-width: 100%;
       margin: 0 auto;
       width: 100%;
@@ -507,7 +516,7 @@
     }
 
     /* ============================================================
-       CARDS & SECTIONS (Mobile optimized)
+       CARDS & SECTIONS
        ============================================================ */
     .card {
       background: var(--surface);
@@ -720,7 +729,6 @@
 
     .action-btn.deposit-btn:active {
       transform: scale(0.97);
-      box-shadow: 0 4px 12px rgba(16,185,129,0.4);
     }
 
     .action-btn.withdraw-btn {
@@ -729,7 +737,6 @@
 
     .action-btn.withdraw-btn:active {
       transform: scale(0.97);
-      box-shadow: 0 4px 12px rgba(245,158,11,0.4);
     }
 
     /* ---- STATS GRID ---- */
@@ -767,11 +774,14 @@
       text-overflow: ellipsis;
     }
 
-    /* ---- PLANS GRID ---- */
+    /* ============================================================
+       PLANS GRID
+       ============================================================ */
     .plans-grid {
       display: flex;
       flex-direction: column;
       gap: 12px;
+      width: 100%;
     }
 
     .plan-card {
@@ -785,6 +795,7 @@
       gap: 6px;
       position: relative;
       overflow: hidden;
+      width: 100%;
     }
 
     .plan-card-header {
@@ -1194,7 +1205,7 @@
     }
 
     /* ============================================================
-       AUTH PAGES — LIGHT THEME (Mobile Optimized)
+       AUTH PAGES
        ============================================================ */
     .auth-wrapper {
       display: flex;
@@ -1236,52 +1247,11 @@
       animation: floatOrb 15s ease-in-out infinite;
     }
 
-    .auth-orb.orb-1 {
-      width: 240px;
-      height: 240px;
-      background: radial-gradient(circle, #818cf8 0%, transparent 70%);
-      top: -60px;
-      left: -60px;
-    }
-
-    .auth-orb.orb-2 {
-      width: 200px;
-      height: 200px;
-      background: radial-gradient(circle, #f472b6 0%, transparent 70%);
-      top: 20%;
-      right: -80px;
-      animation-delay: -5s;
-    }
-
-    .auth-orb.orb-3 {
-      width: 220px;
-      height: 220px;
-      background: radial-gradient(circle, #34d399 0%, transparent 70%);
-      bottom: -80px;
-      left: 25%;
-      animation-delay: -10s;
-      opacity: 0.4;
-    }
-
-    .auth-orb.orb-4 {
-      width: 160px;
-      height: 160px;
-      background: radial-gradient(circle, #a78bfa 0%, transparent 70%);
-      top: 60%;
-      left: 5%;
-      animation-delay: -7s;
-      opacity: 0.45;
-    }
-
-    .auth-orb.orb-5 {
-      width: 180px;
-      height: 180px;
-      background: radial-gradient(circle, #22d3ee 0%, transparent 70%);
-      bottom: 8%;
-      right: 5%;
-      animation-delay: -3s;
-      opacity: 0.35;
-    }
+    .auth-orb.orb-1 { width: 240px; height: 240px; background: radial-gradient(circle, #818cf8 0%, transparent 70%); top: -60px; left: -60px; }
+    .auth-orb.orb-2 { width: 200px; height: 200px; background: radial-gradient(circle, #f472b6 0%, transparent 70%); top: 20%; right: -80px; animation-delay: -5s; }
+    .auth-orb.orb-3 { width: 220px; height: 220px; background: radial-gradient(circle, #34d399 0%, transparent 70%); bottom: -80px; left: 25%; animation-delay: -10s; opacity: 0.4; }
+    .auth-orb.orb-4 { width: 160px; height: 160px; background: radial-gradient(circle, #a78bfa 0%, transparent 70%); top: 60%; left: 5%; animation-delay: -7s; opacity: 0.45; }
+    .auth-orb.orb-5 { width: 180px; height: 180px; background: radial-gradient(circle, #22d3ee 0%, transparent 70%); bottom: 8%; right: 5%; animation-delay: -3s; opacity: 0.35; }
 
     @keyframes floatOrb {
       0%, 100% { transform: translate(0, 0) scale(1); }
@@ -1345,9 +1315,7 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     }
 
-    .auth-theme-toggle:active {
-      transform: scale(0.95);
-    }
+    .auth-theme-toggle:active { transform: scale(0.95); }
 
     .auth-theme-toggle i {
       font-size: 13px;
@@ -1355,13 +1323,8 @@
       transition: var(--transition);
     }
 
-    .auth-theme-toggle .active-icon {
-      color: #6366f1;
-    }
-
-    body.dark .auth-theme-toggle .active-icon {
-      color: #fbbf24;
-    }
+    .auth-theme-toggle .active-icon { color: #6366f1; }
+    body.dark .auth-theme-toggle .active-icon { color: #fbbf24; }
 
     .auth-card {
       position: relative;
@@ -1425,29 +1388,13 @@
       justify-content: center;
       color: white;
       font-size: 28px;
-      box-shadow:
-        0 15px 40px rgba(139, 92, 246, 0.4),
-        0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+      box-shadow: 0 15px 40px rgba(139, 92, 246, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.4) inset;
       animation: brandPulse 3s ease-in-out infinite;
     }
 
-    body.dark .auth-brand-icon {
-      box-shadow:
-        0 15px 40px rgba(139, 92, 246, 0.5),
-        0 0 0 1px rgba(255, 255, 255, 0.15) inset;
-    }
-
     @keyframes brandPulse {
-      0%, 100% {
-        box-shadow:
-          0 15px 40px rgba(139, 92, 246, 0.4),
-          0 0 0 1px rgba(255, 255, 255, 0.4) inset;
-      }
-      50% {
-        box-shadow:
-          0 20px 50px rgba(236, 72, 153, 0.5),
-          0 0 0 1px rgba(255, 255, 255, 0.55) inset;
-      }
+      0%, 100% { box-shadow: 0 15px 40px rgba(139, 92, 246, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.4) inset; }
+      50% { box-shadow: 0 20px 50px rgba(236, 72, 153, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.55) inset; }
     }
 
     .auth-brand-name {
@@ -1494,13 +1441,9 @@
       font-weight: 500;
     }
 
-    body.dark .auth-sub {
-      color: rgba(226, 232, 240, 0.75);
-    }
+    body.dark .auth-sub { color: rgba(226, 232, 240, 0.75); }
 
-    .input-group {
-      margin-bottom: 14px;
-    }
+    .input-group { margin-bottom: 14px; }
 
     .input-group label {
       display: block;
@@ -1511,9 +1454,7 @@
       letter-spacing: 0.2px;
     }
 
-    body.dark .input-group label {
-      color: rgba(226, 232, 240, 0.9);
-    }
+    body.dark .input-group label { color: rgba(226, 232, 240, 0.9); }
 
     .input-field {
       width: 100%;
@@ -1536,39 +1477,24 @@
       color: #ffffff;
     }
 
-    .input-field::placeholder {
-      color: #94a3b8;
-    }
-
-    body.dark .input-field::placeholder {
-      color: rgba(226, 232, 240, 0.45);
-    }
+    .input-field::placeholder { color: #94a3b8; }
+    body.dark .input-field::placeholder { color: rgba(226, 232, 240, 0.45); }
 
     .input-field:focus {
       outline: none;
       border-color: #6366f1;
       background: #ffffff;
-      box-shadow:
-        0 0 0 4px rgba(99, 102, 241, 0.15),
-        0 0 20px rgba(99, 102, 241, 0.15);
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15), 0 0 20px rgba(99, 102, 241, 0.15);
     }
 
     body.dark .input-field:focus {
       border-color: rgba(139, 92, 246, 0.8);
       background: rgba(255, 255, 255, 0.1);
-      box-shadow:
-        0 0 0 4px rgba(139, 92, 246, 0.2),
-        0 0 20px rgba(139, 92, 246, 0.25);
+      box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2), 0 0 20px rgba(139, 92, 246, 0.25);
     }
 
-    .password-wrapper {
-      position: relative;
-      width: 100%;
-    }
-
-    .password-wrapper .input-field {
-      padding-right: 52px;
-    }
+    .password-wrapper { position: relative; width: 100%; }
+    .password-wrapper .input-field { padding-right: 52px; }
 
     .toggle-password {
       position: absolute;
@@ -1590,13 +1516,8 @@
       border-radius: 10px;
     }
 
-    body.dark .toggle-password {
-      color: rgba(226, 232, 240, 0.7);
-    }
-
-    .toggle-password:active {
-      background: rgba(99, 102, 241, 0.1);
-    }
+    body.dark .toggle-password { color: rgba(226, 232, 240, 0.7); }
+    .toggle-password:active { background: rgba(99, 102, 241, 0.1); }
 
     .btn {
       border: none;
@@ -1615,24 +1536,18 @@
       position: relative;
       overflow: hidden;
       background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
-      box-shadow:
-        0 12px 30px rgba(139, 92, 246, 0.35),
-        0 4px 12px rgba(236, 72, 153, 0.25);
+      box-shadow: 0 12px 30px rgba(139, 92, 246, 0.35), 0 4px 12px rgba(236, 72, 153, 0.25);
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
     }
 
-    .btn:active {
-      transform: scale(0.98);
-    }
+    .btn:active { transform: scale(0.98); }
 
     .btn-success {
       background: linear-gradient(135deg, #10b981 0%, #059669 50%, #06b6d4 100%);
-      box-shadow:
-        0 12px 30px rgba(16, 185, 129, 0.35),
-        0 4px 12px rgba(6, 182, 212, 0.25);
+      box-shadow: 0 12px 30px rgba(16, 185, 129, 0.35), 0 4px 12px rgba(6, 182, 212, 0.25);
     }
 
     .auth-switch {
@@ -1643,9 +1558,7 @@
       font-weight: 500;
     }
 
-    body.dark .auth-switch {
-      color: rgba(226, 232, 240, 0.75);
-    }
+    body.dark .auth-switch { color: rgba(226, 232, 240, 0.75); }
 
     .auth-switch a {
       color: #6366f1;
@@ -1657,20 +1570,13 @@
       display: inline-block;
     }
 
-    body.dark .auth-switch a {
-      color: #c4b5fd;
-    }
-
-    .auth-switch a:active {
-      opacity: 0.7;
-    }
+    body.dark .auth-switch a { color: #c4b5fd; }
+    .auth-switch a:active { opacity: 0.7; }
 
     .hidden { display: none !important; }
 
-    /* Auth country picker (mobile) */
-    .country-picker-wrapper {
-      position: relative;
-    }
+    /* Country picker */
+    .country-picker-wrapper { position: relative; }
 
     .country-trigger {
       width: 100%;
@@ -1695,18 +1601,9 @@
       color: #ffffff;
     }
 
-    .country-trigger:active {
-      border-color: #6366f1;
-    }
-
-    .country-trigger i {
-      color: #64748b;
-      font-size: 14px;
-    }
-
-    body.dark .country-trigger i {
-      color: rgba(226, 232, 240, 0.7);
-    }
+    .country-trigger:active { border-color: #6366f1; }
+    .country-trigger i { color: #64748b; font-size: 14px; }
+    body.dark .country-trigger i { color: rgba(226, 232, 240, 0.7); }
 
     .country-dropdown {
       position: absolute;
@@ -1730,9 +1627,7 @@
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
     }
 
-    .country-dropdown.open {
-      display: block;
-    }
+    .country-dropdown.open { display: block; }
 
     .country-search {
       width: 100%;
@@ -1755,9 +1650,7 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .country-list {
-      padding: 4px 0;
-    }
+    .country-list { padding: 4px 0; }
 
     .country-item {
       display: flex;
@@ -1772,9 +1665,7 @@
       color: #0f172a;
     }
 
-    body.dark .country-item {
-      color: #e2e8f0;
-    }
+    body.dark .country-item { color: #e2e8f0; }
 
     .country-item:active {
       background: linear-gradient(135deg, #6366f1, #8b5cf6);
@@ -1800,10 +1691,7 @@
       color: white;
     }
 
-    .phone-row {
-      display: flex;
-      gap: 8px;
-    }
+    .phone-row { display: flex; gap: 8px; }
 
     .phone-prefix-box {
       width: 78px;
@@ -1868,12 +1756,10 @@
       padding-left: 4px;
     }
 
-    body.dark .phone-hint-text {
-      color: rgba(226, 232, 240, 0.6);
-    }
+    body.dark .phone-hint-text { color: rgba(226, 232, 240, 0.6); }
 
     /* ============================================================
-       MODALS (mobile bottom-sheet style)
+       MODALS (bottom-sheet style on mobile)
        ============================================================ */
     .modal-overlay {
       position: fixed;
@@ -1951,16 +1837,9 @@
       border-radius: 50%;
     }
 
-    .modal-close:active {
-      background: var(--danger);
-      color: white;
-    }
+    .modal-close:active { background: var(--danger); color: white; }
 
-    .method-selector {
-      display: flex;
-      gap: 8px;
-      margin: 14px 0;
-    }
+    .method-selector { display: flex; gap: 8px; margin: 14px 0; }
 
     .method-btn {
       flex: 1;
@@ -2016,9 +1895,7 @@
       min-height: 56px;
     }
 
-    .scanner-full-btn:active {
-      transform: scale(0.98);
-    }
+    .scanner-full-btn:active { transform: scale(0.98); }
 
     .amount-summary {
       background: var(--bg);
@@ -2117,6 +1994,117 @@
     .toast-message.pending {
       background: linear-gradient(135deg, #f59e0b, #d97706);
       box-shadow: 0 8px 20px rgba(245,158,11,0.3);
+    }
+
+    /* ---- PLAN SELECTOR IN DEPOSIT ---- */
+    .plan-selector-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .plan-selector-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 14px;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .plan-selector-item:active {
+      transform: scale(0.99);
+    }
+
+    .plan-selector-item.selected {
+      border-color: var(--primary);
+      background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(139,92,246,0.08));
+      box-shadow: 0 8px 20px rgba(59,130,246,0.2);
+    }
+
+    .plan-selector-item .plan-sel-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .plan-selector-item .plan-sel-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .plan-selector-item .plan-sel-name {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+
+    .plan-selector-item .plan-sel-sub {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .plan-selector-item .plan-sel-price {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .plan-selector-item .plan-sel-usd {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--primary);
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+    }
+
+    .plan-selector-item .plan-sel-pkr {
+      font-size: 11px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .plan-selector-item .plan-check {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: var(--transition);
+      background: var(--surface);
+    }
+
+    .plan-selector-item .plan-check i {
+      font-size: 12px;
+      color: white;
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .plan-selector-item.selected .plan-check {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .plan-selector-item.selected .plan-check i {
+      opacity: 1;
     }
 
     /* ---- PROFILE MODAL ---- */
@@ -2334,25 +2322,17 @@
       to { transform: scaleX(0); }
     }
 
-    .custom-toast.toast-success {
-      background: linear-gradient(135deg, #10b981, #059669);
-    }
-    .custom-toast.toast-error {
-      background: linear-gradient(135deg, #ef4444, #b91c1c);
-    }
-    .custom-toast.toast-warning {
-      background: linear-gradient(135deg, #f59e0b, #d97706);
-    }
-    .custom-toast.toast-info {
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
-    }
+    .custom-toast.toast-success { background: linear-gradient(135deg, #10b981, #059669); }
+    .custom-toast.toast-error { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+    .custom-toast.toast-warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
+    .custom-toast.toast-info { background: linear-gradient(135deg, #3b82f6, #2563eb); }
 
     /* ============================================================
-       TABLET+ ADJUSTMENTS (still mobile-first, just more room)
+       TABLET+ ADJUSTMENTS
        ============================================================ */
     @media (min-width: 640px) {
       .main-content {
-        padding: calc(var(--header-h) + 20px) 24px 90px;
+        padding: calc(var(--header-h) + 20px) 24px calc(var(--bottom-nav-h) + 32px);
         max-width: 720px;
       }
 
@@ -2362,9 +2342,7 @@
         gap: 12px;
       }
 
-      .drawer {
-        width: 340px;
-      }
+      .drawer { width: 340px; }
 
       .modal-overlay {
         align-items: center;
@@ -2378,9 +2356,7 @@
         border-bottom: 1px solid var(--border);
       }
 
-      .modal-drag-handle {
-        display: none;
-      }
+      .modal-drag-handle { display: none; }
 
       @keyframes slideUp {
         from { transform: scale(0.95); opacity: 0; }
@@ -2389,13 +2365,8 @@
     }
 
     @media (min-width: 900px) {
-      .plans-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .main-content {
-        max-width: 900px;
-      }
+      .plans-grid { grid-template-columns: repeat(3, 1fr); }
+      .main-content { max-width: 900px; }
     }
 
     /* Very small phones */
@@ -2411,6 +2382,8 @@
       .app-bar-title .brand-text { font-size: 14px; }
       .auth-card { padding: 24px 16px; }
       .auth-brand-name { font-size: 18px; }
+      .plan-selector-item .plan-sel-usd { font-size: 16px; }
+      .plan-selector-item .plan-sel-icon { width: 40px; height: 40px; font-size: 17px; }
     }
 
     /* Landscape phones */
@@ -2422,7 +2395,7 @@
       .auth-sub { margin-bottom: 14px; }
     }
 
-    /* iOS Safe area support */
+    /* iOS Safe area */
     @supports (padding: env(safe-area-inset-top)) {
       .app-bar {
         padding-top: env(safe-area-inset-top);
@@ -2433,7 +2406,7 @@
       }
     }
 
-    /* Custom scrollbar */
+    /* Scrollbar */
     ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 30px; }
@@ -2841,19 +2814,53 @@
     </div>
   </div>
 
-  <!-- ========== MODAL: DEPOSIT ========== -->
+  <!-- ========== MODAL: DEPOSIT (WITH PLAN SELECTOR) ========== -->
   <div id="depositModal" class="modal-overlay hidden">
     <div class="modal-content">
       <div class="modal-drag-handle"></div>
       <button class="modal-close" id="closeDepositModal"><i class="fas fa-times"></i></button>
-      <h3>Deposit funds</h3>
+      <h3>Deposit — Choose a Plan</h3>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;line-height:1.5;">
+        Select one of the plans below. The USD and PKR amounts will be calculated automatically.
+      </p>
+
+      <!-- Plan selector list -->
+      <div class="plan-selector-list" id="depositPlanList"></div>
+
+      <!-- Payment method -->
+      <div style="margin-top:6px;font-size:12.5px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.6px;">Payment Method</div>
       <div class="method-selector">
         <button class="method-btn active" data-method="binance">Binance</button>
         <button class="method-btn" data-method="bank">Bank</button>
       </div>
+
+      <!-- Selected plan summary -->
+      <div class="amount-summary" id="depositSummary">
+        <div class="amount-row">
+          <span>Selected Plan</span>
+          <span id="summaryPlanName" style="font-weight:800;color:var(--primary);">—</span>
+        </div>
+        <div class="amount-row">
+          <span>Deposit Amount (USD)</span>
+          <span id="summaryUsd" style="font-weight:800;">$0.00</span>
+        </div>
+        <div class="amount-row">
+          <span>Transaction fee</span>
+          <span style="font-weight:600; color:var(--warning);" id="summaryFee">+ $0.00</span>
+        </div>
+        <div class="amount-row total">
+          <span>Total to Pay (USD)</span>
+          <span id="summaryTotalUsd">$0.00</span>
+        </div>
+        <div class="amount-row">
+          <span class="pkr-value">Amount in PKR (auto)</span>
+          <span class="pkr-value" id="summaryPkr">₨ 0.00</span>
+        </div>
+      </div>
+
       <div id="depositBinanceDetails" class="deposit-detail-box">
         <p><strong>Binance Pay ID:</strong> 371289456</p>
-        <p style="color:var(--text-secondary);font-size:12.5px;margin-top:6px;">Send USDT (TRC20) to this address. After payment, upload screenshot.</p>
+        <p style="color:var(--text-secondary);font-size:12.5px;margin-top:6px;">Send the exact amount shown above. After payment, upload screenshot.</p>
       </div>
       <div id="depositBankDetails" class="deposit-detail-box hidden">
         <p><strong>Bank transfer (scanner):</strong></p>
@@ -2865,28 +2872,7 @@
         </a>
         <p style="color:var(--text-secondary);font-size:12.5px;margin-top:6px;text-align:center;">Scan the QR code to pay.</p>
       </div>
-      <div id="pkrExtraFields" class="hidden">
-        <div class="amount-summary">
-          <div class="amount-row">
-            <span>Deposit amount (USD) — min $10</span>
-            <div class="amount-input-row">
-              <input type="number" id="depositUsd" class="input-field" value="10" step="0.01" inputmode="decimal">
-            </div>
-          </div>
-          <div class="amount-row">
-            <span>Transaction fee</span>
-            <span style="font-weight:600; color:var(--warning);">+ $0.50</span>
-          </div>
-          <div class="amount-row total">
-            <span>Total deposit</span>
-            <span id="depositTotalUsd">$10.50</span>
-          </div>
-          <div class="amount-row">
-            <span class="pkr-value">Amount in PKR (auto)</span>
-            <span class="pkr-value" id="depositPkr">₨ 2,887.50</span>
-          </div>
-        </div>
-      </div>
+
       <div class="screenshot-upload">
         <label>Screenshot proof</label>
         <input type="file" id="depositScreenshot" class="file-input" accept="image/*">
@@ -2918,9 +2904,9 @@
         </div>
         <div class="amount-summary">
           <div class="amount-row">
-            <span>Withdraw (USD) — min $30</span>
+            <span>Withdraw (USD) — min $20</span>
             <div class="amount-input-row">
-              <input type="number" id="withdrawBinanceAmount" class="input-field" value="30" step="0.01" inputmode="decimal">
+              <input type="number" id="withdrawBinanceAmount" class="input-field" value="20" step="0.01" inputmode="decimal">
             </div>
           </div>
           <div class="amount-row">
@@ -2929,11 +2915,11 @@
           </div>
           <div class="amount-row total">
             <span>You receive</span>
-            <span id="withdrawBinanceReceive">$29.50</span>
+            <span id="withdrawBinanceReceive">$19.50</span>
           </div>
           <div class="amount-row">
             <span class="pkr-value">In PKR</span>
-            <span class="pkr-value" id="withdrawBinancePkr">₨ 8,112.50</span>
+            <span class="pkr-value" id="withdrawBinancePkr">₨ 5,362.50</span>
           </div>
         </div>
       </div>
@@ -2955,9 +2941,9 @@
         </div>
         <div class="amount-summary">
           <div class="amount-row">
-            <span>Withdraw (USD) — min $30</span>
+            <span>Withdraw (USD) — min $20</span>
             <div class="amount-input-row">
-              <input type="number" id="withdrawBankAmount" class="input-field" value="30" step="0.01" inputmode="decimal">
+              <input type="number" id="withdrawBankAmount" class="input-field" value="20" step="0.01" inputmode="decimal">
             </div>
           </div>
           <div class="amount-row">
@@ -2966,11 +2952,11 @@
           </div>
           <div class="amount-row total">
             <span>You receive</span>
-            <span id="withdrawBankReceive">$29.50</span>
+            <span id="withdrawBankReceive">$19.50</span>
           </div>
           <div class="amount-row">
             <span class="pkr-value">In PKR</span>
-            <span class="pkr-value" id="withdrawBankPkr">₨ 8,112.50</span>
+            <span class="pkr-value" id="withdrawBankPkr">₨ 5,362.50</span>
           </div>
         </div>
       </div>
@@ -2996,10 +2982,7 @@
           success: 'fa-check-circle', error: 'fa-times-circle',
           warning: 'fa-exclamation-triangle', info: 'fa-info-circle'
         };
-        const titles = {
-          success: 'Success', error: 'Error',
-          warning: 'Warning', info: 'Info'
-        };
+        const titles = { success: 'Success', error: 'Error', warning: 'Warning', info: 'Info' };
         const finalTitle = title || titles[type] || 'Notice';
         const icon = icons[type] || 'fa-info-circle';
 
@@ -3045,6 +3028,9 @@
       const AD_DURATION_SEC = 10;
       const ADS_PER_DAY = 10;
       const APPLY_ELIGIBILITY_MS = 20 * 60 * 1000;
+      const USD_TO_PKR = 275; // conversion rate used across the app
+      const DEPOSIT_FEE = 0.5;
+      const MIN_WITHDRAW = 20; // ⬅️ updated from 30 → 20
 
       const PLANS = [
         { id: 'plan1', name: 'Starter', deposit: 10, bonus: 5, totalRequired: 15, perAd: 0.5, daily: 5, color: '#10b981', icon: 'fa-seedling' },
@@ -3257,9 +3243,6 @@
       const loginCard = document.getElementById('loginCard');
       const resetCard = document.getElementById('resetCard');
 
-      // ============================================================
-      // AUTH NAVIGATION
-      // ============================================================
       function showAuthCard(card) {
         signupCard.classList.add('hidden');
         loginCard.classList.add('hidden');
@@ -3283,14 +3266,11 @@
       const signupCountryInput = document.getElementById('signupCountry');
       const signupCountryDial = document.getElementById('signupCountryDial');
       const phonePrefixDisplay = document.getElementById('phonePrefixDisplay');
-      const phoneHint = document.getElementById('phoneHint');
 
       countryTrigger.addEventListener('click', (e) => {
         e.stopPropagation();
         countryDropdown.classList.toggle('open');
-        if (countryDropdown.classList.contains('open')) {
-          countrySearch.focus();
-        }
+        if (countryDropdown.classList.contains('open')) countrySearch.focus();
       });
 
       document.addEventListener('click', (e) => {
@@ -3314,9 +3294,7 @@
         `).join('');
         countryList.querySelectorAll('.country-item').forEach(item => {
           item.addEventListener('click', () => {
-            const name = item.dataset.name;
-            const dial = item.dataset.dial;
-            selectCountry(name, dial);
+            selectCountry(item.dataset.name, item.dataset.dial);
             countryDropdown.classList.remove('open');
             countrySearch.value = '';
             renderCountryList('');
@@ -3332,15 +3310,10 @@
         document.getElementById('signupPhone').value = '';
       }
 
-      function initCountryPicker() {
-        selectCountry("Pakistan", "+92");
-        renderCountryList('');
-      }
-      initCountryPicker();
+      selectCountry("Pakistan", "+92");
+      renderCountryList('');
 
-      countrySearch.addEventListener('input', (e) => {
-        renderCountryList(e.target.value);
-      });
+      countrySearch.addEventListener('input', (e) => renderCountryList(e.target.value));
 
       // ============================================================
       // SIGNUP
@@ -3363,7 +3336,6 @@
         if (digitsOnly.length < 5) return toastError('Please enter a valid phone number.', 'Invalid phone');
 
         const fullPhone = countryDial + digitsOnly;
-
         const users = getUsers();
         if (users.find(u => u.phone === fullPhone)) return toastError('Phone already registered.', 'Account exists');
         if (users.find(u => u.email === email)) return toastError('Email already registered.', 'Account exists');
@@ -3401,7 +3373,6 @@
             if (user) break;
           }
         }
-
         if (!user) {
           const normalized = normalizePhone(identifier);
           user = users.find(u => u.phone === normalized && u.password === password);
@@ -3451,6 +3422,7 @@
       let currentBalanceTab = 'current';
       let adTimer = null;
       let adSecondsLeft = 0;
+      let selectedDepositPlanId = null; // ⬅️ which plan the user picked in deposit modal
 
       // ============================================================
       // DRAWER
@@ -3462,13 +3434,11 @@
       function openDrawer() {
         drawer.classList.add('open');
         drawerOverlay.classList.add('open');
-        document.body.style.overflow = 'hidden';
       }
 
       function closeDrawer() {
         drawer.classList.remove('open');
         drawerOverlay.classList.remove('open');
-        document.body.style.overflow = '';
       }
 
       hamburgerBtn.addEventListener('click', openDrawer);
@@ -3556,12 +3526,10 @@
         if (!currentUser) return;
         renderProfileModal();
         profileModal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
       }
 
       function closeProfile() {
         profileModal.classList.add('hidden');
-        document.body.style.overflow = '';
       }
 
       document.getElementById('drawerProfileBtn').addEventListener('click', () => {
@@ -3772,9 +3740,7 @@
         toastInfo('Application submitted! Eligible in 20 minutes.', 'Pending approval');
         renderApplyView();
 
-        setTimeout(() => {
-          processApplyApproval(currentUser.phone);
-        }, APPLY_ELIGIBILITY_MS + 1000);
+        setTimeout(() => processApplyApproval(currentUser.phone), APPLY_ELIGIBILITY_MS + 1000);
       });
 
       function processApplyApproval(phone) {
@@ -4018,44 +3984,97 @@
       });
 
       // ============================================================
-      // MODALS: DEPOSIT & WITHDRAW
+      // DEPOSIT MODAL — PLAN SELECTOR LOGIC
       // ============================================================
       const depositModal = document.getElementById('depositModal');
-      const withdrawModal = document.getElementById('withdrawModal');
+      const depositPlanList = document.getElementById('depositPlanList');
+      const summaryPlanName = document.getElementById('summaryPlanName');
+      const summaryUsd = document.getElementById('summaryUsd');
+      const summaryFee = document.getElementById('summaryFee');
+      const summaryTotalUsd = document.getElementById('summaryTotalUsd');
+      const summaryPkr = document.getElementById('summaryPkr');
 
-      function openModal(modal) {
-        modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
+      // Build the plan selector list once
+      function buildDepositPlanList() {
+        depositPlanList.innerHTML = PLANS.map(plan => `
+          <div class="plan-selector-item" data-plan-id="${plan.id}">
+            <div class="plan-sel-icon" style="background:${plan.color};">
+              <i class="fas ${plan.icon}"></i>
+            </div>
+            <div class="plan-sel-info">
+              <div class="plan-sel-name">${plan.name}</div>
+              <div class="plan-sel-sub">${plan.perAd.toFixed(2)} $ / ad • Daily $${plan.daily}</div>
+            </div>
+            <div class="plan-sel-price">
+              <div class="plan-sel-usd">$${plan.deposit}</div>
+              <div class="plan-sel-pkr">₨ ${(plan.deposit * USD_TO_PKR).toFixed(0)}</div>
+            </div>
+            <div class="plan-check"><i class="fas fa-check"></i></div>
+          </div>
+        `).join('');
+
+        depositPlanList.querySelectorAll('.plan-selector-item').forEach(item => {
+          item.addEventListener('click', () => {
+            const planId = item.dataset.planId;
+            selectDepositPlan(planId);
+          });
+        });
       }
 
-      function closeModal(modal) {
-        modal.classList.add('hidden');
-        document.body.style.overflow = '';
+      function selectDepositPlan(planId) {
+        selectedDepositPlanId = planId;
+        depositPlanList.querySelectorAll('.plan-selector-item').forEach(item => {
+          item.classList.toggle('selected', item.dataset.planId === planId);
+        });
+        updateDepositSummary();
       }
 
-      document.getElementById('depositBtn').addEventListener('click', () => {
-        openModal(depositModal);
+      function updateDepositSummary() {
+        if (!selectedDepositPlanId) {
+          summaryPlanName.textContent = '—';
+          summaryUsd.textContent = '$0.00';
+          summaryFee.textContent = '+ $0.00';
+          summaryTotalUsd.textContent = '$0.00';
+          summaryPkr.textContent = '₨ 0.00';
+          return;
+        }
+        const plan = PLANS.find(p => p.id === selectedDepositPlanId);
+        if (!plan) return;
+
+        const fee = depositMethod === 'bank' ? DEPOSIT_FEE : 0;
+        const totalUsd = plan.deposit + fee;
+        const pkr = totalUsd * USD_TO_PKR;
+
+        summaryPlanName.textContent = plan.name;
+        summaryUsd.textContent = '$' + plan.deposit.toFixed(2);
+        summaryFee.textContent = '+ $' + fee.toFixed(2);
+        summaryTotalUsd.textContent = '$' + totalUsd.toFixed(2);
+        summaryPkr.textContent = '₨ ' + pkr.toFixed(2);
+      }
+
+      buildDepositPlanList();
+
+      function openDepositModal() {
+        selectedDepositPlanId = null;
+        depositPlanList.querySelectorAll('.plan-selector-item').forEach(item => item.classList.remove('selected'));
+        updateDepositSummary();
         document.getElementById('depositPendingMessage').classList.add('hidden');
         document.getElementById('depositSuccessMessage').classList.add('hidden');
-      });
-      document.getElementById('withdrawBtn').addEventListener('click', () => {
-        openModal(withdrawModal);
-        document.getElementById('withdrawPendingMessage').classList.add('hidden');
-        document.getElementById('withdrawSuccessMessage').classList.add('hidden');
-      });
-      document.getElementById('closeDepositModal').addEventListener('click', () => closeModal(depositModal));
-      document.getElementById('closeWithdrawModal').addEventListener('click', () => closeModal(withdrawModal));
-      window.addEventListener('click', (e) => {
-        if (e.target === depositModal) closeModal(depositModal);
-        if (e.target === withdrawModal) closeModal(withdrawModal);
+        depositModal.classList.remove('hidden');
+      }
+
+      document.getElementById('depositBtn').addEventListener('click', openDepositModal);
+      document.getElementById('closeDepositModal').addEventListener('click', () => depositModal.classList.add('hidden'));
+      depositModal.addEventListener('click', (e) => {
+        if (e.target === depositModal) depositModal.classList.add('hidden');
       });
 
       // Deposit method toggle
       const depositMethodBtns = document.querySelectorAll('[data-method]');
       const binanceDetail = document.getElementById('depositBinanceDetails');
       const bankDetail = document.getElementById('depositBankDetails');
-      const pkrExtra = document.getElementById('pkrExtraFields');
       let depositMethod = 'binance';
+
       depositMethodBtns.forEach(btn => {
         btn.addEventListener('click', () => {
           depositMethodBtns.forEach(b => b.classList.remove('active'));
@@ -4064,50 +4083,25 @@
           if (depositMethod === 'binance') {
             binanceDetail.classList.remove('hidden');
             bankDetail.classList.add('hidden');
-            pkrExtra.classList.add('hidden');
           } else {
             binanceDetail.classList.add('hidden');
             bankDetail.classList.remove('hidden');
-            pkrExtra.classList.remove('hidden');
           }
+          updateDepositSummary();
         });
       });
 
-      // Deposit amount
-      const depositUsd = document.getElementById('depositUsd');
-      const depositTotalUsd = document.getElementById('depositTotalUsd');
-      const depositPkr = document.getElementById('depositPkr');
-
-      function refreshDepositSummary() {
-        const raw = parseFloat(depositUsd.value);
-        const usd = isNaN(raw) ? 0 : raw;
-        const fee = 0.5;
-        const total = usd + fee;
-        depositTotalUsd.textContent = '$' + (usd >= 10 ? total.toFixed(2) : '0.00');
-        depositPkr.textContent = '₨ ' + (usd >= 10 ? (total * 275).toFixed(2) : '0.00');
-      }
-      depositUsd.addEventListener('input', refreshDepositSummary);
-      depositUsd.addEventListener('blur', () => {
-        let val = parseFloat(depositUsd.value);
-        if (isNaN(val) || val < 10) val = 10;
-        depositUsd.value = val;
-        refreshDepositSummary();
-      });
-      refreshDepositSummary();
-
       // Deposit request
       document.getElementById('requestDepositBtn').addEventListener('click', () => {
+        if (!selectedDepositPlanId) return toastWarning('Please select a plan to deposit.', 'No plan selected');
         const screenshot = document.getElementById('depositScreenshot').files[0];
         if (!screenshot) return toastWarning('Please upload a payment screenshot.', 'Screenshot required');
 
-        let baseAmount = 0;
-        if (depositMethod === 'bank') {
-          baseAmount = parseFloat(depositUsd.value) || 0;
-          if (baseAmount < 10) return toastError('Minimum deposit is $10.', 'Amount too low');
-        } else {
-          baseAmount = 50;
-        }
-        const fee = depositMethod === 'bank' ? 0.5 : 0;
+        const plan = PLANS.find(p => p.id === selectedDepositPlanId);
+        if (!plan) return;
+
+        const baseAmount = plan.deposit;
+        const fee = depositMethod === 'bank' ? DEPOSIT_FEE : 0;
         const totalDeposit = baseAmount + fee;
         const createdAt = new Date().toLocaleString();
         const approveAt = Date.now() + DEPOSIT_APPROVAL_MS;
@@ -4118,8 +4112,8 @@
 
         addHistory(currentUser.phone, {
           type: 'deposit',
-          description: 'Deposit request (pending)',
-          detail: depositMethod === 'bank' ? `Bank • $${baseAmount.toFixed(2)} + $0.5 fee` : 'Binance',
+          description: `Deposit request — ${plan.name}`,
+          detail: depositMethod === 'bank' ? `Bank • $${baseAmount.toFixed(2)} + $${fee.toFixed(2)} fee` : `Binance • $${baseAmount.toFixed(2)}`,
           amount: totalDeposit,
           time: createdAt
         });
@@ -4131,13 +4125,32 @@
           phone: currentUser.phone,
           baseAmount: baseAmount,
           fee: fee,
-          detailApproved: depositMethod === 'bank' ? `Bank transfer • $${baseAmount.toFixed(2)} + $0.5 fee` : 'Binance',
+          planId: plan.id,
+          planName: plan.name,
+          detailApproved: depositMethod === 'bank'
+            ? `Bank transfer — ${plan.name} • $${baseAmount.toFixed(2)} + $${fee.toFixed(2)} fee`
+            : `Binance — ${plan.name} • $${baseAmount.toFixed(2)}`,
           createdAt: createdAt,
           approveAt: approveAt
         });
 
         setTimeout(processPendingRequests, DEPOSIT_APPROVAL_MS + 500);
-        setTimeout(() => closeModal(depositModal), 2000);
+        setTimeout(() => depositModal.classList.add('hidden'), 2000);
+      });
+
+      // ============================================================
+      // WITHDRAW MODAL
+      // ============================================================
+      const withdrawModal = document.getElementById('withdrawModal');
+
+      document.getElementById('withdrawBtn').addEventListener('click', () => {
+        withdrawModal.classList.remove('hidden');
+        document.getElementById('withdrawPendingMessage').classList.add('hidden');
+        document.getElementById('withdrawSuccessMessage').classList.add('hidden');
+      });
+      document.getElementById('closeWithdrawModal').addEventListener('click', () => withdrawModal.classList.add('hidden'));
+      withdrawModal.addEventListener('click', (e) => {
+        if (e.target === withdrawModal) withdrawModal.classList.add('hidden');
       });
 
       // Withdraw method toggle
@@ -4145,6 +4158,7 @@
       const binanceWithdrawFields = document.getElementById('withdrawBinanceFields');
       const bankWithdrawFields = document.getElementById('withdrawBankFields');
       let withdrawMethod = 'binance';
+
       withdrawMethodBtns.forEach(btn => {
         btn.addEventListener('click', () => {
           withdrawMethodBtns.forEach(b => b.classList.remove('active'));
@@ -4160,7 +4174,6 @@
         });
       });
 
-      // Withdraw amount
       const withdrawBinanceAmount = document.getElementById('withdrawBinanceAmount');
       const withdrawBinanceReceive = document.getElementById('withdrawBinanceReceive');
       const withdrawBinancePkr = document.getElementById('withdrawBinancePkr');
@@ -4173,13 +4186,13 @@
         const amt = isNaN(raw) ? 0 : raw;
         const fee = 0.5;
         const net = Math.max(0, amt - fee);
-        withdrawBinanceReceive.textContent = '$' + (amt >= 30 ? net.toFixed(2) : '0.00');
-        withdrawBinancePkr.textContent = '₨ ' + (amt >= 30 ? (net * 275).toFixed(2) : '0.00');
+        withdrawBinanceReceive.textContent = '$' + (amt >= MIN_WITHDRAW ? net.toFixed(2) : '0.00');
+        withdrawBinancePkr.textContent = '₨ ' + (amt >= MIN_WITHDRAW ? (net * USD_TO_PKR).toFixed(2) : '0.00');
       }
       withdrawBinanceAmount.addEventListener('input', refreshWithdrawBinanceSummary);
       withdrawBinanceAmount.addEventListener('blur', () => {
         let val = parseFloat(withdrawBinanceAmount.value);
-        if (isNaN(val) || val < 30) val = 30;
+        if (isNaN(val) || val < MIN_WITHDRAW) val = MIN_WITHDRAW;
         withdrawBinanceAmount.value = val;
         refreshWithdrawBinanceSummary();
       });
@@ -4190,19 +4203,18 @@
         const amt = isNaN(raw) ? 0 : raw;
         const fee = 0.5;
         const net = Math.max(0, amt - fee);
-        withdrawBankReceive.textContent = '$' + (amt >= 30 ? net.toFixed(2) : '0.00');
-        withdrawBankPkr.textContent = '₨ ' + (amt >= 30 ? (net * 275).toFixed(2) : '0.00');
+        withdrawBankReceive.textContent = '$' + (amt >= MIN_WITHDRAW ? net.toFixed(2) : '0.00');
+        withdrawBankPkr.textContent = '₨ ' + (amt >= MIN_WITHDRAW ? (net * USD_TO_PKR).toFixed(2) : '0.00');
       }
       withdrawBankAmount.addEventListener('input', refreshWithdrawBankSummary);
       withdrawBankAmount.addEventListener('blur', () => {
         let val = parseFloat(withdrawBankAmount.value);
-        if (isNaN(val) || val < 30) val = 30;
+        if (isNaN(val) || val < MIN_WITHDRAW) val = MIN_WITHDRAW;
         withdrawBankAmount.value = val;
         refreshWithdrawBankSummary();
       });
       refreshWithdrawBankSummary();
 
-      // Withdraw request
       document.getElementById('requestWithdrawBtn').addEventListener('click', () => {
         let amount = 0;
         if (withdrawMethod === 'binance') {
@@ -4214,7 +4226,7 @@
           if (!document.getElementById('withdrawHolder').value || !document.getElementById('withdrawAccountNumber').value) 
             return toastWarning('Please fill in bank details.', 'Missing info');
         }
-        if (amount < 30) return toastError('Minimum withdrawal is $30.', 'Amount too low');
+        if (amount < MIN_WITHDRAW) return toastError(`Minimum withdrawal is $${MIN_WITHDRAW}.`, 'Amount too low');
         if (!currentUser || currentUser.balance < amount) return toastError('Insufficient balance.', 'Insufficient funds');
 
         const fee = 0.5;
@@ -4249,7 +4261,7 @@
         });
 
         setTimeout(processPendingRequests, WITHDRAW_APPROVAL_MS + 500);
-        setTimeout(() => closeModal(withdrawModal), 2000);
+        setTimeout(() => withdrawModal.classList.add('hidden'), 2000);
       });
 
       // ============================================================
@@ -4273,9 +4285,9 @@
             saveUsers(users);
 
             const history = getUserHistory(req.phone);
-            const hIdx = history.findIndex(h => h.type === 'deposit' && h.description === 'Deposit request (pending)' && h.time === req.createdAt);
+            const hIdx = history.findIndex(h => h.type === 'deposit' && h.description.includes('Deposit request') && h.time === req.createdAt);
             if (hIdx !== -1) {
-              history[hIdx].description = 'Deposit approved';
+              history[hIdx].description = 'Deposit approved' + (req.planName ? ' — ' + req.planName : '');
               history[hIdx].detail = req.detailApproved;
               history[hIdx].amount = req.baseAmount;
               saveUserHistory(req.phone, history);
@@ -4366,17 +4378,14 @@
         dashboardSection.classList.add('hidden');
       }
 
-      // Logout
-      function doLogout() {
+      document.getElementById('drawerLogoutBtn').addEventListener('click', () => {
         clearCurrentUser();
         closeDrawer();
         authSection.classList.remove('hidden');
         dashboardSection.classList.add('hidden');
         currentUser = null;
         toastInfo('You have been logged out.', 'Logged out');
-      }
-
-      document.getElementById('drawerLogoutBtn').addEventListener('click', doLogout);
+      });
 
       // ============================================================
       // POLLING & VISIBILITY

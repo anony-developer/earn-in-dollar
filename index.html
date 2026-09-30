@@ -1345,7 +1345,6 @@
 
   <!-- ========== DASHBOARD SECTION ========== -->
   <div id="dashboardSection" class="app-shell hidden">
-    <!-- TOP APP BAR -->
     <header class="app-bar">
       <div class="app-bar-left">
         <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
@@ -1363,7 +1362,6 @@
       </div>
     </header>
 
-    <!-- NAVIGATION DRAWER -->
     <div class="drawer-overlay" id="drawerOverlay"></div>
     <aside class="drawer" id="drawer">
       <div class="drawer-header">
@@ -1402,14 +1400,13 @@
       </div>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <main class="main-content">
       <div class="page-header">
         <h1 id="pageTitle">Dashboard</h1>
         <p id="pageSubtitle">Welcome back, User</p>
       </div>
 
-      <!-- ====== VIEW: DASHBOARD ====== -->
+      <!-- VIEW: DASHBOARD -->
       <div id="view-dashboard" class="view-section">
         <div class="balance-tabs" id="balanceTabs">
           <button class="balance-tab active" data-tab="current">
@@ -1486,12 +1483,12 @@
         </div>
       </div>
 
-      <!-- ====== VIEW: APPLY FOR EARNING ====== -->
+      <!-- VIEW: APPLY FOR EARNING (10 minutes) -->
       <div id="view-apply" class="view-section hidden">
         <div class="card">
           <div class="card-title"><i class="fas fa-file-signature"></i> Apply for Earning</div>
           <p style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;line-height:1.5;">
-            Fill in your details. After submitting, you'll become eligible within <strong>20 minutes</strong> and receive a <strong>$5 bonus</strong>.
+            Fill in your details. After submitting, you'll become eligible within <strong>10 minutes</strong> and receive a <strong>$5 bonus</strong>.
           </p>
           <div class="apply-section" id="applySection">
             <input type="text" id="applyFullName" class="apply-input" placeholder="Full name (as on CNIC)">
@@ -1515,7 +1512,7 @@
         </div>
       </div>
 
-      <!-- ====== VIEW: PREMIUM PLANS ====== -->
+      <!-- VIEW: PREMIUM PLANS -->
       <div id="view-plans" class="view-section hidden">
         <div class="card">
           <div class="card-title"><i class="fas fa-crown"></i> Premium Plans</div>
@@ -1538,7 +1535,7 @@
         </div>
       </div>
 
-      <!-- ====== VIEW: WATCH ADS ====== -->
+      <!-- VIEW: WATCH ADS -->
       <div id="view-watch" class="view-section hidden">
         <div class="card">
           <div class="card-title"><i class="fas fa-tv"></i> Watch & Earn</div>
@@ -1582,7 +1579,7 @@
         </div>
       </div>
 
-      <!-- ====== VIEW: HISTORY ====== -->
+      <!-- VIEW: HISTORY -->
       <div id="view-history" class="view-section hidden">
         <div class="card">
           <div class="card-title"><i class="fas fa-history"></i> Transaction History</div>
@@ -1614,7 +1611,6 @@
       </div>
     </main>
 
-    <!-- BOTTOM NAVIGATION -->
     <nav class="bottom-nav">
       <button class="bottom-nav-item active" data-view="dashboard">
         <i class="fas fa-home"></i>
@@ -1639,7 +1635,7 @@
     </nav>
   </div>
 
-  <!-- ========== MODAL: PROFILE ========== -->
+  <!-- MODAL: PROFILE -->
   <div id="profileModal" class="modal-overlay hidden">
     <div class="modal-content" style="max-width:480px;">
       <div class="modal-drag-handle"></div>
@@ -1677,7 +1673,7 @@
     </div>
   </div>
 
-  <!-- ========== MODAL: DEPOSIT ========== -->
+  <!-- MODAL: DEPOSIT -->
   <div id="depositModal" class="modal-overlay hidden">
     <div class="modal-content">
       <div class="modal-drag-handle"></div>
@@ -1747,7 +1743,7 @@
     </div>
   </div>
 
-  <!-- ========== MODAL: WITHDRAW ========== -->
+  <!-- MODAL: WITHDRAW -->
   <div id="withdrawModal" class="modal-overlay hidden">
     <div class="modal-content">
       <div class="modal-drag-handle"></div>
@@ -1832,16 +1828,11 @@
 
   <script>
     (function() {
-      // ============================================================
       // TOAST SYSTEM
-      // ============================================================
       const toastContainer = document.getElementById('toastContainer');
 
       function showToast(message, type = 'info', title = null, duration = 3500) {
-        const icons = {
-          success: 'fa-check-circle', error: 'fa-times-circle',
-          warning: 'fa-exclamation-triangle', info: 'fa-info-circle'
-        };
+        const icons = { success: 'fa-check-circle', error: 'fa-times-circle', warning: 'fa-exclamation-triangle', info: 'fa-info-circle' };
         const titles = { success: 'Success', error: 'Error', warning: 'Warning', info: 'Info' };
         const finalTitle = title || titles[type] || 'Notice';
         const icon = icons[type] || 'fa-info-circle';
@@ -1857,21 +1848,15 @@
           <button class="toast-close" aria-label="Close"><i class="fas fa-times"></i></button>
           <div class="toast-progress" style="animation-duration: ${duration}ms;"></div>
         `;
-
         toastContainer.appendChild(toast);
         const timeoutId = setTimeout(() => dismissToast(toast), duration);
-        toast.querySelector('.toast-close').addEventListener('click', () => {
-          clearTimeout(timeoutId);
-          dismissToast(toast);
-        });
+        toast.querySelector('.toast-close').addEventListener('click', () => { clearTimeout(timeoutId); dismissToast(toast); });
       }
 
       function dismissToast(toast) {
         if (!toast.parentNode) return;
         toast.classList.add('toast-out');
-        toast.addEventListener('animationend', () => {
-          if (toast.parentNode) toast.parentNode.removeChild(toast);
-        }, { once: true });
+        toast.addEventListener('animationend', () => { if (toast.parentNode) toast.parentNode.removeChild(toast); }, { once: true });
       }
 
       window.toastSuccess = (msg, title) => showToast(msg, 'success', title);
@@ -1879,15 +1864,13 @@
       window.toastWarning = (msg, title) => showToast(msg, 'warning', title);
       window.toastInfo = (msg, title) => showToast(msg, 'info', title);
 
-      // ============================================================
-      // CONFIG
-      // ============================================================
+      // CONFIG — ⭐ Application approval: 10 minutes
       const DEPOSIT_APPROVAL_MS = 3 * 60 * 1000;
       const WITHDRAW_APPROVAL_MS = 5 * 60 * 1000;
       const POLL_INTERVAL_MS = 5000;
       const AD_DURATION_SEC = 10;
       const ADS_PER_DAY = 10;
-      const APPLY_ELIGIBILITY_MS = 20 * 60 * 1000;
+      const APPLY_ELIGIBILITY_MS = 10 * 60 * 1000; // ⭐ changed 20 → 10 min
       const USD_TO_PKR = 275;
       const DEPOSIT_FEE = 0.5;
       const MIN_WITHDRAW = 20;
@@ -1901,9 +1884,7 @@
         { id: 'plan5', name: 'Platinum',deposit: 200, bonus: 5, totalRequired: 205, perAd: 7.00, daily: 70.0, color: '#ef4444', icon: 'fa-gem' }
       ];
 
-      // ============================================================
-      // COUNTRY DATA
-      // ============================================================
+      // COUNTRIES
       const countries = [
         { name: "Afghanistan", dial: "+93" }, { name: "Albania", dial: "+355" }, { name: "Algeria", dial: "+213" },
         { name: "Andorra", dial: "+376" }, { name: "Angola", dial: "+244" }, { name: "Argentina", dial: "+54" },
@@ -1970,9 +1951,7 @@
         { name: "Zimbabwe", dial: "+263" }
       ];
 
-      // ============================================================
       // STORAGE
-      // ============================================================
       function getUsers() { return JSON.parse(localStorage.getItem('earndollar_users') || '[]'); }
       function saveUsers(users) { localStorage.setItem('earndollar_users', JSON.stringify(users)); }
       function getCurrentUser() {
@@ -2000,16 +1979,12 @@
         savePendingRequests(queue);
       }
 
-      // ============================================================
       // PHONE NORMALIZATION
-      // ============================================================
       function normalizePhone(input) {
         if (!input) return '';
         let cleaned = input.trim().replace(/\D/g, '');
         if (!cleaned) return '';
-        if (cleaned.startsWith('92')) {
-          if (cleaned.length === 12) return '+' + cleaned;
-        }
+        if (cleaned.startsWith('92')) { if (cleaned.length === 12) return '+' + cleaned; }
         if (cleaned.startsWith('0')) {
           if (cleaned.length === 11) return '+92' + cleaned.substring(1);
           cleaned = '92' + cleaned.substring(1);
@@ -2033,9 +2008,7 @@
         return [...new Set(results)];
       }
 
-      // ============================================================
       // THEME
-      // ============================================================
       const themeToggle = document.getElementById('themeToggle');
       const themeIcon = document.getElementById('themeIcon');
       const authThemeToggle = document.getElementById('authThemeToggle');
@@ -2070,9 +2043,7 @@
         applyTheme(currentTheme);
       });
 
-      // ============================================================
       // PASSWORD TOGGLES
-      // ============================================================
       function setupPasswordToggle(toggleId, inputId) {
         const toggle = document.getElementById(toggleId);
         const input = document.getElementById(inputId);
@@ -2095,9 +2066,7 @@
       setupPasswordToggle('toggleLoginPassword', 'loginPassword');
       setupPasswordToggle('toggleResetPassword', 'resetNewPassword');
 
-      // ============================================================
       // DOM REFS
-      // ============================================================
       const authSection = document.getElementById('authSection');
       const dashboardSection = document.getElementById('dashboardSection');
       const signupCard = document.getElementById('signupCard');
@@ -2116,9 +2085,7 @@
       document.getElementById('goToReset').addEventListener('click', () => showAuthCard(resetCard));
       document.getElementById('backToLoginFromReset').addEventListener('click', () => showAuthCard(loginCard));
 
-      // ============================================================
       // COUNTRY PICKER
-      // ============================================================
       const countryTrigger = document.getElementById('countryTrigger');
       const countryTriggerLabel = document.getElementById('countryTriggerLabel');
       const countryDropdown = document.getElementById('countryDropdown');
@@ -2176,9 +2143,7 @@
 
       countrySearch.addEventListener('input', (e) => renderCountryList(e.target.value));
 
-      // ============================================================
       // SIGNUP
-      // ============================================================
       document.getElementById('signupBtn').addEventListener('click', () => {
         const fullname = document.getElementById('signupFullname').value.trim();
         const country = signupCountryInput.value;
@@ -2203,8 +2168,7 @@
 
         const newUser = {
           fullname, country, phone: fullPhone, email, password,
-          balance: 0,
-          totalDeposited: 0, totalWithdrawn: 0,
+          balance: 0, totalDeposited: 0, totalWithdrawn: 0,
           activePlan: null, planLocked: false,
           adsWatchedToday: 0, lastAdDate: null,
           applyStatus: 'none', applyTime: null, applyData: null,
@@ -2217,9 +2181,7 @@
         showDashboard();
       });
 
-      // ============================================================
       // LOGIN
-      // ============================================================
       document.getElementById('loginBtn').addEventListener('click', () => {
         const identifier = document.getElementById('loginIdentifier').value.trim();
         const password = document.getElementById('loginPassword').value;
@@ -2248,9 +2210,7 @@
         showDashboard();
       });
 
-      // ============================================================
       // RESET PASSWORD
-      // ============================================================
       document.getElementById('resetBtn').addEventListener('click', () => {
         const phone = document.getElementById('resetPhone').value.trim();
         const newPass = document.getElementById('resetNewPassword').value;
@@ -2276,9 +2236,7 @@
         showAuthCard(loginCard);
       });
 
-      // ============================================================
       // APP STATE
-      // ============================================================
       let currentUser = null;
       let currentView = 'dashboard';
       let currentHistoryFilter = 'all';
@@ -2287,9 +2245,7 @@
       let adSecondsLeft = 0;
       let selectedDepositPlanId = null;
 
-      // ============================================================
       // DRAWER
-      // ============================================================
       const drawer = document.getElementById('drawer');
       const drawerOverlay = document.getElementById('drawerOverlay');
       const hamburgerBtn = document.getElementById('hamburgerBtn');
@@ -2307,9 +2263,7 @@
       hamburgerBtn.addEventListener('click', openDrawer);
       drawerOverlay.addEventListener('click', closeDrawer);
 
-      // ============================================================
       // NAVIGATION
-      // ============================================================
       const viewSections = {
         dashboard: document.getElementById('view-dashboard'),
         apply: document.getElementById('view-apply'),
@@ -2355,21 +2309,14 @@
       }
 
       drawerNavItems.forEach(item => {
-        item.addEventListener('click', () => {
-          switchView(item.dataset.view);
-          closeDrawer();
-        });
+        item.addEventListener('click', () => { switchView(item.dataset.view); closeDrawer(); });
       });
 
       bottomNavItems.forEach(item => {
-        item.addEventListener('click', () => {
-          switchView(item.dataset.view);
-        });
+        item.addEventListener('click', () => { switchView(item.dataset.view); });
       });
 
-      // ============================================================
       // BALANCE TABS
-      // ============================================================
       document.querySelectorAll('.balance-tab').forEach(tab => {
         tab.addEventListener('click', () => {
           document.querySelectorAll('.balance-tab').forEach(t => t.classList.remove('active'));
@@ -2380,9 +2327,7 @@
         });
       });
 
-      // ============================================================
       // PROFILE MODAL
-      // ============================================================
       const profileModal = document.getElementById('profileModal');
 
       function openProfile() {
@@ -2391,9 +2336,7 @@
         profileModal.classList.remove('hidden');
       }
 
-      function closeProfile() {
-        profileModal.classList.add('hidden');
-      }
+      function closeProfile() { profileModal.classList.add('hidden'); }
 
       document.getElementById('drawerProfileBtn').addEventListener('click', () => {
         closeDrawer();
@@ -2402,9 +2345,7 @@
 
       document.getElementById('bottomProfileBtn').addEventListener('click', openProfile);
       document.getElementById('closeProfileModal').addEventListener('click', closeProfile);
-      profileModal.addEventListener('click', (e) => {
-        if (e.target === profileModal) closeProfile();
-      });
+      profileModal.addEventListener('click', (e) => { if (e.target === profileModal) closeProfile(); });
 
       function renderProfileModal() {
         if (!currentUser) return;
@@ -2417,10 +2358,7 @@
         document.getElementById('profilePassword').textContent = '••••••••';
         
         const toggleIcon = document.querySelector('#toggleProfilePassword i');
-        if (toggleIcon) {
-          toggleIcon.classList.remove('fa-eye-slash');
-          toggleIcon.classList.add('fa-eye');
-        }
+        if (toggleIcon) { toggleIcon.classList.remove('fa-eye-slash'); toggleIcon.classList.add('fa-eye'); }
 
         if (currentUser.createdAt) {
           const joined = new Date(currentUser.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -2444,34 +2382,20 @@
         }
       });
 
-      // ============================================================
       // RENDER HELPERS
-      // ============================================================
       function updateBalanceUI() {
         if (!currentUser) return;
         document.getElementById('balanceDisplay').textContent = currentUser.balance.toFixed(2);
-
         const history = getUserHistory(currentUser.phone);
         const totalLifetime = history.filter(h => h.amount > 0).reduce((sum, h) => sum + h.amount, 0);
         document.getElementById('totalBalanceDisplay').textContent = totalLifetime.toFixed(2);
       }
 
       function formatHistoryEntry(entry) {
-        let icon = 'fa-circle';
-        let typeClass = '';
-        let amountClass = '';
-        let amountSign = '';
-
-        if (entry.type === 'deposit') {
-          icon = 'fa-arrow-down'; typeClass = 'deposit';
-          amountClass = 'positive'; amountSign = '+';
-        } else if (entry.type === 'withdraw') {
-          icon = 'fa-arrow-up'; typeClass = 'withdraw';
-          amountClass = 'negative'; amountSign = '-';
-        } else if (entry.type === 'ad') {
-          icon = 'fa-play-circle'; typeClass = 'ad';
-          amountClass = 'positive'; amountSign = '+';
-        }
+        let icon = 'fa-circle', typeClass = '', amountClass = '', amountSign = '';
+        if (entry.type === 'deposit') { icon = 'fa-arrow-down'; typeClass = 'deposit'; amountClass = 'positive'; amountSign = '+'; }
+        else if (entry.type === 'withdraw') { icon = 'fa-arrow-up'; typeClass = 'withdraw'; amountClass = 'negative'; amountSign = '-'; }
+        else if (entry.type === 'ad') { icon = 'fa-play-circle'; typeClass = 'ad'; amountClass = 'positive'; amountSign = '+'; }
 
         return `
           <div class="history-item ${typeClass}">
@@ -2494,9 +2418,7 @@
         const recentContainer = document.getElementById('recentActivityList');
 
         let history = allHistory;
-        if (currentHistoryFilter !== 'all') {
-          history = allHistory.filter(h => h.type === currentHistoryFilter);
-        }
+        if (currentHistoryFilter !== 'all') history = allHistory.filter(h => h.type === currentHistoryFilter);
 
         if (history.length === 0) {
           const iconMap = { all: 'fa-inbox', deposit: 'fa-arrow-down', withdraw: 'fa-arrow-up', ad: 'fa-play-circle' };
@@ -2514,9 +2436,7 @@
         }
       }
 
-      // ============================================================
-      // DASHBOARD VIEW
-      // ============================================================
+      // DASHBOARD
       function renderDashboard() {
         if (!currentUser) return;
         updateBalanceUI();
@@ -2545,9 +2465,7 @@
         renderHistory();
       }
 
-      // ============================================================
-      // APPLY VIEW
-      // ============================================================
+      // APPLY
       function renderApplyView() {
         if (!currentUser) return;
         const statusBox = document.getElementById('applyStatusBox');
@@ -2615,7 +2533,8 @@
         saveUsers(users);
         currentUser = users[idx];
 
-        toastInfo('Application submitted! Eligible in 20 minutes.', 'Pending approval');
+        // ⭐ Updated toast: 10 minutes
+        toastInfo('Application submitted! Eligible in 10 minutes.', 'Pending approval');
         renderApplyView();
 
         setTimeout(() => processApplyApproval(currentUser.phone), APPLY_ELIGIBILITY_MS + 1000);
@@ -2645,13 +2564,10 @@
           if (currentView === 'apply') renderApplyView();
           if (currentView === 'dashboard') renderDashboard();
         }
-
         toastSuccess('$5 eligibility bonus credited!', 'Application approved');
       }
 
-      // ============================================================
-      // PLANS VIEW
-      // ============================================================
+      // PLANS
       function renderPlansView() {
         if (!currentUser) return;
         const grid = document.getElementById('plansGrid');
@@ -2710,7 +2626,6 @@
           return toastError(`You need $${plan.totalRequired} in your wallet. You have $${users[idx].balance.toFixed(2)}. Please deposit first.`, 'Insufficient balance');
         }
 
-        // Deduct from balance and activate
         users[idx].balance -= plan.totalRequired;
         users[idx].activePlan = plan.id;
         users[idx].planLocked = true;
@@ -2733,9 +2648,7 @@
         renderDashboard();
       }
 
-      // ============================================================
-      // WATCH VIEW
-      // ============================================================
+      // WATCH
       function renderWatchView() {
         if (!currentUser) return;
         const watchBtn = document.getElementById('watchAdBtn');
@@ -2760,14 +2673,9 @@
           perAdEarning.textContent = '$0.00';
         } else {
           const plan = PLANS.find(p => p.id === currentUser.activePlan);
-          if (!plan) {
-            adText.textContent = 'Plan error. Contact support.';
-            watchBtn.disabled = true;
-            return;
-          }
+          if (!plan) { adText.textContent = 'Plan error. Contact support.'; watchBtn.disabled = true; return; }
 
           perAdEarning.textContent = '$' + plan.perAd.toFixed(2);
-
           const today = new Date().toDateString();
           const todayAds = (currentUser.lastAdDate === today) ? (currentUser.adsWatchedToday || 0) : 0;
           adsTodayCount.textContent = todayAds + ' / ' + ADS_PER_DAY;
@@ -2796,10 +2704,7 @@
         if (!plan) return;
 
         const today = new Date().toDateString();
-        if (currentUser.lastAdDate !== today) {
-          currentUser.adsWatchedToday = 0;
-          currentUser.lastAdDate = today;
-        }
+        if (currentUser.lastAdDate !== today) { currentUser.adsWatchedToday = 0; currentUser.lastAdDate = today; }
         if (currentUser.adsWatchedToday >= ADS_PER_DAY) return toastWarning('Daily ad limit reached.', 'Limit reached');
 
         const watchBtn = document.getElementById('watchAdBtn');
@@ -2857,9 +2762,7 @@
         }, 1000);
       });
 
-      // ============================================================
       // HISTORY SUB-TABS
-      // ============================================================
       document.querySelectorAll('.history-subtab').forEach(btn => {
         btn.addEventListener('click', () => {
           document.querySelectorAll('.history-subtab').forEach(b => b.classList.remove('active'));
@@ -2869,9 +2772,7 @@
         });
       });
 
-      // ============================================================
       // DEPOSIT MODAL
-      // ============================================================
       const depositModal = document.getElementById('depositModal');
       const depositPlanList = document.getElementById('depositPlanList');
       const summaryPlanName = document.getElementById('summaryPlanName');
@@ -2950,9 +2851,7 @@
 
       document.getElementById('depositBtn').addEventListener('click', openDepositModal);
       document.getElementById('closeDepositModal').addEventListener('click', () => depositModal.classList.add('hidden'));
-      depositModal.addEventListener('click', (e) => {
-        if (e.target === depositModal) depositModal.classList.add('hidden');
-      });
+      depositModal.addEventListener('click', (e) => { if (e.target === depositModal) depositModal.classList.add('hidden'); });
 
       const depositMethodBtns = document.querySelectorAll('[data-method]');
       const binanceDetail = document.getElementById('depositBinanceDetails');
@@ -3022,9 +2921,7 @@
         setTimeout(() => depositModal.classList.add('hidden'), 2000);
       });
 
-      // ============================================================
       // WITHDRAW MODAL
-      // ============================================================
       const withdrawModal = document.getElementById('withdrawModal');
 
       document.getElementById('withdrawBtn').addEventListener('click', () => {
@@ -3033,9 +2930,7 @@
         document.getElementById('withdrawSuccessMessage').classList.add('hidden');
       });
       document.getElementById('closeWithdrawModal').addEventListener('click', () => withdrawModal.classList.add('hidden'));
-      withdrawModal.addEventListener('click', (e) => {
-        if (e.target === withdrawModal) withdrawModal.classList.add('hidden');
-      });
+      withdrawModal.addEventListener('click', (e) => { if (e.target === withdrawModal) withdrawModal.classList.add('hidden'); });
 
       const withdrawMethodBtns = document.querySelectorAll('[data-wmethod]');
       const binanceWithdrawFields = document.getElementById('withdrawBinanceFields');
@@ -3147,9 +3042,7 @@
         setTimeout(() => withdrawModal.classList.add('hidden'), 2000);
       });
 
-      // ============================================================
       // PENDING REQUEST PROCESSOR
-      // ============================================================
       function processPendingRequests() {
         const now = Date.now();
         const queue = getPendingRequests();
@@ -3167,7 +3060,6 @@
             const bonus = req.planBonus || 5;
             const totalCredit = req.baseAmount + bonus;
 
-            // Add deposit + bonus to withdrawable balance
             users[idx].balance += totalCredit;
             users[idx].totalDeposited = (users[idx].totalDeposited || 0) + req.baseAmount;
             saveUsers(users);
@@ -3228,9 +3120,7 @@
         if (changed) savePendingRequests(queue);
       }
 
-      // ============================================================
       // SESSION / DASHBOARD LOAD
-      // ============================================================
       function showDashboard() {
         currentUser = getCurrentUser();
         if (!currentUser) {
@@ -3276,9 +3166,7 @@
         toastInfo('You have been logged out.', 'Logged out');
       });
 
-      // ============================================================
       // POLLING & VISIBILITY
-      // ============================================================
       setInterval(processPendingRequests, POLL_INTERVAL_MS);
       document.addEventListener('visibilitychange', () => {
         if (!document.hidden) {

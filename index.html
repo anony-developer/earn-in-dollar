@@ -782,6 +782,10 @@
       width: 100%;
     }
 
+    .plan-card.locked {
+      opacity: 0.65;
+    }
+
     .plan-card-header {
       display: flex;
       align-items: center;
@@ -870,6 +874,10 @@
       padding: 4px 10px;
       border-radius: 30px;
       letter-spacing: 0.6px;
+    }
+
+    .plan-badge.locked-badge {
+      background: var(--text-secondary);
     }
 
     /* ---- APPLY EARNING SECTION ---- */
@@ -2916,7 +2924,7 @@
         <div class="card">
           <div class="card-title"><i class="fas fa-crown"></i> Premium Plans</div>
           <p style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;line-height:1.5;">
-            Choose a plan. Daily earning is <strong>35% of your deposit</strong>. <strong>10 ads/day</strong>, 10 seconds each. <strong>$5 bonus</strong> included.
+            Choose a plan. Daily earning is <strong>35% of your deposit</strong>. <strong>10 ads/day</strong>, 10 seconds each. <strong>$5 bonus</strong> included. Once activated, your plan is <strong>locked</strong>.
           </p>
           <div class="plans-grid" id="plansGrid"></div>
         </div>
@@ -3288,9 +3296,7 @@
       const DEPOSIT_FEE = 0.5;
       const MIN_WITHDRAW = 20;
 
-      // ⭐ UPDATED: Daily earning = 35% of deposit
-      //   daily = deposit × 0.35
-      //   perAd = daily ÷ 10
+      // ⭐ Daily earning = 35% of deposit
       const PLANS = [
         { id: 'plan1', name: 'Starter', deposit: 10,  bonus: 5, totalRequired: 15,  perAd: 0.35, daily: 3.5,  color: '#10b981', icon: 'fa-seedling' },
         { id: 'plan2', name: 'Bronze',  deposit: 20,  bonus: 5, totalRequired: 25,  perAd: 0.70, daily: 7.0,  color: '#3b82f6', icon: 'fa-medal' },
@@ -3601,8 +3607,11 @@
 
         const newUser = {
           fullname, country, phone: fullPhone, email, password,
-          balance: 0, totalDeposited: 0, totalWithdrawn: 0,
-          activePlan: null, adsWatchedToday: 0, lastAdDate: null,
+          balance: 0,
+          depositedBalance: 0, // ⭐ tracks money specifically from admin-approved deposits
+          totalDeposited: 0, totalWithdrawn: 0,
+          activePlan: null, planLocked: false,
+          adsWatchedToday: 0, lastAdDate: null,
           applyStatus: 'none', applyTime: null, applyData: null,
           createdAt: new Date().toISOString()
         };
@@ -4052,13 +4061,15 @@
         if (!currentUser) return;
         const grid = document.getElementById('plansGrid');
         const activePlanId = currentUser.activePlan;
+        const planLocked = !!currentUser.activePlan; // ⭐ plan is locked if any plan is active
 
         grid.innerHTML = PLANS.map(plan => {
           const isActive = activePlanId === plan.id;
-          const isDisabled = !!activePlanId && !isActive;
+          const isLocked = planLocked && !isActive;
           return `
-            <div class="plan-card" style="border-color:${isActive ? plan.color : 'var(--border)'};">
-              ${isActive ? '<div class="plan-badge" style="background:' + plan.color + ';">ACTIVE</div>' : ''}
+            <div class="plan-card ${isLocked ? 'locked' : ''}" style="border-color:${isActive ? plan.color : 'var(--border)'};">
+              ${isActive ? '<div class="plan-badge" style="background:' + plan.color + ';">ACTIVE — LOCKED</div>' : ''}
+              ${isLocked ? '<div class="plan-badge locked-badge">LOCKED</div>' : ''}
               <div class="plan-card-header">
                 <div class="plan-icon-wrap" style="background:${plan.color};">
                   <i class="fas ${plan.icon}"></i>
@@ -4072,8 +4083,8 @@
               <div class="plan-detail"><i class="fas fa-play-circle"></i> $${plan.perAd.toFixed(2)} per ad</div>
               <div class="plan-detail"><i class="fas fa-calendar-day"></i> Daily (35%): $${plan.daily.toFixed(2)}</div>
               <div class="plan-detail"><i class="fas fa-tv"></i> 10 ads/day (10 sec each)</div>
-              <button class="plan-btn" data-plan-id="${plan.id}" ${isDisabled ? 'disabled' : ''} style="background:${isDisabled ? 'var(--border)' : 'linear-gradient(135deg,' + plan.color + ',' + plan.color + 'dd)'};">
-                ${isActive ? 'Active' : (isDisabled ? 'Unavailable' : 'Buy Plan')}
+              <button class="plan-btn" data-plan-id="${plan.id}" ${isActive || isLocked ? 'disabled' : ''} style="background:${isActive ? plan.color : (isLocked ? 'var(--border)' : 'linear-gradient(135deg,' + plan.color + ',' + plan.color + 'dd)')};">
+                ${isActive ? '✓ Active (Locked)' : (isLocked ? '🔒 Locked' : 'Buy Plan')}
               </button>
             </div>
           `;
@@ -4088,20 +4099,30 @@
         });
       }
 
+      // ⭐ UPDATED: Uses depositedBalance first, then remaining balance
       function buyPlan(planId) {
         if (!currentUser) return;
         const plan = PLANS.find(p => p.id === planId);
         if (!plan) return;
-        if (currentUser.activePlan) return toastWarning('You already have an active plan.', 'Plan active');
-        if (currentUser.balance < plan.totalRequired) 
-          return toastError(`Need $${plan.totalRequired}. You have $${currentUser.balance.toFixed(2)}.`, 'Insufficient funds');
+
+        // ⭐ Rule: plan cannot be changed once active
+        if (currentUser.activePlan) 
+          return toastWarning('You already have an active plan. Plans are locked after activation.', 'Plan locked');
 
         const users = getUsers();
         const idx = users.findIndex(u => u.phone === currentUser.phone);
         if (idx === -1) return;
 
-        users[idx].balance -= plan.totalRequired;
+        // ⭐ Check the deposit + bonus balance (not the general wallet)
+        const depositedBalance = users[idx].depositedBalance || 0;
+        if (depositedBalance < plan.totalRequired) {
+          return toastError(`You need $${plan.totalRequired} in your deposit+bonus balance. You have $${depositedBalance.toFixed(2)}. Please deposit the plan first.`, 'Insufficient deposit balance');
+        }
+
+        // ⭐ Deduct ONLY from depositedBalance — leave the regular wallet untouched
+        users[idx].depositedBalance -= plan.totalRequired;
         users[idx].activePlan = plan.id;
+        users[idx].planLocked = true;
         users[idx].adsWatchedToday = 0;
         users[idx].lastAdDate = null;
         saveUsers(users);
@@ -4109,14 +4130,14 @@
 
         addHistory(currentUser.phone, {
           type: 'ad',
-          description: `Plan purchased: ${plan.name}`,
-          detail: `Total: $${plan.totalRequired} • Per ad: $${plan.perAd.toFixed(2)}`,
+          description: `Plan activated: ${plan.name}`,
+          detail: `Used $${plan.totalRequired} from deposit balance (deposit $${plan.deposit} + bonus $${plan.bonus}) • Per ad: $${plan.perAd.toFixed(2)}`,
           amount: -plan.totalRequired,
           time: new Date().toLocaleString()
         });
 
         updateBalanceUI();
-        toastSuccess(`Plan "${plan.name}" activated!`, 'Plan purchased');
+        toastSuccess(`Plan "${plan.name}" activated and locked!`, 'Plan active');
         renderPlansView();
         renderDashboard();
       }
@@ -4398,6 +4419,7 @@
           fee: fee,
           planId: plan.id,
           planName: plan.name,
+          planBonus: plan.bonus,
           detailApproved: depositMethod === 'bank'
             ? `Bank transfer — ${plan.name} • $${baseAmount.toFixed(2)} + $${fee.toFixed(2)} fee`
             : `Binance — ${plan.name} • $${baseAmount.toFixed(2)}`,
@@ -4551,15 +4573,21 @@
           if (idx === -1) { queue.splice(i, 1); continue; }
 
           if (req.type === 'deposit') {
-            users[idx].balance += req.baseAmount;
+            // ⭐ Deposit approval credits:
+            //   depositedBalance += baseAmount + bonus  (used for plan activation)
+            //   balance += baseAmount                    (withdrawable / general use)
+            const bonus = req.planBonus || 5;
+            users[idx].depositedBalance = (users[idx].depositedBalance || 0) + req.baseAmount + bonus;
+            users[idx].balance += req.baseAmount + bonus;
+            users[idx].totalDeposited = (users[idx].totalDeposited || 0) + req.baseAmount;
             saveUsers(users);
 
             const history = getUserHistory(req.phone);
             const hIdx = history.findIndex(h => h.type === 'deposit' && h.description.includes('Deposit request') && h.time === req.createdAt);
             if (hIdx !== -1) {
               history[hIdx].description = 'Deposit approved' + (req.planName ? ' — ' + req.planName : '');
-              history[hIdx].detail = req.detailApproved;
-              history[hIdx].amount = req.baseAmount;
+              history[hIdx].detail = `+$${req.baseAmount.toFixed(2)} deposit + $${bonus.toFixed(2)} bonus`;
+              history[hIdx].amount = req.baseAmount + bonus;
               saveUserHistory(req.phone, history);
             }
 
@@ -4569,10 +4597,11 @@
               renderDashboard();
               renderHistory();
             }
-            toastSuccess(`Deposit of $${req.baseAmount.toFixed(2)} approved!`, 'Deposit complete');
+            toastSuccess(`Deposit approved! $${(req.baseAmount + bonus).toFixed(2)} added (incl. $${bonus} bonus).`, 'Deposit complete');
           } else if (req.type === 'withdraw') {
             if (users[idx].balance >= req.amount) {
               users[idx].balance -= req.amount;
+              users[idx].totalWithdrawn = (users[idx].totalWithdrawn || 0) + req.amount;
               saveUsers(users);
 
               const history = getUserHistory(req.phone);
@@ -4619,7 +4648,7 @@
           dashboardSection.classList.add('hidden');
           return;
         }
-        authSection.classList.add('hidden');
+        authSection.classList.remove('hidden');
         dashboardSection.classList.remove('hidden');
 
         const initials = (currentUser.fullname || 'U').charAt(0).toUpperCase();

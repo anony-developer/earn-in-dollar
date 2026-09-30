@@ -783,7 +783,7 @@
     }
 
     .plan-card.locked {
-      opacity: 0.65;
+      opacity: 0.6;
     }
 
     .plan-card-header {
@@ -858,7 +858,7 @@
     }
 
     .plan-card .plan-btn:disabled {
-      opacity: 0.5;
+      opacity: 0.55;
       cursor: not-allowed;
       transform: none;
     }
@@ -3608,7 +3608,7 @@
         const newUser = {
           fullname, country, phone: fullPhone, email, password,
           balance: 0,
-          depositedBalance: 0, // ⭐ tracks money specifically from admin-approved deposits
+          depositedBalance: 0,
           totalDeposited: 0, totalWithdrawn: 0,
           activePlan: null, planLocked: false,
           adsWatchedToday: 0, lastAdDate: null,
@@ -4061,7 +4061,7 @@
         if (!currentUser) return;
         const grid = document.getElementById('plansGrid');
         const activePlanId = currentUser.activePlan;
-        const planLocked = !!currentUser.activePlan; // ⭐ plan is locked if any plan is active
+        const planLocked = !!currentUser.activePlan;
 
         grid.innerHTML = PLANS.map(plan => {
           const isActive = activePlanId === plan.id;
@@ -4099,13 +4099,11 @@
         });
       }
 
-      // ⭐ UPDATED: Uses depositedBalance first, then remaining balance
       function buyPlan(planId) {
         if (!currentUser) return;
         const plan = PLANS.find(p => p.id === planId);
         if (!plan) return;
 
-        // ⭐ Rule: plan cannot be changed once active
         if (currentUser.activePlan) 
           return toastWarning('You already have an active plan. Plans are locked after activation.', 'Plan locked');
 
@@ -4113,13 +4111,11 @@
         const idx = users.findIndex(u => u.phone === currentUser.phone);
         if (idx === -1) return;
 
-        // ⭐ Check the deposit + bonus balance (not the general wallet)
         const depositedBalance = users[idx].depositedBalance || 0;
         if (depositedBalance < plan.totalRequired) {
-          return toastError(`You need $${plan.totalRequired} in your deposit+bonus balance. You have $${depositedBalance.toFixed(2)}. Please deposit the plan first.`, 'Insufficient deposit balance');
+          return toastError(`You need $${plan.totalRequired} in your deposit balance. You have $${depositedBalance.toFixed(2)}. Please deposit first.`, 'Insufficient deposit balance');
         }
 
-        // ⭐ Deduct ONLY from depositedBalance — leave the regular wallet untouched
         users[idx].depositedBalance -= plan.totalRequired;
         users[idx].activePlan = plan.id;
         users[idx].planLocked = true;
@@ -4573,9 +4569,6 @@
           if (idx === -1) { queue.splice(i, 1); continue; }
 
           if (req.type === 'deposit') {
-            // ⭐ Deposit approval credits:
-            //   depositedBalance += baseAmount + bonus  (used for plan activation)
-            //   balance += baseAmount                    (withdrawable / general use)
             const bonus = req.planBonus || 5;
             users[idx].depositedBalance = (users[idx].depositedBalance || 0) + req.baseAmount + bonus;
             users[idx].balance += req.baseAmount + bonus;
@@ -4648,7 +4641,7 @@
           dashboardSection.classList.add('hidden');
           return;
         }
-        authSection.classList.remove('hidden');
+        authSection.classList.add('hidden');
         dashboardSection.classList.remove('hidden');
 
         const initials = (currentUser.fullname || 'U').charAt(0).toUpperCase();

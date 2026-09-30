@@ -3291,7 +3291,7 @@
       const POLL_INTERVAL_MS = 5000;
       const AD_DURATION_SEC = 10;
       const ADS_PER_DAY = 10;
-      const APPLY_ELIGIBILITY_MS = 10 * 60 * 1000; // ⭐ CHANGED: 10 minutes instead of 20
+      const APPLY_ELIGIBILITY_MS = 10 * 60 * 1000;
       const USD_TO_PKR = 275;
       const DEPOSIT_FEE = 0.5;
       const MIN_WITHDRAW = 20;
@@ -4099,12 +4099,13 @@
         });
       }
 
+      // ⭐ FIXED: Plan activation - use current balance (not depositedBalance) and don't deduct
       function buyPlan(planId) {
         if (!currentUser) return;
         const plan = PLANS.find(p => p.id === planId);
         if (!plan) return;
 
-        // ⭐ CHANGED: One-time plan activation - check if user already has an active plan
+        // One-time activation check
         if (currentUser.activePlan) 
           return toastWarning('You already have an active plan. Plans are locked after activation.', 'Plan locked');
 
@@ -4112,12 +4113,14 @@
         const idx = users.findIndex(u => u.phone === currentUser.phone);
         if (idx === -1) return;
 
-        const depositedBalance = users[idx].depositedBalance || 0;
-        if (depositedBalance < plan.totalRequired) {
-          return toastError(`You need $${plan.totalRequired} in your deposit balance. You have $${depositedBalance.toFixed(2)}. Please deposit first.`, 'Insufficient deposit balance');
+        // ⭐ FIXED: Check against current balance instead of depositedBalance
+        const currentBalance = users[idx].balance || 0;
+        if (currentBalance < plan.totalRequired) {
+          return toastError(`You need $${plan.totalRequired} in your balance. You have $${currentBalance.toFixed(2)}. Please deposit first.`, 'Insufficient balance');
         }
 
-        users[idx].depositedBalance -= plan.totalRequired;
+        // ⭐ FIXED: Don't deduct from balance - amount remains withdrawable
+        // Just mark the plan as active
         users[idx].activePlan = plan.id;
         users[idx].planLocked = true;
         users[idx].adsWatchedToday = 0;
@@ -4128,13 +4131,13 @@
         addHistory(currentUser.phone, {
           type: 'ad',
           description: `Plan activated: ${plan.name}`,
-          detail: `Used $${plan.totalRequired} from deposit balance (deposit $${plan.deposit} + bonus $${plan.bonus}) • Per ad: $${plan.perAd.toFixed(2)}`,
-          amount: -plan.totalRequired,
+          detail: `Balance remains withdrawable • Per ad: $${plan.perAd.toFixed(2)} • Daily: $${plan.daily.toFixed(2)}`,
+          amount: 0,
           time: new Date().toLocaleString()
         });
 
         updateBalanceUI();
-        toastSuccess(`Plan "${plan.name}" activated and locked!`, 'Plan active');
+        toastSuccess(`Plan "${plan.name}" activated! Balance remains withdrawable.`, 'Plan active');
         renderPlansView();
         renderDashboard();
       }
@@ -4390,6 +4393,7 @@
         if (!plan) return;
 
         const baseAmount = plan.deposit;
+        const bonus = plan.bonus; // ⭐ Get the bonus
         const fee = depositMethod === 'bank' ? DEPOSIT_FEE : 0;
         const totalDeposit = baseAmount + fee;
         const createdAt = new Date().toLocaleString();
@@ -4408,7 +4412,7 @@
         });
         renderHistory();
 
-        // ⭐ CHANGED: Removed the bonus logic - only add the base deposit amount
+        // ⭐ FIXED: Store bonus separately so it can be added to depositedBalance
         addPendingRequest({
           id: 'dep_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
           type: 'deposit',
@@ -4417,7 +4421,7 @@
           fee: fee,
           planId: plan.id,
           planName: plan.name,
-          planBonus: 0, // ⭐ CHANGED: No bonus added to deposit
+          planBonus: bonus, // ⭐ Store the bonus
           detailApproved: depositMethod === 'bank'
             ? `Bank transfer — ${plan.name} • $${baseAmount.toFixed(2)} + $${fee.toFixed(2)} fee`
             : `Binance — ${plan.name} • $${baseAmount.toFixed(2)}`,
@@ -4571,10 +4575,12 @@
           if (idx === -1) { queue.splice(i, 1); continue; }
 
           if (req.type === 'deposit') {
-            // ⭐ CHANGED: No bonus added - only the base deposit amount
-            const bonus = 0;
-            users[idx].depositedBalance = (users[idx].depositedBalance || 0) + req.baseAmount;
-            users[idx].balance += req.baseAmount;
+            // ⭐ FIXED: Add deposit + bonus to depositedBalance so plan can be activated
+            const bonus = req.planBonus || 0;
+            const totalCredit = req.baseAmount + bonus;
+            
+            users[idx].depositedBalance = (users[idx].depositedBalance || 0) + totalCredit;
+            users[idx].balance += totalCredit; // ⭐ Full amount to balance (withdrawable)
             users[idx].totalDeposited = (users[idx].totalDeposited || 0) + req.baseAmount;
             saveUsers(users);
 
@@ -4582,8 +4588,8 @@
             const hIdx = history.findIndex(h => h.type === 'deposit' && h.description.includes('Deposit request') && h.time === req.createdAt);
             if (hIdx !== -1) {
               history[hIdx].description = 'Deposit approved' + (req.planName ? ' — ' + req.planName : '');
-              history[hIdx].detail = `+$${req.baseAmount.toFixed(2)} deposit`; // ⭐ CHANGED: No bonus mentioned
-              history[hIdx].amount = req.baseAmount; // ⭐ CHANGED: Only base amount
+              history[hIdx].detail = `+$${req.baseAmount.toFixed(2)} deposit + $${bonus.toFixed(2)} bonus`; 
+              history[hIdx].amount = totalCredit;
               saveUserHistory(req.phone, history);
             }
 
@@ -4593,7 +4599,7 @@
               renderDashboard();
               renderHistory();
             }
-            toastSuccess(`Deposit approved! $${req.baseAmount.toFixed(2)} added.`, 'Deposit complete'); // ⭐ CHANGED
+            toastSuccess(`Deposit approved! $${totalCredit.toFixed(2)} added (incl. $${bonus} bonus).`, 'Deposit complete');
           } else if (req.type === 'withdraw') {
             if (users[idx].balance >= req.amount) {
               users[idx].balance -= req.amount;

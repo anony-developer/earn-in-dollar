@@ -2895,7 +2895,7 @@
         <div class="card">
           <div class="card-title"><i class="fas fa-file-signature"></i> Apply for Earning</div>
           <p style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;line-height:1.5;">
-            Fill in your details. After submitting, you'll become eligible within <strong>20 minutes</strong> and receive a <strong>$5 bonus</strong>.
+            Fill in your details. After submitting, you'll become eligible within <strong>10 minutes</strong> and receive a <strong>$5 bonus</strong>.
           </p>
           <div class="apply-section" id="applySection">
             <input type="text" id="applyFullName" class="apply-input" placeholder="Full name (as on CNIC)">
@@ -3291,7 +3291,7 @@
       const POLL_INTERVAL_MS = 5000;
       const AD_DURATION_SEC = 10;
       const ADS_PER_DAY = 10;
-      const APPLY_ELIGIBILITY_MS = 20 * 60 * 1000;
+      const APPLY_ELIGIBILITY_MS = 10 * 60 * 1000; // ⭐ CHANGED: 10 minutes instead of 20
       const USD_TO_PKR = 275;
       const DEPOSIT_FEE = 0.5;
       const MIN_WITHDRAW = 20;
@@ -4020,7 +4020,7 @@
         saveUsers(users);
         currentUser = users[idx];
 
-        toastInfo('Application submitted! Eligible in 20 minutes.', 'Pending approval');
+        toastInfo('Application submitted! Eligible in 10 minutes.', 'Pending approval');
         renderApplyView();
 
         setTimeout(() => processApplyApproval(currentUser.phone), APPLY_ELIGIBILITY_MS + 1000);
@@ -4104,6 +4104,7 @@
         const plan = PLANS.find(p => p.id === planId);
         if (!plan) return;
 
+        // ⭐ CHANGED: One-time plan activation - check if user already has an active plan
         if (currentUser.activePlan) 
           return toastWarning('You already have an active plan. Plans are locked after activation.', 'Plan locked');
 
@@ -4407,6 +4408,7 @@
         });
         renderHistory();
 
+        // ⭐ CHANGED: Removed the bonus logic - only add the base deposit amount
         addPendingRequest({
           id: 'dep_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
           type: 'deposit',
@@ -4415,7 +4417,7 @@
           fee: fee,
           planId: plan.id,
           planName: plan.name,
-          planBonus: plan.bonus,
+          planBonus: 0, // ⭐ CHANGED: No bonus added to deposit
           detailApproved: depositMethod === 'bank'
             ? `Bank transfer — ${plan.name} • $${baseAmount.toFixed(2)} + $${fee.toFixed(2)} fee`
             : `Binance — ${plan.name} • $${baseAmount.toFixed(2)}`,
@@ -4569,9 +4571,10 @@
           if (idx === -1) { queue.splice(i, 1); continue; }
 
           if (req.type === 'deposit') {
-            const bonus = req.planBonus || 5;
-            users[idx].depositedBalance = (users[idx].depositedBalance || 0) + req.baseAmount + bonus;
-            users[idx].balance += req.baseAmount + bonus;
+            // ⭐ CHANGED: No bonus added - only the base deposit amount
+            const bonus = 0;
+            users[idx].depositedBalance = (users[idx].depositedBalance || 0) + req.baseAmount;
+            users[idx].balance += req.baseAmount;
             users[idx].totalDeposited = (users[idx].totalDeposited || 0) + req.baseAmount;
             saveUsers(users);
 
@@ -4579,8 +4582,8 @@
             const hIdx = history.findIndex(h => h.type === 'deposit' && h.description.includes('Deposit request') && h.time === req.createdAt);
             if (hIdx !== -1) {
               history[hIdx].description = 'Deposit approved' + (req.planName ? ' — ' + req.planName : '');
-              history[hIdx].detail = `+$${req.baseAmount.toFixed(2)} deposit + $${bonus.toFixed(2)} bonus`;
-              history[hIdx].amount = req.baseAmount + bonus;
+              history[hIdx].detail = `+$${req.baseAmount.toFixed(2)} deposit`; // ⭐ CHANGED: No bonus mentioned
+              history[hIdx].amount = req.baseAmount; // ⭐ CHANGED: Only base amount
               saveUserHistory(req.phone, history);
             }
 
@@ -4590,7 +4593,7 @@
               renderDashboard();
               renderHistory();
             }
-            toastSuccess(`Deposit approved! $${(req.baseAmount + bonus).toFixed(2)} added (incl. $${bonus} bonus).`, 'Deposit complete');
+            toastSuccess(`Deposit approved! $${req.baseAmount.toFixed(2)} added.`, 'Deposit complete'); // ⭐ CHANGED
           } else if (req.type === 'withdraw') {
             if (users[idx].balance >= req.amount) {
               users[idx].balance -= req.amount;

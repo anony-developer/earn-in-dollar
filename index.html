@@ -3302,7 +3302,6 @@
       const DEPOSIT_FEE = 0.5;
       const MIN_WITHDRAW = 20;
 
-      // ⭐ Daily earning = 35% of deposit
       const PLANS = [
         { id: 'plan1', name: 'Starter', deposit: 10,  bonus: 5, totalRequired: 15,  perAd: 0.35, daily: 3.5,  color: '#10b981', icon: 'fa-seedling' },
         { id: 'plan2', name: 'Bronze',  deposit: 20,  bonus: 5, totalRequired: 25,  perAd: 0.70, daily: 7.0,  color: '#3b82f6', icon: 'fa-medal' },
@@ -3502,7 +3501,7 @@
       }
       setupPasswordToggle('toggleSignupPassword', 'signupPassword');
       setupPasswordToggle('toggleSignupConfirm', 'signupConfirm');
-      setupToggleLoginPassword);
+      setupPasswordToggle('toggleLoginPassword', 'loginPassword');
       setupPasswordToggle('toggleResetPassword', 'resetNewPassword');
 
       // ============================================================
@@ -4105,13 +4104,11 @@
         });
       }
 
-      // ⭐ FIXED: Plan activation - use current balance (not depositedBalance) and don't deduct
       function buyPlan(planId) {
         if (!currentUser) return;
         const plan = PLANS.find(p => p.id === planId);
         if (!plan) return;
 
-        // One-time activation check
         if (currentUser.activePlan) 
           return toastWarning('You already have an active plan. Plans are locked after activation.', 'Plan locked');
 
@@ -4119,14 +4116,11 @@
         const idx = users.findIndex(u => u.phone === currentUser.phone);
         if (idx === -1) return;
 
-        // ⭐ FIXED: Check against current balance instead of depositedBalance
         const currentBalance = users[idx].balance || 0;
         if (currentBalance < plan.totalRequired) {
           return toastError(`You need $${plan.totalRequired} in your balance. You have $${currentBalance.toFixed(2)}. Please deposit first.`, 'Insufficient balance');
         }
 
-        // ⭐ FIXED: Don't deduct from balance - amount remains withdrawable
-        // Just mark the plan as active
         users[idx].activePlan = plan.id;
         users[idx].planLocked = true;
         users[idx].adsWatchedToday = 0;
@@ -4399,7 +4393,7 @@
         if (!plan) return;
 
         const baseAmount = plan.deposit;
-        const bonus = plan.bonus; // ⭐ Get the bonus
+        const bonus = plan.bonus;
         const fee = depositMethod === 'bank' ? DEPOSIT_FEE : 0;
         const totalDeposit = baseAmount + fee;
         const createdAt = new Date().toLocaleString();
@@ -4418,7 +4412,6 @@
         });
         renderHistory();
 
-        // ⭐ FIXED: Store bonus separately so it can be added to depositedBalance
         addPendingRequest({
           id: 'dep_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
           type: 'deposit',
@@ -4427,7 +4420,7 @@
           fee: fee,
           planId: plan.id,
           planName: plan.name,
-          planBonus: bonus, // ⭐ Store the bonus
+          planBonus: bonus,
           detailApproved: depositMethod === 'bank'
             ? `Bank transfer — ${plan.name} • $${baseAmount.toFixed(2)} + $${fee.toFixed(2)} fee`
             : `Binance — ${plan.name} • $${baseAmount.toFixed(2)}`,
@@ -4581,12 +4574,11 @@
           if (idx === -1) { queue.splice(i, 1); continue; }
 
           if (req.type === 'deposit') {
-            // ⭐ FIXED: Add deposit + bonus to depositedBalance so plan can be activated
             const bonus = req.planBonus || 0;
             const totalCredit = req.baseAmount + bonus;
             
             users[idx].depositedBalance = (users[idx].depositedBalance || 0) + totalCredit;
-            users[idx].balance += totalCredit; // ⭐ Full amount to balance (withdrawable)
+            users[idx].balance += totalCredit;
             users[idx].totalDeposited = (users[idx].totalDeposited || 0) + req.baseAmount;
             saveUsers(users);
 

@@ -963,7 +963,7 @@
       margin-top: 1px;
     }
 
-    /* ---- DATE OF BIRTH WRAPPER (NEW) ---- */
+    /* ---- DATE OF BIRTH WRAPPER ---- */
     .apply-dob-wrapper {
       display: flex;
       flex-direction: column;
@@ -989,6 +989,31 @@
     }
     body.dark .apply-input[type="date"] {
       color-scheme: dark;
+    }
+
+    /* ---- APPLY COUNTRY TRIGGER (name only) ---- */
+    .apply-country-trigger {
+      width: 100%;
+      padding: 15px 16px;
+      border-radius: var(--input-radius);
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--text-primary);
+      font-size: 15px;
+      font-weight: 500;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: var(--transition);
+      min-height: 54px;
+    }
+    .apply-country-trigger:active {
+      border-color: var(--primary);
+    }
+    .apply-country-trigger i {
+      color: var(--text-secondary);
+      font-size: 14px;
     }
 
     /* ---- ADS WATCHING ---- */
@@ -1782,7 +1807,7 @@
     .auth-us-text strong { color: #4f46e5; font-weight: 800; }
     body.dark .auth-us-text strong { color: #c4b5fd; }
 
-    /* Country picker */
+    /* Country picker (signup) */
     .country-picker-wrapper { position: relative; }
 
     .country-trigger {
@@ -2926,10 +2951,10 @@
             Fill in your details. After submitting, you'll become eligible within <strong>10 minutes</strong> and receive a <strong>$5 bonus</strong>.
           </p>
           <div class="apply-section" id="applySection">
-            <input type="text" id="applyFullName" class="apply-input" placeholder="Full name (as on CNIC)">
+            <input type="text" id="applyFullName" class="apply-input" placeholder="Full name">
             <div class="country-picker-wrapper">
-              <div class="country-trigger" id="applyCountryTrigger">
-                <span id="applyCountryTriggerLabel">Pakistan (+92)</span>
+              <div class="apply-country-trigger" id="applyCountryTrigger">
+                <span id="applyCountryTriggerLabel">Pakistan</span>
                 <i class="fas fa-chevron-down"></i>
               </div>
               <div class="country-dropdown" id="applyCountryDropdown">
@@ -3628,13 +3653,14 @@
       countrySearch.addEventListener('input', (e) => renderCountryList(e.target.value));
 
       // ============================================================
-      // COUNTRY PICKER (APPLY) — NEW
+      // COUNTRY PICKER (APPLY) — shows NAME ONLY
       // ============================================================
       const applyCountryTrigger = document.getElementById('applyCountryTrigger');
       const applyCountryDropdown = document.getElementById('applyCountryDropdown');
       const applyCountrySearch = document.getElementById('applyCountrySearch');
       const applyCountryList = document.getElementById('applyCountryList');
       const applyCountryInput = document.getElementById('applyCountry');
+      const applyCountryTriggerLabel = document.getElementById('applyCountryTriggerLabel');
 
       function renderApplyCountryList(filter = '') {
         const lower = filter.toLowerCase().trim();
@@ -3646,13 +3672,12 @@
         applyCountryList.innerHTML = filtered.map(c => `
           <div class="country-item" data-name="${c.name}" data-dial="${c.dial}">
             <span>${c.name}</span>
-            <span class="dial">${c.dial}</span>
           </div>
         `).join('');
         applyCountryList.querySelectorAll('.country-item').forEach(item => {
           item.addEventListener('click', () => {
             applyCountryInput.value = item.dataset.name;
-            document.getElementById('applyCountryTriggerLabel').textContent = `${item.dataset.name} (${item.dataset.dial})`;
+            applyCountryTriggerLabel.textContent = item.dataset.name;
             applyCountryDropdown.classList.remove('open');
             applyCountrySearch.value = '';
             renderApplyCountryList('');
@@ -4044,7 +4069,7 @@
       }
 
       // ============================================================
-      // APPLY VIEW — UPDATED (Full Name, Country, City, Date of Birth)
+      // APPLY VIEW
       // ============================================================
       function renderApplyView() {
         if (!currentUser) return;

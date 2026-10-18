@@ -963,6 +963,34 @@
       margin-top: 1px;
     }
 
+    /* ---- DATE OF BIRTH WRAPPER (NEW) ---- */
+    .apply-dob-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .apply-dob-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding-left: 2px;
+    }
+    .apply-dob-label i {
+      color: var(--primary);
+      font-size: 13px;
+    }
+    .apply-input[type="date"] {
+      -webkit-appearance: none;
+      appearance: none;
+      color-scheme: light;
+    }
+    body.dark .apply-input[type="date"] {
+      color-scheme: dark;
+    }
+
     /* ---- ADS WATCHING ---- */
     .ad-box {
       width: 100%;
@@ -2899,8 +2927,22 @@
           </p>
           <div class="apply-section" id="applySection">
             <input type="text" id="applyFullName" class="apply-input" placeholder="Full name (as on CNIC)">
-            <input type="text" id="applyCnic" class="apply-input" placeholder="CNIC (35202-1234567-1)">
+            <div class="country-picker-wrapper">
+              <div class="country-trigger" id="applyCountryTrigger">
+                <span id="applyCountryTriggerLabel">Pakistan (+92)</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="country-dropdown" id="applyCountryDropdown">
+                <input type="text" class="country-search" id="applyCountrySearch" placeholder="Search country...">
+                <div class="country-list" id="applyCountryList"></div>
+              </div>
+            </div>
+            <input type="hidden" id="applyCountry" value="Pakistan">
             <input type="text" id="applyCity" class="apply-input" placeholder="City">
+            <div class="apply-dob-wrapper">
+              <label class="apply-dob-label"><i class="fas fa-calendar-alt"></i> Date of Birth</label>
+              <input type="date" id="applyDob" class="apply-input" max="2010-12-31" min="1940-01-01">
+            </div>
             <button class="apply-btn" id="applySubmitBtn">Submit Application</button>
           </div>
           <div id="applyStatusBox" style="margin-top:12px;"></div>
@@ -3526,7 +3568,7 @@
       document.getElementById('backToLoginFromReset').addEventListener('click', () => showAuthCard(loginCard));
 
       // ============================================================
-      // COUNTRY PICKER
+      // COUNTRY PICKER (SIGNUP)
       // ============================================================
       const countryTrigger = document.getElementById('countryTrigger');
       const countryTriggerLabel = document.getElementById('countryTriggerLabel');
@@ -3584,6 +3626,52 @@
       renderCountryList('');
 
       countrySearch.addEventListener('input', (e) => renderCountryList(e.target.value));
+
+      // ============================================================
+      // COUNTRY PICKER (APPLY) — NEW
+      // ============================================================
+      const applyCountryTrigger = document.getElementById('applyCountryTrigger');
+      const applyCountryDropdown = document.getElementById('applyCountryDropdown');
+      const applyCountrySearch = document.getElementById('applyCountrySearch');
+      const applyCountryList = document.getElementById('applyCountryList');
+      const applyCountryInput = document.getElementById('applyCountry');
+
+      function renderApplyCountryList(filter = '') {
+        const lower = filter.toLowerCase().trim();
+        const filtered = lower ? countries.filter(c => c.name.toLowerCase().includes(lower)) : countries;
+        if (filtered.length === 0) {
+          applyCountryList.innerHTML = '<div style="padding:16px;text-align:center;color:var(--text-secondary);">No countries found</div>';
+          return;
+        }
+        applyCountryList.innerHTML = filtered.map(c => `
+          <div class="country-item" data-name="${c.name}" data-dial="${c.dial}">
+            <span>${c.name}</span>
+            <span class="dial">${c.dial}</span>
+          </div>
+        `).join('');
+        applyCountryList.querySelectorAll('.country-item').forEach(item => {
+          item.addEventListener('click', () => {
+            applyCountryInput.value = item.dataset.name;
+            document.getElementById('applyCountryTriggerLabel').textContent = `${item.dataset.name} (${item.dataset.dial})`;
+            applyCountryDropdown.classList.remove('open');
+            applyCountrySearch.value = '';
+            renderApplyCountryList('');
+          });
+        });
+      }
+
+      applyCountryTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        applyCountryDropdown.classList.toggle('open');
+        if (applyCountryDropdown.classList.contains('open')) applyCountrySearch.focus();
+      });
+      document.addEventListener('click', (e) => {
+        if (!applyCountryTrigger.contains(e.target) && !applyCountryDropdown.contains(e.target)) {
+          applyCountryDropdown.classList.remove('open');
+        }
+      });
+      applyCountrySearch.addEventListener('input', (e) => renderApplyCountryList(e.target.value));
+      renderApplyCountryList('');
 
       // ============================================================
       // SIGNUP
@@ -3956,7 +4044,7 @@
       }
 
       // ============================================================
-      // APPLY VIEW
+      // APPLY VIEW — UPDATED (Full Name, Country, City, Date of Birth)
       // ============================================================
       function renderApplyView() {
         if (!currentUser) return;
@@ -3964,11 +4052,14 @@
         const applySection = document.getElementById('applySection');
         const submitBtn = document.getElementById('applySubmitBtn');
         const inputs = applySection.querySelectorAll('.apply-input');
+        const countryTriggerEl = document.getElementById('applyCountryTrigger');
 
         if (currentUser.applyStatus === 'pending') {
           applySection.classList.remove('eligible');
           submitBtn.disabled = true;
           inputs.forEach(i => i.disabled = true);
+          countryTriggerEl.style.pointerEvents = 'none';
+          countryTriggerEl.style.opacity = '0.7';
 
           let submittedText = '';
           if (currentUser.applyTime) {
@@ -3990,6 +4081,8 @@
           applySection.classList.add('eligible');
           submitBtn.disabled = true;
           inputs.forEach(i => i.disabled = true);
+          countryTriggerEl.style.pointerEvents = 'none';
+          countryTriggerEl.style.opacity = '0.7';
           statusBox.innerHTML = `
             <div class="apply-status" style="border-color:var(--success);background:rgba(16,185,129,0.08);">
               <i class="fas fa-check-circle" style="color:var(--success);"></i>
@@ -4000,6 +4093,8 @@
           applySection.classList.remove('eligible');
           submitBtn.disabled = false;
           inputs.forEach(i => i.disabled = false);
+          countryTriggerEl.style.pointerEvents = '';
+          countryTriggerEl.style.opacity = '';
           statusBox.innerHTML = '';
         }
       }
@@ -4009,11 +4104,20 @@
         if (currentUser.applyStatus === 'pending' || currentUser.applyStatus === 'eligible') return;
 
         const fullName = document.getElementById('applyFullName').value.trim();
-        const cnic = document.getElementById('applyCnic').value.trim();
+        const country = document.getElementById('applyCountry').value;
         const city = document.getElementById('applyCity').value.trim();
+        const dob = document.getElementById('applyDob').value;
 
-        if (!fullName || !cnic || !city) return toastWarning('Please fill all fields.', 'Missing info');
-        if (!/^\d{5}-\d{7}-\d$/.test(cnic)) return toastError('CNIC must be in format 35202-1234567-1', 'Invalid CNIC');
+        if (!fullName || !country || !city || !dob) return toastWarning('Please fill all fields.', 'Missing info');
+
+        // Validate age (must be at least 13, reasonable range)
+        const dobDate = new Date(dob);
+        const today = new Date();
+        let age = today.getFullYear() - dobDate.getFullYear();
+        const m = today.getMonth() - dobDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) age--;
+        if (isNaN(age) || age < 13) return toastError('You must be at least 13 years old.', 'Invalid date of birth');
+        if (age > 120) return toastError('Please enter a valid date of birth.', 'Invalid date of birth');
 
         const users = getUsers();
         const idx = users.findIndex(u => u.phone === currentUser.phone);
@@ -4021,7 +4125,7 @@
 
         users[idx].applyStatus = 'pending';
         users[idx].applyTime = new Date().toISOString();
-        users[idx].applyData = { fullName, cnic, city };
+        users[idx].applyData = { fullName, country, city, dob };
         saveUsers(users);
         currentUser = users[idx];
 
